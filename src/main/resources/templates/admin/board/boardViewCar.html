@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="ko"  xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="fragment/_layout">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>게시판 관리 > 게시판 상세정보</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <!--  <link rel="stylesheet" type="text/css" th:href="@{/static/css/layoutStyle.css}" />-->
+  <style>
+    .main {
+        background-color: white;
+        box-shadow: 0 0 3px 1px #ccc;
+        margin-bottom: 30px;
+    }
+    .main h3 {
+    padding: 10px 0 10px 15px;
+    border-bottom: 1px solid #888;
+    color: rgb(50, 50, 50);
+    }
+
+    /* ---------------------------------- main1 ---------------------------------- */
+    #main1 tr{
+        border-bottom: 1px solid #dcdcdc;
+    }
+
+    #main1 th, #main1 td{
+        padding: 8px 14px;
+        height: 50px;
+        text-align: left;
+    }
+
+    #main1 th {
+        background-color: #eee;
+        width: 10%;
+        line-height: 1.3rem;
+    }
+
+    #main1 td {
+        width: 40%;
+    }
+
+    #main1 .w100 {
+        width: 150px;
+    }
+
+    /* col {
+        display: table-column;
+    } */
+
+    #main1 select{
+        width: 193px;
+        height: 30px;
+    }
+
+    #main1 input {
+        height: 30px;
+        padding: 0 10px
+    }
+
+    #main1 p {
+      border: 1px solid #767676;
+      border-radius: 3px;
+      width: 250px;
+      height: 30px;
+      padding: 0 10px;
+      align-items: center;
+    }
+
+    #view_address p {
+      margin-bottom: 8px;
+    }
+
+    .btn_wrap {
+        display: flex;
+        align-items: center;
+        height: 40px;
+    }
+
+    .btn_wrap input {
+        border: none;
+        margin: 0 4px;
+    }
+    /* ------------------------------------------------------------------- */
+
+    /* ---------------------------------- main2 ---------------------------------- */
+
+    #main2 tr {
+        height: 40px;
+        text-align: center;
+    }
+
+    #main2 thead {
+        background-color: #eee;
+    }
+    #main2 th, #main2 td {
+        border: 1px solid #ccc;
+    }
+
+    .board_detail {
+      display: flex;
+    }
+
+    .board_detail li:nth-child(2), .board_detail li:nth-child(3), .board_detail li:nth-child(4) {
+      margin-left: 30px;
+    }
+    /* -------------------------------------------------------------------- */
+
+
+  .red_border{ /* 값 미입력시 색 변경 이벤트 클래스*/
+    border: 1px solid red;
+    outline: red;
+  }
+
+  span {
+      color: rgb(220, 20, 20);
+  }
+
+  p {
+      margin: 0;
+  }
+
+  .btn_confirm {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+    padding: 0 15px;
+  }
+
+  .rentalDate{
+    display: flex;
+  }
+
+  .rentalDate p {
+    width: 116.07px !important;
+    padding: 0px !important;
+    text-align: center;
+  }
+
+  </style>
+</head>
+
+<body>
+<h2 layout:fragment="page_name">게시판글 정보</h2>
+
+<div class="main_container" layout:fragment="main_container">
+  <div class="main" id="main1">
+    <h3>게시판글 상세정보</h3>
+
+    <form>
+      <div class="f_table">
+        <table>
+          <colgroup>
+            <col class="w100">
+            <col>
+          </colgroup>
+          <tbody>
+          <tr>
+            <th>작성자</th>
+            <td>
+              <p>[[${view.memberNickName}]]</p>
+            </td>
+          </tr>
+          <tr>
+            <th>글 제목</th>
+            <td>
+              <p>[[${view.title}]]</p>
+            </td>
+            <th>글 작성일</th>
+            <td>
+              <p>[[${view.uploadDate}]]</p>
+            </td>
+          </tr>
+          <tr>
+            <th>글 상세</th>
+            <td id="view_address" colspan="4">
+              <ul>
+                <li>
+                  <ul class="board_detail">
+                    <li>
+                      <label>제품명</label>
+                      <p>[[${view.name}]]</p>
+                    </li>
+                    <li>
+                      <label>렌탈기간</label>
+                      <div class="rentalDate">
+                        <p>[[${view.rentalStartDate}]]</p>&nbsp;~&nbsp;<p>[[${view.rentalEndDate}]]</p>
+                      </div>
+                    </li>
+                    <li>
+                      <label>위치</label>
+                      <p>[[${view.address}]]</p>
+                    </li>
+                    <li>
+                      <label>운송방식</label>
+                      <p>[[${view.carrier}]]</p>
+                    </li>
+                  </ul>
+                </li>
+
+                <li>
+                  <ul class="board_detail">
+                    <li>
+                      <label>차종</label>
+                      <p>[[${view.carType}]]</p>
+                    </li>
+                    <li>
+                      <label>연료종류</label>
+                      <p>[[${view.carFuelType}]]</p>
+                    </li>
+                    <li>
+                      <label>차량 연식</label>
+                      <p>[[${view.carAge}]]</p>
+                    </li>
+                    <li>
+                      <label>가격</label>
+                      <p>[[${view.rentalPrice}]]</p>
+                    </li>
+                  </ul>
+                </li>
+
+                <li>
+                  <label>글 내용</label>
+                  <p style="word-wrap: break-word; width:1090px; height:210px; overflow-y: scroll;">[[${view.content}]]</p>
+                </li>
+
+              </ul>
+            </td>
+          </tr>
+          <tr class="img_file">
+            <th>제품 이미지</th>
+            <td>
+              <img th:src="@{|/upload/${view.folderName}/${view.fileName}|}" width="250" alt="">
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="btn_confirm">
+        <div class="btn_left">
+          <a href="#" class="btn red" th:onclick="removeItem([[${view.itemId}]])">삭제</a>
+        </div>
+        <div class="btn_right">
+          <a th:href="@{/admin/boardUpdateCar?(itemId=${view.itemId})}" class="btn green">수정</a>
+          <a href="/admin/boardList" class="btn gray">확인</a>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<script layout:fragment="script">
+  window.onload=function(){
+      $(".board_menu").show();
+      $(".board_menu_1").css({"background-color":"rgba(255, 255, 255, 0.1)", "border-radius":"4px"});
+  }
+
+  // 해당 게시글 삭제
+    function removeItem(itemId) {
+       if(confirm("해당 게시글을 삭제 하시겠습니까?") ) {
+            if(true) {
+            alert("삭제가 완료되었습니다.");
+                location.href = "/admin/boardDelete?itemId="+itemId;
+            }
+       }
+    }
+</script>
+</body>
+</html>

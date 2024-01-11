@@ -1,0 +1,759 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>제품 상세페이지</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+          integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script th:src="@{/static/js/fragment.js}"></script>
+    <link rel="stylesheet" th:href=@{/static/css/style.css}>
+    <style>
+        .view-content {
+            width: 100%;
+            max-width: var(--main-width);
+            margin: 0 auto;
+            margin-top: 30px;
+            margin-bottom: 180px;
+            padding: 10px;
+        }
+        .view-content h2 {
+            color: var(--sub-color);
+        }
+
+        .view-content-top{
+            width: 1000px;
+            height: 385px;
+            margin: 20px auto;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+
+        }
+
+        .view-image{
+            width: 44%;
+            height: 82%;
+            margin: 0 8px;
+            overflow: hidden;
+            border-radius: 8px;
+            position: relative;
+        }
+        .view-image img{
+            width: auto;
+            height: 100%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-height: 100%;
+        }
+        .view-product{
+            width: 46%;
+            height: 100%;
+            margin: 0 8px;
+            display: flex;
+            align-items: center;
+
+        }
+        .product-category{
+            width: 100%;
+            margin: 10px 0;
+            color:rgb(36, 36, 36);
+            font-size: 15px;
+        }
+        .product-category a{
+            text-decoration: none;
+            padding:4px 0;
+            color: rgb(59, 59, 59);
+        }
+        .product-detail{
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+        }
+        .product-detail ul{
+            width:100%;
+            padding: 0;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .product-detail ul > *{
+            width: 100%;
+            list-style: none;
+            padding: 7px 0;
+
+        }
+        .product-detail li:nth-child(2),
+        .product-detail li:nth-child(3),
+        .product-detail li:nth-child(4),
+        .product-detail li:nth-child(5),
+        .product-detail li:nth-child(6),
+        .product-detail li:nth-child(7){
+            color: grey;
+            font-size: 15px;
+        }
+        .product-detail li:nth-child(2) span,
+        .product-detail li:nth-child(3) span,
+        .product-detail li:nth-child(4) span,
+        .product-detail li:nth-child(5) span,
+        .product-detail li:nth-child(6) span{
+            color: rgb(61, 61, 61);
+            font-weight:bold;
+            font-size: 18px;
+        }
+        .product-detail li:nth-child(7){
+            text-align: right;
+        }
+        .product-detail li:nth-child(7) h2{
+            color:coral;
+        }
+        .product-detail .won{
+            font-size: 18px;
+            font-weight: bold;
+            color: rgb(72, 72, 72);
+        }
+        .product-detail .month{
+            font-size: 16px;
+            font-weight: bold;
+            color: grey;
+        }
+        /*렌더 정보 클릭이벤트*/
+        .lender{
+            cursor:pointer;
+            color: rgb(107, 107, 107);
+            font-weight: bold;
+        }
+        .lender:hover{
+            text-decoration:underline;
+            text-underline-offset: 0.3rem;
+            text-decoration-thickness: 1px;
+        }
+        .product-detail li:nth-child(6){
+            position:relative;
+        }
+        .memberMenu{
+            position:absolute;
+            display: none;
+            top: 100%;
+            left: 39px;
+            width: 120px;
+            border: 1px solid rgb(221, 221, 221);
+            box-shadow: 0px 0px 9px 1px rgb(231, 231, 231);
+            background-color: white;
+        }
+        .active{
+            display:block;
+        }
+        .memberMenu ul{
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .memberMenu ul a{
+            text-decoration: none;
+        }
+        .memberMenu ul a:hover{
+            background-color: rgb(255, 229, 81);
+        }
+        .memberMenu ul li{
+            width:100%;
+            height:24px;
+            list-style: none;
+            font-weight: bold;
+            font-size: 15px;
+            color: rgb(78, 78, 78);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        /*----------장바구니, 문의하기, 렌탈버튼 영역---------*/
+
+        .product-detail button{
+            width: 192px;
+            height: 50px;
+            border-radius: 4px;
+            font-size: 17px;
+            font-weight: bold;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+        .btnList{
+            display: flex;
+            justify-content: space-between;
+        }
+        .btnList a{
+            width:55px;
+            text-align:center;
+            text-decoration:none;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+        }
+        .btnList a img{
+            width:44px;
+        }
+        .cartBtn{
+            width:8%;
+            background-color: white;
+            /*border: 1px solid var(--main-color);*/
+            font-size:30px;
+            border: none;
+            color: var(--main-color);
+            cursor: pointer;
+        }
+        .msgBtn{
+            width:43%;
+            background-color: white;
+            border: 1px solid var(--main-color);
+            color: var(--main-color);
+            cursor: pointer;
+        }
+        .rentalBtn{
+            width:43%;
+            background-color: var(--main-color);
+            border: 0;
+            color: white;
+            cursor: pointer;
+        }
+
+        .view-content-bottom{
+            width: 1000px;
+            margin: 0 auto;
+        }
+        .view-content-bottom h3{
+            font-size: 18px;
+            color: rgb(68,68,68);
+        }
+        .view-content-bottom textarea{
+            width: 100%;
+            min-height: 300px;
+            margin: 10px 0;
+            padding: 16px;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 17px;
+            border: 0;
+            background-color: rgb(250, 250, 250);
+            border-top: 2px solid rgb(230, 230, 230);
+            border-bottom: 2px solid rgb(230, 230, 230);
+            outline: none;
+            resize: none;
+        }
+        .btnArea{
+            width: 1000px;
+            margin: 0 auto;
+            text-align : right;
+        }
+        .btnArea button{
+            width: 90px;
+            height: 40px;
+            border: 0;
+            border-radius: 5px;
+            font-size: 16px;
+            font-family: 'Noto Sans KR', sans-serif;
+            color:white;
+            margin-left:5px;
+            cursor: pointer;
+        }
+
+
+        /*-------------회원에게 쪽지보내기 모달----------------*/
+        .message-back {
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: rgba(0, 0, 0, .4);
+            display:none;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            z-index: 200;
+        }
+        .message-wrapper {
+            width: 400px;
+            height: 400px;
+            padding: 12px;
+            top: 50%;
+            left: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: absolute;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            border: 1px solid rgb(223, 223, 223);
+            box-shadow: 0 0 10px 2px rgb(110, 110, 110);
+            border-radius: 4px;
+        }
+
+        .exitBtn {
+            position: absolute;
+            right: 10px;
+            top: 6px;
+            background-color: transparent;
+            border: none;
+            font-size: 18px;
+            color: rgb(170, 170, 170);
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .message-info {
+            width: 100%;
+            height: 15%;
+        }
+
+        .message-info ul {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .message-info ul li {
+            margin: 2px 0;
+            display: flex;
+            align-items: center;
+            color: grey;
+        }
+
+        .message-info ul li h4 {
+            font-size: 20px;
+
+        }
+
+        .message-info ul li:nth-child(1) span {
+            margin: 0 6px;
+            color: var(--sub-color);
+            font-weight: 800;
+            font-size: 18px;
+        }
+
+        .message-info ul li:nth-child(2) span {
+            font-size: 13px;
+            color: grey;
+            margin-right: 8px;
+        }
+
+        .message-wrapper textarea {
+            width: 100%;
+            height: 70%;
+            padding: 4px;
+            resize: none;
+            border: 1px solid rgb(223, 223, 223);
+            background-color: rgb(247, 247, 247);
+            font-family: 'NanumSquare', sans-serif;
+            font-size: 16px;
+            outline: none;
+        }
+
+        .message-wrapper .sendBtn {
+            width: 100%;
+            height: 10%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .message-wrapper .sendBtn button {
+            width: 100px;
+            height: 36px;
+            border: 0;
+            background-color: rgb(255, 224, 47);
+            border-radius: 4px;
+            font-family: 'NanumSquare', sans-serif;
+            font-size: 14px;
+            font-weight: bold;
+            color: rgb(78, 78, 78);
+            cursor: pointer;
+        }
+
+        /*------------- 신고하기 모달----------------*/
+        .report-back {
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: rgba(0, 0, 0, .4);
+            display:none;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            z-index: 200;
+        }
+
+        .exitBtn2 {
+            position: absolute;
+            right: 10px;
+            top: 6px;
+            background-color: transparent;
+            border: none;
+            font-size: 18px;
+            color: rgb(170, 170, 170);
+            cursor: pointer;
+            padding: 4px;
+        }
+
+
+        .coral{
+            background-color: coral;
+        }
+        .blue{
+            background-color: skyblue;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="~{fragment/nav::nav}"></div>
+
+<div class="view-content">
+    <h2>제품 상세보기</h2>
+    <div class="product-category">
+        <a th:href="@{|/users/category/${menu}|}"><p>[[${card.itemCategory}]]</p></a>
+    </div>
+    <div class="view-content-top">
+        <div class="view-image">
+            <img th:src="@{|/upload/${card.folderName}/${card.fileName}|}">
+        </div>
+        <div class="view-product">
+            <div class="product-detail">
+                <ul>
+                    <li><h2>[[${card.title}]]</h2></li>
+                    <li><p>렌탈기간&emsp;<span>[[${card.rentalStartDate}]] ~ [[${card.rentalEndDate}]]</span></p></li>
+                    <li><p>제품명&emsp;<span>[[${card.name}]]</span></p></li>
+                    <li><p>제품위치&emsp;<span>[[${card.address}]]</span></p></li>
+                    <li><p>운송방식&emsp;<span>[[${card.carrier}]]</span></p></li>
+                    <li>
+                        <p>렌더&emsp;<span class="lender">[[${card.memberName}]]</span></p>
+                        <div class="memberMenu">
+                            <ul>
+                                <a href=""><li>회원정보</li></a>
+                                <a href="" class="msg"><li>메시지</li></a>
+                                <a href="" class="report"><li>신고</li></a>
+                            </ul>
+                        </div>
+                    </li>
+                    <li><h2>[[${card.rentalPrice}]]<span class="won"> 원</span><span class="month"> / 월</span></h2></li>
+                    <li class="btnList">
+                        <a href="" class="cartBtn"><img src="/static/images/icon/bag2.svg"alt=""></a>
+                        <button class="msgBtn">쪽지 문의</button>
+                        <button class="rentalBtn" th:onclick="'moveToApply('+${card.itemId}+')'">렌탈신청</button>
+                    </li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+
+    <!----------------현재 웹페이지에 유저가 로그인한 상태인지 구별------------------>
+    <th:block th:if="${#strings.isEmpty(session.user)}">
+        <input type="hidden" name="checkUser" th:value="empty">
+    </th:block>
+    <th:block th:unless="${#strings.isEmpty(session.user)}">
+        <input type="hidden" name="checkUser" th:value="${session.user.memberId}">
+    </th:block>
+    <!----------------------------------------------------------------------->
+
+    <div class="view-content-bottom">
+        <h3>제품 설명</h3>
+        <textarea readonly>[[${card.content}]]</textarea>
+    </div>
+    <div class="btnArea">
+        <th:block th:if="${session.user!=null and (session.user.memberRole=='Admin' or card.memberId == session.user.memberId)}">
+            <button class="blue" th:onclick="'moveToEdit('+${card.itemId}+')'">수정</button>
+            <button class="coral" th:onclick="'deleteItem('+${card.itemId}+')'">삭제</button>
+        </th:block>
+        <th:block th:unless="${session.user!=null and (session.user.memberRole=='Admin' or card.memberId == session.user.memberId)}">
+        </th:block>
+    </div>
+</div>
+
+<div class="message-back">
+    <form method="post" class="message-wrapper" action="/users/category/car/msgCar">
+        <button type="button" class="exitBtn"><i class="fa-solid fa-x"></i></button>
+        <div class="message-info">
+            <ul>
+                <li><i class="fa-regular fa-envelope fa-lg"></i><span>[[${card.memberName}]]</span>님에게 문의 메시지 보내기</li>
+                <li><span>게시글 제목 | </span>
+                    <h4>[[${card.title}]]</h4>
+                </li>
+            </ul>
+        </div>
+        <textarea name="msgContent"></textarea>
+        <div class="sendBtn">
+            <input type="hidden" name="itemId" th:value="${card.itemId}">
+            <input type="hidden" name="ownerId" th:value="${card.memberId}">
+            <input type="hidden" name="renterId" value="">
+            <button type="submit">보내기</button>
+        </div>
+    </form>
+</div>
+
+<!-- 신고하기 모달-->
+<div class="report-back">
+    <!-- report 변경-->
+    <form onsubmit="return reportCheck()" method="post" class="message-wrapper" action="/reportProduct" >
+        <button type="button" class="exitBtn2"><i class="fa-solid fa-x"></i></button>
+        <div class="message-info">
+            <ul>
+                <li><i class="fa-regular fa-envelope fa-lg"></i><span>[[${card.memberName}]]</span>님 신고하기</li>
+                <li><span>게시글 제목 | </span>
+                    <h4>[[${card.title}]]</h4>
+                </li>
+            </ul>
+        </div>
+        <select name="reportType" class="reportType" style="width: 120px; margin: 10px 0;">
+            <option value="">-----신고사유-----</option>
+            <option value="사기">사기</option>
+            <option value="금지물품">금지물품</option>
+            <option value="비매너">비매너</option>
+            <option value="기타">기타</option>
+        </select>
+        <textarea name="reportContent" class="reportContent"></textarea>
+        <div class="sendBtn">
+            <input type="hidden" name="itemId" th:value="${card.itemId}">
+            <input type="hidden" name="ownerId" th:value="${card.memberId}">
+            <input type="hidden" name="ownerNickName" th:value="${card.memberNickName}">
+
+            <!--            <input type="hidden" name="renterId" value="">-->
+            <button type="submit" style="margin-top: 10px;">신고하기</button>
+        </div>
+    </form>
+</div>
+
+<div th:replace="~{fragment/nav::footer}"></div>
+<script>
+    let itemId = document.querySelector("input[name=itemId]");
+    let memberId = document.querySelector("input[name=checkUser]");
+    window.onload = function(){
+        let checkUser = document.querySelector("input[name=checkUser]").value;
+        if(checkUser!=='empty'){
+            document.querySelector("input[name=renterId]").value=checkUser;
+        }
+
+
+        /*------------------페이지 뜨자마자 장바구니 중복체크-----------------------*/
+        console.log(itemId.value+ " " +memberId.value)
+        if(memberId.value!=="empty"){
+            $.ajax({
+            type: "get",
+            url: "/CartDuplicateCheck",
+            dataType: "json",
+            data:{
+            itemId: itemId.value,
+            memberId: memberId.value
+            },
+            success: function(res){
+                if(res.msg == "failure") {
+                    document.querySelector(".btnList a").innerHTML=`<img src="/static/images/icon/bag1.svg"alt="">`;
+                    //$('.cartBtn').css("color", "coral");
+                } else {
+                    document.querySelector(".btnList a").innerHTML=`<img src="/static/images/icon/bag2.svg"alt="">`;
+                    //$('.cartBtn').css("color", "rgb(245, 188, 0)");
+                }
+            }
+            });
+        }
+
+    };
+
+
+    /*----------------------------메시지 모달창 이벤트------------------------------*/
+
+    let msg = document.querySelector(".msg");
+    let msgBtn = document.querySelector(".msgBtn");
+    let modal = document.querySelector(".message-back");
+    let exit = document.querySelector(".exitBtn");
+    let ownerId = document.querySelector("input[name=ownerId]");
+
+    msgBtn.addEventListener('click', (event) => {
+        event.preventDefault();
+        if(document.querySelector("input[name=checkUser]").value=='empty'){
+            alert("로그인 후 이용해주세요.");
+        }else if(ownerId.value==document.querySelector("input[name=checkUser]").value){
+            alert("렌탈제품 본인에게 메시지를 보낼 수 없습니다.");
+        }else{
+            modal.style.display = 'block';
+        }
+    });
+
+    msg.addEventListener('click', (event) => {
+        event.preventDefault();
+        if(document.querySelector("input[name=checkUser]").value=='empty'){
+            alert("로그인 후 이용해주세요.");
+        }else if(ownerId.value==document.querySelector("input[name=checkUser]").value){
+            alert("렌탈제품 본인에게 메시지를 보낼 수 없습니다.");
+        }else{
+            modal.style.display = 'block';
+        }
+    });
+    exit.addEventListener('click', () => {
+         modal.style.display = 'none';
+    });
+
+    /*------------------신고하기 모달창 이벤트-----------------*/
+    let report = document.querySelector(".report");
+    let modalReport = document.querySelector(".report-back");
+    let exitBtn2 = document.querySelector(".exitBtn2");
+
+    report.addEventListener('click', (event) => {
+        event.preventDefault();
+        if(document.querySelector("input[name=checkUser]").value=='empty'){
+            alert("로그인 후 이용해주세요.");
+        }else if(ownerId.value==document.querySelector("input[name=checkUser]").value){
+            alert("신고하기는 본인에게 보낼 수 없습니다.");
+        }else{
+            modalReport.style.display = 'block';
+        }
+    });
+    exitBtn2.addEventListener('click', () => {
+         modalReport.style.display = 'none';
+    });
+
+    // 유효성 검사
+    function reportCheck() {
+        if ($(".reportType").val() == "") { // 신고사유
+            alert("신고사유를 선택하세요.");
+            $(".reportType").focus();
+            return false;
+        }
+
+        if ($(".reportContent").val() == "") { // 내용
+            alert("신고내용을 입력하세요.");
+            $(".reportContent").focus();
+            return false;
+        }
+        alert("정상적으로 신고가 접수되었습니다!");
+
+    }
+
+    /*------------------렌더버튼 클릭시 서브메뉴 active 이벤트-----------------*/
+
+    let lender = document.querySelector(".lender");
+    let memberMenu = document.querySelector(".memberMenu");
+
+    lender.addEventListener('click',(event)=>{
+        memberMenu.classList.toggle('active');
+        event.stopPropagation(); // 이벤트 버블링 방지
+    });
+
+
+
+    /*--------------------문서의 다른 곳을 클릭했을 때 메뉴 숨기기--------------------*/
+
+    document.addEventListener('click', function(event) {
+        if (!memberMenu.contains(event.target) && event.target !== lender) {
+            memberMenu.classList.remove('active');
+        }
+    });
+
+
+
+
+
+    /*---------------------------장바구니 함수---------------------------------*/
+
+    document.querySelector(".cartBtn").addEventListener('click', function() {
+
+    if(ownerId.value == memberId.value) {
+            alert("자신의 상품은 장바구니에 담을 수 없습니다.");
+    } else {
+        $.ajax({
+            type: "get",
+            url: "/CartDuplicateCheck",
+            dataType: "json",
+            data:{
+                itemId: itemId.value,
+                memberId: memberId.value
+            },
+            success: function(res){
+                if(res.msg == "failure") {
+                    if(confirm("장바구니에 이미 들어가 있습니다!\n장바구니를 삭제하시겠습니까?")) {
+                        $.ajax({
+                            type: "get",
+                            url: "/deleteItemAndMemberId",
+                            dataType: "json",
+                            data:{
+                                itemId: itemId.value,
+                                memberId: memberId.value
+                            },
+                            success: function(res){
+                                if(res.msg == "success") {
+                                    alert("장바구니 삭제 완료!");
+                                }
+                            }
+                        });
+                    }
+                    location.reload();
+                } else {
+                    $.ajax({
+                        type: "get",
+                        url: "/addCart",
+                        dataType: "json",
+                        data:{
+                        itemId: itemId.value,
+                        memberId: memberId.value
+                        },
+                        success: function(res){
+                            if(res.msg == "success") {
+                                alert("장바구니 업로드 완료!");
+                                location.reload();
+                            } else {
+                                alert("오류");
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    }
+    });
+
+
+
+
+    function moveToApply(id){
+        location.href="/users/category/applyProduct?id="+id;
+    }
+    function moveToEdit(id){
+        location.href="/users/category/editProduct?id="+id;
+    }
+
+    function deleteItem(id){
+        if(confirm("게시글을 삭제하시겠습니까?")){
+            $.ajax({
+            type: "get",
+            url: "/users/category/deleteProduct",
+            dataType: "json",
+            data: {itemNum : id},
+            success: function(res){
+                let category=res.category;
+                console.log(category);
+                if(res.result=="success"){
+                    location.href="/users/category/"+category;
+                }
+            }
+            });
+        }
+
+
+    };
+
+</script>
+</body>
+</html>

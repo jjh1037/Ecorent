@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ko">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+          integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <link rel="stylesheet" th:href="@{/static/css/style.css}">
+    <link rel="stylesheet" th:href="@{/static/css/login/login.css}">
+
+
+</head>
+<body>
+<div th:replace="~{fragment/nav::nav}"></div>
+
+<form name="frm" method="post" id="loginForm" action="/member/login">
+    <h1>로그인</h1>
+    <ul>
+        <li>
+            <input type="text" name="memberEmail" placeholder="이메일" class="email">
+        </li>
+        <li>
+            <input type="password" name="memberPasswd" placeholder="비밀번호" class="passwd">
+        </li>
+        <li>
+            <button type="submit" name="login" class="btn">로그인</button>
+        </li>
+    </ul>
+    <section class="social-login">
+        <p>SNS 계정으로 로그인</p>
+
+        <div class="naver">
+            <a href="#">네이버로 시작하기</a>
+            <img th:src="@{/static/images/login/naver_logo.svg}" alt="">
+        </div>
+        <div class="kakao">
+            <a href="https://kauth.kakao.com/oauth/authorize?client_id=1cb6eeda5b10fa681b67816de0e0ea61&redirect_uri=http://localhost:9876/oauth/kakao&response_type=code">카카오로 시작하기</a>
+            <img th:src="@{/static/images/login/kakao_logo.svg}" alt="">
+        </div>
+        <div class="google">
+            <a href="#">Google로 시작하기</a>
+            <img src="https://www.svgrepo.com/show/475656/google-color.svg">
+        </div>
+    </section>
+    <section class="find-signup-wrap">
+        <div id="find-signup">
+                <span class="find-id">
+                    <a th:href="@{./searchEmail}" target="_blank" title="아이디 찾기">이메일 찾기</a>
+                </span>
+            <span class="find-pw">
+                    <a th:href="@{./searchPasswd}" target="_blank" title="비밀번호 찾기">비밀번호 찾기</a>
+                </span>
+            <span class="sign-up">
+                    <a th:href="@{./join}" target="_blank" title="회원가입">회원가입</a>
+                </span>
+        </div>
+    </section>
+
+</form>
+
+<script>
+    let loginForm = document.getElementById('loginForm');
+
+    loginForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        let memberEmail = document.querySelector('.email').value;
+        let memberPasswd = document.querySelector('.passwd').value;
+
+        $.ajax({
+            type: "post",
+            url: "/users/member/memberLogin/login",
+            dataType: "json",
+            data: {
+            memberEmail: memberEmail,
+            memberPasswd: memberPasswd
+            },
+            success: function(res) {
+                console.log(res);
+                if (res.success) {
+                    location.href = "/";
+                } else {
+                     alert("로그인에 문제가 발생했습니다.\n관리자에게 문의하세요.");
+                }
+            }
+        });
+
+    });
+
+</script>
+
+</body>
+</html>

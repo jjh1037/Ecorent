@@ -1,0 +1,421 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+          integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script th:src="@{/static/js/fragment.js}"></script>
+    <link rel="stylesheet" th:href="@{/static/css/style.css}">
+    <style>
+        .my-menu{
+            width: 100%;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+            box-shadow: 0 0 2px rgb(175, 175, 175);
+        }
+        .my-menu ul{
+            width: 100%;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .my-menu ul a{
+            text-decoration: none;
+            padding: 8px 12px;
+            margin: 0 20px;
+        }
+        .my-menu ul li{
+            width: 100%;
+            list-style: none;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: rgb(94, 94, 94);
+        }
+        .underline{
+            line-height: 1.2;
+            background-image: linear-gradient(transparent calc(100%-3px),#000 3px);
+            background-repeat: no-repeat;
+            background-size: 0% 100%;
+            transition: background-size 0.3s;
+            color:#000;
+        }
+        .underline.yellow{
+            background-image: linear-gradient(transparent 60%, #ffdb3b 40%);
+        }
+        .underline:hover {
+            background-size: 100% 100%;
+        }
+        .active {
+            line-height: 1.2;
+            background-repeat: no-repeat;
+            background-size: 0% 100%;
+            color:#000;
+            background-image: linear-gradient(transparent 60%, #ffdb3b 40%);
+            background-size: 100% 100%;
+        }
+        .wrapper {
+            width: var(--main-width);
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .msgWrapper {
+            width: 800px;
+            height: 740px;
+            margin: 0;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .itemInfo {
+            width: 100%;
+            height: 11%;
+            margin-bottom: 8px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+        }
+
+        .item-img {
+            background-color: cadetblue;
+            margin: 0 20px;
+            border-radius: 50%;
+            width: 64px;
+            height: 64px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .item-img img {
+            width: auto;
+            height: 100%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .item-text {
+            width: 84%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            line-height: 1.8rem;
+        }
+
+        .item-text h4 {
+            margin: 4px 0 0;
+            padding: 0;
+            font-size: 26px;
+            color: rgb(107, 107, 107);
+        }
+
+        .item-text p {
+            margin: 0px 0;
+            color: rgb(109, 109, 109);
+        }
+        .item-text span{
+            color:rgb(155, 155, 155);
+            font-size: 14px;
+        }
+        .item-text button{
+            background-color:transparent;
+            border:none;
+            font-family: 'NanumSquare', sans-serif;
+            color: rgb(109, 109, 109);
+            font-size: 16px;
+            cursor:pointer;
+        }
+
+        .msgScreen {
+            width: 100%;
+            height: 650px;
+            border-radius: 4px;
+            background-color: white;
+            border: 1px solid rgb(216, 216, 216);
+            box-shadow: 0 0 32px 1px rgb(230, 230, 230);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .msgView {
+            width: 100%;
+            height: 78%;
+            margin: 4px auto;
+            overflow-y: auto;
+        }
+
+        .msgView textarea {
+            font-family: 'NanumSquare', sans-serif;
+        }
+
+        .insertArea {
+            width: 95%;
+            height: 90px;
+            margin: 4px auto;
+            border-radius: 2px;
+            background-color: rgb(228, 228, 228);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .insertArea textarea {
+            resize: none;
+            border: none;
+            width: 84%;
+            height: 80%;
+            outline: none;
+            padding: 4px;
+            font-size: 18px;
+            background-color: rgb(228, 228, 228);
+            font-family: 'NanumSquare', sans-serif;
+        }
+        .insertArea textarea::placeholder{
+            color: rgb(170, 170, 170);
+        }
+        .insertArea textarea::placeholder{
+            color: rgb(170, 170, 170);
+        }
+
+        .insertArea .buttonArea {
+            width: 10%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .insertArea button {
+            border: none;
+            background-color: transparent;
+            width: 80px;
+            height: 50%;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 40px;
+            font-weight: bold;
+            color:rgb(150, 150, 150);
+            font-family: 'NanumSquare', sans-serif;
+        }
+
+        .msg {
+            width: 286px;
+            min-height: 46px;
+            height: auto;
+            margin: 24px;
+            padding: 12px;
+            border-radius: 2px;
+            box-shadow: 0 0 4px 1px rgb(209, 209, 209);
+            position: relative;
+        }
+
+        .right {
+            background-color: rgb(255, 250, 205);
+            border: 1px solid rgb(130, 167, 130);
+            margin-left: auto;
+        }
+
+        .left {
+            background-color: white;
+            border: 1px solid rgb(241, 193, 33);
+            margin-right: auto;
+        }
+
+        .msg pre {
+            width: 98%;
+            font-size: 16px;
+            font-family: 'NanumSquare', sans-serif;
+            white-space: pre-wrap;
+            /* 줄바꿈을 허용하고 공백을 유지함 */
+            word-wrap: break-word;
+            /* 긴 단어가 div를 벗어날 경우 줄바꿈 처리 */
+            overflow-wrap: break-word;
+            /* 긴 단어를 강제로 줄바꿈 처리 */
+            max-width: 100%;
+            /* 최대 너비를 부모 요소의 너비로 제한 */
+        }
+
+        .msg p {
+            position: absolute;
+            bottom: -18px;
+            font-size: 12px;
+            font-weight: bold;
+            color: rgb(160, 160, 160);
+        }
+
+        .right p {
+            right: 0;
+        }
+
+        .left p {
+            left: 0;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div th:replace="~{fragment/nav::nav}"></div>
+
+<div class="my-menu">
+    <ul>
+        <a href="/users/member/memberInfo/info">
+            <li class="underline yellow">회원정보</li>
+        </a>
+        <a href="/users/member/cart">
+            <li class="underline yellow">장바구니</li>
+        </a>
+        <a href="/users/member/memberInfo/receivedForms">
+            <li class="underline yellow">받은렌탈요청</li>
+        </a>
+        <a href="/users/member/memberInfo/sentForms">
+            <li class="underline yellow">보낸렌탈요청</li>
+        </a>
+        <a href="/users/member/memberInfo/messages">
+            <li class="underline yellow active">메시지함</li>
+        </a>
+    </ul>
+</div>
+<input type="hidden" class="userId" th:value="${session.user.memberId}">
+<input type="hidden" class="renterId" th:value="${view.renterId}">
+<input type="hidden" class="ownerId" th:value="${view.ownerId}">
+<input type="hidden" class="itemId" th:value="${view.itemId}">
+<div class="wrapper">
+    <div class="msgWrapper">
+        <div class="itemInfo">
+            <div class="item-img">
+                <img th:src="@{|/upload/${view.folderName}/${view.fileName}|}">
+            </div>
+            <div class="item-text">
+                <h4>[[${view.title}]]</h4>
+                <p><span>렌더 </span> [[${view.ownerName}]]&emsp;|&emsp;<button th:onclick="'moveToApply('+${view.itemId}+')'">렌탈신청 바로가기</button></p>
+            </div>
+        </div>
+        <div class="msgScreen">
+            <div class="msgView">
+
+
+            </div>
+            <div class="insertArea">
+                <textarea class="msgContent" placeholder="메시지를 입력해주세요"></textarea>
+                <div class="buttonArea">
+                    <button>..<i class="fa-regular fa-paper-plane"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="~{fragment/nav::footer}"></div>
+
+<script>
+    let userId=document.querySelector(".userId").value;
+    let renterId=document.querySelector(".renterId").value;
+    let ownerId=document.querySelector(".ownerId").value;
+    let itemId=document.querySelector(".itemId").value;
+    let textSendBtn = document.querySelector(".buttonArea button");
+
+
+    window.onload = function() {
+    var msgView = document.querySelector(".msgView");
+    msgView.scrollTop = msgView.scrollHeight;
+    };
+
+    function moveToApply(id){
+        location.href="/users/category/car/applyCar?id="+id;
+    }
+
+
+    function timeForm(msgDate){
+        let date = new Date(msgDate);
+        console.log(date);
+        let year = date.getFullYear().toString().substr(-2);
+        var month = (date.getMonth() + 1).toString().padStart(2, '0');
+        var day = date.getDate().toString().padStart(2, '0');
+        var hours = date.getHours().toString().padStart(2, '0');
+        var minutes = date.getMinutes().toString().padStart(2, '0');
+        return `${year}.${month}.${day} (${hours}:${minutes})`;
+    }
+
+    textSendBtn.addEventListener('click',()=>{
+        let msgContent= document.querySelector(".msgContent").value;
+
+        let obj={
+            renterId: renterId,
+            ownerId: ownerId,
+            itemId: itemId,
+            sentBy: userId,
+            msgContent: msgContent
+        }
+        console.log(obj);
+        $.ajax({
+            type: "post",
+            url: "/users/member/memberInfo/sendMsg",
+            dataType: "json",
+            data : obj,
+            success: function(res){
+                if(res.result=="good"){
+                    location.reload();
+                }
+            }
+        });
+    });
+
+    $.ajax({
+        type: "post",
+        url: "/users/member/memberInfo/msgView",
+        data:{
+            renterId : renterId,
+            ownerId : ownerId,
+            itemId : itemId
+        },
+        dataType: "json",
+        success: function(res){
+            let output="";
+            res.result.forEach((each)=>{
+                    if(each.sentBy==userId){
+                        output+=`
+                        <div class="msg right">
+                        <pre>${each.msgContent}</pre>
+                        <p>${timeForm(each.msgTime)}</p>
+                        </div>`;
+                    }else{
+                        output+=`<div class="msg left">
+                        <pre>${each.msgContent}</pre>
+                        <p>${timeForm(each.msgTime)}</p>
+                        </div>`;
+                    }
+            });
+            document.querySelector(".msgView").innerHTML=output;
+        }
+    });
+
+
+
+</script>
+</body>
+
+</html>

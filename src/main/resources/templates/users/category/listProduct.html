@@ -1,0 +1,209 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>제품 리스트</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+          integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script th:src="@{/static/js/fragment.js}"></script>
+    <link rel="stylesheet" th:href=@{/static/css/style.css}>
+    <style>
+        .content {
+            width: 100%;
+            max-width: var(--main-width);
+            margin: 0 auto;
+            margin-top: 30px;
+            padding: 10px;
+        }
+        .content a{
+            text-decoration:none;
+        }
+        .content h2 {
+            color: var(--sub-color);
+        }
+
+        .btnArea {
+            width: 100%;
+            text-align: right;
+            margin: 30px 0;
+        }
+        .btnArea button{
+            border: 0;
+            background-color: transparent;
+            color: var(--main-color);
+            font-weight: bold;
+            font-size: 17px;
+            font-family: 'NanumSquare', sans-serif;
+            cursor: pointer;
+        }
+
+        .wrapper_product {
+            width: 100%;
+            padding: 10px 0;
+        }
+
+        .wrapper_product ul {
+            width: 100%;
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+
+        }
+        .nullPost{
+            width:100%;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content:center;
+            font-size: 20px;
+            color:rgb(128, 128, 128)
+        }
+
+        .card {
+            background-color: white;
+            width: 285px;
+            height: 420px;
+            overflow: hidden;
+            margin: 10px 17.5px;
+            cursor:pointer;
+        }
+
+        .card-img {
+            width: 100%;
+            height: 65%;
+            overflow: hidden;
+            position: relative;
+            border-radius: 8px;
+        }
+
+        .card img {
+            height: 104%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-height: 104%;
+        }
+        .card-discription{
+            padding: 2px 4px;
+        }
+        .card-discription >*{
+            margin: 4px 0;
+        }
+        .itemTitle h3 {
+            color: rgb(68, 68, 68);
+            font-size: 17px;
+            font-family: 'Noto Sans KR', sans-serif;
+            width: 269px;
+            white-space:nowrap;
+            overflow:hidden;
+            text-overflow:ellipsis;
+        }
+
+        .itemPeriod, .itemAge, .itemName{
+            display: flex;
+            color: grey;
+        }
+        .itemPrice{
+            text-align: right;
+        }
+        .itemPrice .won{
+            font-size: 18px;
+            font-weight: bold;
+            color: rgb(72, 72, 72);
+        }
+        .itemPrice .month{
+            font-size: 16px;
+            font-weight: 500;
+            color: grey;
+        }
+    </style>
+</head>
+
+<body>
+
+<div th:replace="~{fragment/nav::nav}"></div>
+
+<div class="content">
+    <a th:href="@{|/users/category/${category}|}"><h2>[[${menu}]]</h2></a>
+    <input type="hidden" class="category" th:value="${category}">
+
+    <div class="btnArea">
+        <th:block th:if="${session.user!=null}">
+            <button class="postProductBtn">렌탈등록</button>
+        </th:block>
+        <th:block th:unless="${session.user!=null}">
+        </th:block>
+    </div>
+    <div class="wrapper_product">
+        <ul>
+
+        </ul>
+    </div>
+
+</div>
+
+<div th:replace="~{fragment/nav::footer}"></div>
+<script>
+    let postProductBtn = document.querySelector(".postProductBtn");
+    let category = document.querySelector(".category").value;
+    let url = "/users/category/"+category;
+
+    if(postProductBtn){
+        postProductBtn.addEventListener('click',()=>{
+            location.href="/users/category/postProduct?category="+category;
+        });
+    }
+
+    function viewProduct(id){
+        location.href="/users/category/viewProduct?id="+id;
+    }
+
+    $.ajax({
+        type : "post",
+        url : url,
+        dataType : "json",
+        success : function(res){
+
+            let total = res.total;
+
+
+            let output="";
+            if (res.list === "zero") {
+                output += `
+                <div class="nullPost">
+                    <p>등록된 게시글이 없습니다.</p>
+                </div>`;
+                document.querySelector(".wrapper_product ul").innerHTML = output;
+            }else{
+                res.list.forEach((each)=>{
+                output+=`
+                <li>
+                    <div class="card" onclick="viewProduct(${each.itemId})">
+                        <div class="card-img">
+                        <img src="/upload/${each.folderName}/${each.fileName}" alt="">
+                        </div>
+                        <div class="card-discription">
+                        <div class="itemTitle"><h3>${each.title}</h3></div>
+                        <div class="itemPeriod"><p>${each.rentalStartDate} ~ ${each.rentalEndDate}</p></div>
+                        <div class="itemName"><p>${each.name}</p></div>
+                        <div class="itemPrice"><h2>${each.rentalPrice} <span class="won">원</span><span class="month"> / 월</span></h2></div>
+                    </div>
+                </div>
+                </li>`;
+                });
+                document.querySelector(".wrapper_product ul").innerHTML=output;
+            }
+        }
+    });
+</script>
+</body>
+
+</html>

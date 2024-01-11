@@ -1,0 +1,245 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<div class="wrapper">
+
+<!------------------------- 네비메뉴시작 -------------------------->
+
+<header th:fragment="nav">
+    <nav>
+        <div class="logo">
+            <a href="/">
+                <p>ECORENT</p>
+            </a>
+            <img src="/static/images/main/leaf.png" alt="">
+        </div>
+        <div class="menu">
+            <ul class="menu-ul">
+                <li class="menu-li">
+                    <a href="">카테고리</a>
+                    <div class="subMenu-wrap">
+                        <ul class="subMenu">
+                            <li><a th:href="@{/users/category/stage}">무대방송</a></li>
+                            <li><a th:href="@{/users/category/car}">자동차</a></li>
+                            <li><a th:href="@{/users/category/restaurant}">상업용 가전</a></li>
+                            <li><a th:href="@{/users/category/office}">IT 오피스</a></li>
+                            <li><a th:href="@{/users/category/instrument}">악기</a></li>
+                            <li><a th:href="@{/users/category/construction}">현장장비</a></li>
+                            <li><a th:href="@{/users/category/etc}">기타장비</a></li>
+                            <li><a th:href="@{/users/category/oversea}">해외운송</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li><a href="/users/shipping/u_shippingList">운송회사</a></li>
+                <li><a href="/users/community/listPost">커뮤니티</a></li>
+            </ul>
+        </div>
+        <div class="search">
+            <form action="/users/searchMain" method="get" class="mainSearch">
+                <p><i class="fa-solid fa-magnifying-glass"></i></p>
+                <input type="text" name="searchWord">
+            </form>
+        </div>
+        <div class="sign">
+            <div class="dropbtn_click"><a href="#"><img src="/static/images/icon/bag2.svg" class="cartIcon" alt=""></a>
+                <div class="cart_container">
+                    <h3 class="cart-title">장바구니 목록</h3>
+                    <ul id="cartList" onclick="moveToCart()">
+                        <!-- 카트 preview -> script를 통해 추가, cart css 복사해야함-->
+                    </ul>
+                </div>
+            </div>
+            <th:block th:if="${#strings.isEmpty(session.user)}">
+                <input type="hidden" class="isLogin" value="0">
+                <ul class="ulOfSign">
+                    <li><a href="/users/member/memberLogin/login" class="signUrl">로그인</a></li>
+                    <li><a href="/users/member/memberLogin/join" class="signUrl">회원가입</a></li>
+                </ul>
+            </th:block>
+            <th:block th:unless="${#strings.isEmpty(session.user)}">
+                <input type="hidden" class="isLogin" value="1">
+                <input type="hidden" class="memberId" th:value="${session.user.memberId}">
+                <ul class="ulOfSign">
+                    <li class="memberName">
+                        <a th:href="@{/users/member/memberInfo/info}" class="memberName signUrl" th:text="${session.user.memberNickName}+' 님'"></a>
+                        <a th:href="@{/users/member/memberInfo/receivedForms}" class="newRequest signUrl"><p>0</p></a>
+                        <div class="member-wrapper">
+                            <ul class="member">
+                                <li><a th:href="@{/users/member/memberInfo/info}" class="signUrl"><i class="fa-regular fa-user"></i>&nbsp; 회원정보</a></li>
+                                <li><a th:href="@{/users/member/cart}" class="signUrl"><img src="/static/images/icon/bag3.svg" style="width:18px;" alt="">&nbsp; 장바구니</a></li>
+                                <li><a th:href="@{/users/member/memberInfo/receivedForms}" class="signUrl"><i class="fa-regular fa-bell"></i> &nbsp; 렌탈요청건</a></li>
+                                <li><a th:href="@{/users/member/memberInfo/messages}" class="signUrl"><i class="fa-regular fa-envelope"></i> &nbsp; 메시지함</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li><a th:href="@{/users/member/logout}" class="signUrl">로그아웃</a></li>
+                </ul>
+            </th:block>
+            <th:block th:if="${session.user!=null and session.user.memberRole=='Admin'}">
+                <a th:href="@{/admin/member/memberList}" class="signUrl">관리자</a>
+            </th:block>
+        </div>
+    </nav>
+    <script>
+
+        function moveToCart(){
+            location.href="/users/member/cart";
+        }
+
+        /*----------------------렌탈요청 및 메시지 알림----------------------------*/
+
+        function updateNav() {
+        $.ajax({
+            type : "post",
+            url : "/index",
+            dataType : "json",
+            success : function(res){
+                console.log(res.count);
+                console.log(res.countMsg);
+                if(res.count!=null || res.countMsg!=null){
+                    document.querySelector(".newRequest p").innerText=(res.count+res.countMsg);
+                }
+            }
+        });
+        }
+        document.addEventListener("DOMContentLoaded", function() {
+            updateNav();
+        });
+
+
+        /*----------------------장바구니 프리뷰-----------------------------*/
+
+        let login = document.querySelector(".isLogin").value;
+        console.log("login");
+
+        document.querySelector(".dropbtn_click").addEventListener('click', () => {
+        if(login == 0) {
+            console.log("plz login")
+        } else {
+            let userId = document.querySelector(".memberId").value;
+
+            $.ajax({
+                type: "post",
+                url: "/users/member/cart",
+                dataType: "json",
+                data: { memberId : userId },
+                success: function (res) {
+                    let output = "";
+
+                    if(res.list.length == 0) {
+                        output += `
+                            <li>
+                                <a href="/users/member/cart" class="cart_direct_link">
+                                <div class="cart_wrap" style="display: flex; justify-content: center;">
+                                    <p style="display: flex; text-align: center;">장바구니가 비어있습니다.</br>장바구니 바로가기</p>
+                                </div>
+                                </a>
+                            </li>
+                        `;
+                        $(".cart_container").css("height", "140px");
+                        $(".cart_container").css("border-bottom", "none");
+
+                    }else{
+                        res.list.forEach((each) => {
+                            output += `
+                                <li>
+                                    <a href="/users/member/cart" class="cartUrl">
+                                        <div class="cart_wrap">
+                                            <div class="cartImg">
+                                                <img src="/upload/${each.folderName}/${each.fileName}" alt="">
+                                            </div>
+                                            <div class="cartText">
+                                                <h2>${each.title}</h2>
+                                                <p>${each.name} | <span>${each.itemCategory}</span></p>
+                                                <p><strong>${each.rentalPrice}</strong> / <span>월</span></p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            `;
+                        });
+                    }
+                    document.querySelector("#cartList").innerHTML = output;
+                }
+            });
+            }
+        });
+
+        /*-----------------카트 서브메뉴 activeCart 기능------------------------*/
+
+        let dropbtn_click = document.querySelector(".dropbtn_click");
+        let cartWrap = document.querySelector(".cart_container")
+
+        dropbtn_click.addEventListener('click', (e) =>{
+            e.preventDefault();
+            if(login == 0){
+                alert("장바구니 서비스는 로그인이 필요합니다!");
+                location.reload();
+            }else {
+                cartWrap.classList.toggle('activeCart');
+                e.stopPropagation();
+            }
+        });
+
+        // 다른 곳 클릭시 activeCart 취소
+        document.addEventListener('click', function(event) {
+        if (!cartWrap.contains(event.target) && event.target !== dropbtn_click) {
+            cartWrap.classList.remove('activeCart');
+        }
+        });
+    </script>
+</header>
+
+<!------------------------- 네비메뉴 끝 -------------------------->
+
+<!--------------------------푸터시작------------------------------>
+<footer th:fragment="footer">
+    <div class="footer-wrapper">
+        <div class="footer-top">
+            <div class="footer-content1">
+                <div class="logo">
+                    <a href="/">
+                        <p>ECORENT</p>
+                    </a>
+                    <img src="/static/images/main/leaf.png" alt="">
+                </div>
+                <div class="icons">
+                    <a href=""><i class="fa-brands fa-twitter"></i></a>
+                    <a href=""><i class="fa-brands fa-instagram"></i></a>
+                    <a href=""><i class="fa-brands fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-content2">
+                <a href=""><p>고객센터</p></a>
+                <a href=""><p>공지사항</p></a>
+                <a href=""><p>이용약관</p></a>
+                <a href=""><p>제휴/광고문의</p></a>
+            </div>
+            <div class="footer-content3">
+                <p>(주)ECORENT 대표이사 아이티 부산 진구 어쩌구 저쩌구 4층</p>
+                <p>사업자 등록번호 123-45-67891</p>
+                <p>mail@mail.com</p>
+
+                <span>프로젝트는 통신판매중개자로 거래당사자가 아니므로, <br />판매자가 등록한 상품정보 및 거래 등에 대해 책임을 지지 않습니다.</span>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2023 ECORENT. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+<!--------------------------푸터 끝------------------------------>
+
+</div>
+
+</body>
+</html>

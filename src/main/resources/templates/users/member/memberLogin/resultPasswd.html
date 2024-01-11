@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ko">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>아이디, 비번찾기 </title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" th:href=@{/static/css/style.css}>
+    <link rel="stylesheet" th:href="@{/static/css/login/resultPasswd.css}">
+</head>
+<body>
+<div th:replace="~{fragment/nav::nav}"></div>
+<form class="resultPwForm">
+    <main>
+        <div class="layout">
+            <h2>비밀번호 찾기</h2>
+        </div>
+        <section class="content">
+            <div class="login-find-result">
+                <p th:if="${result != null}" class="result-title">
+                    회원님의 정보로 <br>
+                    가입된 비밀번호입니다
+                </p>
+                <p th:unless="${result != null}" class="result-title">
+                    회원정보가 없습니다<br>
+                    <span>다시 확인해주세요</span>
+                </p>
+                <ul class="result-list">
+                    <li th:if="${result != null}">
+                        <p class="result-passwd">[[${result.memberPasswd}]]</p>
+                    </li>
+                    <li th:unless="${result != null}">
+                        <div>
+                            <p class="result-passwd">
+                                <a th:href="@{./searchPasswd}" >비밀번호 찾으러가기</a>
+                            </p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="login-button">
+                <p class="passwd-search">
+                    이메일은 뭐더라?
+                    <a th:href="@{./searchEmail}">이메일 찾기</a>
+                </p>
+                <button type="button" class="login" onclick="toLogin()">로그인 하러가기</button>
+            </div>
+        </section>
+    </main>
+</form>
+<script th:if="${result != null}">
+    document.addEventListener('DOMContentLoaded', function() {
+        let maskedPasswd = document.querySelector('.result-passwd');
+        let originalPassword = '[[${result.memberPasswd}]]';
+
+        function maskPasswd(password) {
+            let masked = password.substring(0, password.length - 3) + '***';
+            return masked;
+        }
+        maskedPasswd.textContent = maskPasswd(originalPassword);
+
+    });
+
+</script>
+<script>
+    // result가 참이든 거짓이든 항상 실행되어야해서 script 나눴어요
+    function toLogin() {
+        location.href = '/users/member/memberLogin/login';
+    }
+</script>
+</body>
+</html>

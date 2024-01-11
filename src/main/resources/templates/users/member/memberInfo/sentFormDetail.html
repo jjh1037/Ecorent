@@ -1,0 +1,354 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+          integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script th:src="@{/static/js/fragment.js}"></script>
+    <link rel="stylesheet" th:href="@{/static/css/style.css}">
+    <style>
+
+        .my-menu{
+            width: 100%;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+            box-shadow: 0 0 2px rgb(175, 175, 175);
+        }
+        .my-menu ul{
+            width: 100%;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .my-menu ul a{
+            text-decoration: none;
+            padding: 8px 12px;
+            margin: 0 20px;
+        }
+        .my-menu ul li{
+            width: 100%;
+            list-style: none;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: rgb(94, 94, 94);
+        }
+        .underline{
+            line-height: 1.2;
+            background-image: linear-gradient(transparent calc(100%-3px),#000 3px);
+            background-repeat: no-repeat;
+            background-size: 0% 100%;
+            transition: background-size 0.3s;
+            color:#000;
+        }
+        .underline.yellow{
+            background-image: linear-gradient(transparent 60%, #ffdb3b 40%);
+        }
+        .underline:hover {
+            background-size: 100% 100%;
+        }
+        .active {
+            line-height: 1.2;
+            background-repeat: no-repeat;
+            background-size: 0% 100%;
+            color:#000;
+            background-image: linear-gradient(transparent 60%, #ffdb3b 40%);
+            background-size: 100% 100%;
+        }
+
+        .wrapper {
+            width: var(--main-width);
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .form-wrapper {
+            width: 80%;
+            margin: 20px auto;
+        }
+
+        .form-wrapper h2 {
+            margin: 20px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+        }
+
+        table th,
+        td {
+            border-top: 1px solid rgb(211, 211, 211);
+            border-bottom: 1px solid rgb(211, 211, 211);
+        }
+
+        table td {
+            padding-left: 30px;
+            font-size: 18px;
+            font-weight: bold;
+            color: rgb(78, 78, 78);
+        }
+
+        /*렌탈 아이템 정보칸*/
+        table tr:first-child {
+            height: 260px;
+            border-top: 2px solid white;
+        }
+
+        table tr:nth-child(2) {
+            height: 50px;
+            text-align: left;
+            border-top: 2px solid white;
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        table tr:nth-child(2) p i {
+            color: var(--sub-color);
+        }
+
+        table tr:nth-child(3) th,
+        table tr:nth-child(4) th,
+        table tr:nth-child(5) th,
+        table tr:nth-child(6) th,
+        table tr:nth-child(7) th,
+        table tr:nth-child(8) th {
+            width: 30%;
+            height: 68px;
+            /* background-color: rgb(238, 238, 238); */
+            color: rgb(65, 65, 65);
+
+            padding-right: 10px;
+            text-align: right;
+            text-decoration: underline;
+            text-underline-offset: 0.5rem;
+            text-decoration-thickness: 2px;
+            text-decoration-color: var(--main-color);
+        }
+
+        table tr:last-child {
+            height: 200px;
+        }
+
+
+        .item-info {
+            width: 100%;
+            height: 190px;
+            margin: 0 auto;
+            margin-top:30px;
+            margin-bottom:30px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            /*box-shadow: 0.5px 1px 8px 0px rgb(224, 224, 224); */
+            border-top: 3px solid var(--sub-color);
+            border-bottom: 3px solid var(--sub-color);
+            background-color: rgb(255, 255, 255);
+        }
+        .item-img {
+            width: 25%;
+            height: 80%;
+            padding: 20px;
+            overflow: hidden;
+            position: relative;
+            margin-right: 20px;
+        }
+
+        .item-img img {
+            width: 100%;
+            height: 100%;
+            border-radius: 6px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .item-text {
+            width: 70%;
+            height: 100%;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .item-text h3 {
+            color: grey;
+            margin-bottom: 4px;
+            font-weight: 800;
+            font-size: 18px;
+        }
+
+        .item-text p {
+            color: grey;
+            line-height: 1.7rem;
+            font-size: 14px;
+        }
+        .item-text span{
+            font-weight: bold;
+            font-size: 15px;
+        }
+        .item-text .info {
+            color: rgb(78, 78, 78);
+        }
+
+        .carrierBtn{
+            width: 130px;
+            height: 40px;
+            border: 0;
+            border-radius: 5px;
+            font-size: 16px;
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: rgb(95, 155, 245);
+            color:white;
+            margin: 0 8px;
+            cursor: pointer;
+        }
+        .btnArea{
+            width:100%;
+            margin: 18px 0;
+            display: flex;
+            justify-content:center;
+            align-items: center;
+        }
+        .btnArea button{
+            width: 100px;
+            height: 40px;
+            border: 0;
+            border-radius: 5px;
+            font-size: 16px;
+            font-family: 'Noto Sans KR', sans-serif;
+            color:white;
+            margin: 0 8px;
+            cursor: pointer;
+        }
+        .coral{
+            background-color: coral;
+        }
+        .green{
+            background-color: rgb(107, 153, 86);
+        }
+        .confirmed{
+            color: var(--sub-color);
+        }
+        .waiting{
+            color: grey;
+        }
+        .rejected{
+            color: coral;
+        }
+    </style>
+</head>
+
+<body>
+<div th:replace="~{fragment/nav::nav}"></div>
+<div class="my-menu">
+    <ul>
+        <a href="/users/member/memberInfo/info">
+            <li class="underline yellow">회원정보</li>
+        </a>
+        <a href="/users/member/cart">
+            <li class="underline yellow">장바구니</li>
+        </a>
+        <a href="/users/member/memberInfo/receivedForms">
+            <li class="underline yellow">받은렌탈요청</li>
+        </a>
+        <a href="/users/member/memberInfo/sentForms">
+            <li class="underline yellow active">보낸렌탈요청</li>
+        </a>
+        <a href="/users/member/memberInfo/messages">
+            <li class="underline yellow">메시지함</li>
+        </a>
+    </ul>
+</div>
+<div class="wrapper">
+        <input type="hidden" class="memberId" th:value="${session.user.memberId}">
+        <div class="form-wrapper">
+            <table>
+                <tr>
+                    <th colspan="2">
+                        <div class="item-info">
+                            <div class="item-img">
+                                <img th:src="@{|/upload/${ownerItem.folderName}/${ownerItem.fileName}|}" alt="">
+                            </div>
+                            <div class="item-text">
+                                <h3>[[${ownerItem.title}]]</h3>
+                                <p>렌탈 신청 상태&emsp;
+                                    <th:block th:if="${sentForm.formStatus=='confirmed'}">
+                                        <span class="confirmed">렌탈 확정 완료</span>
+                                    </th:block>
+                                    <th:block th:if="${sentForm.formStatus=='rejected'}">
+                                        <span class="rejected">거절된 렌탈요청</span>
+                                    </th:block>
+                                    <th:block th:if="${sentForm.formStatus=='waiting'}">
+                                        <span class="waiting">렌탈 확정 대기중</span>
+                                    </th:block>
+                                </p>
+                                <p>업로더 제시 날짜&emsp;<span class="info">[[${ownerItem.rentalStartDate}]] ~ [[${ownerItem.rentalEndDate}]]</span></p>
+                                <p>신청자 제시 날짜&emsp;<span class="info">[[${sentForm.rentalStartDate}]] ~ [[${sentForm.rentalStartDate}]]</span></p>
+                                <p>제품 위치&emsp;<span class="info">[[${ownerItem.address}]]</span></p>
+                                <p>가격&emsp;<span class="info">[[${ownerItem.rentalPrice}]]</span> / 월</p>
+                            </div>
+                        </div>
+                    </th>
+                </tr>
+                <tr>
+                    <th colspan="2">
+                        <p><i class="fa-solid fa-check fa-lg"></i> 주문자 정보</p>
+                    </th>
+                </tr>
+                <tr>
+                    <th>주문자 이름</th>
+                    <td>[[${sentForm.userName}]]</td>
+                </tr>
+                <tr>
+                    <th>주문자 연락처</th>
+                    <td>[[${sentForm.userPhone}]]</td>
+                </tr>
+                <tr>
+                    <th>렌탈 요청 날짜</th>
+                    <td>[[${sentForm.rentalStartDate}]]</td>
+                </tr>
+                <tr>
+                    <th>렌탈 배송 주소</th>
+                    <td>[[${sentForm.address}]]</td>
+                </tr>
+                <tr>
+                    <th>요청 운송사</th>
+                    <td>
+                        [[${sentForm.carrier}]]
+                    </td>
+                </tr>
+                <tr>
+                    <th>문의사항</th>
+                    <td>[[${sentForm.userContent}]]</td>
+                </tr>
+            </table>
+
+        </div>
+
+</div>
+
+<div th:replace="~{fragment/nav::footer}"></div>
+<script>
+</script>
+</body>
+
+</html>

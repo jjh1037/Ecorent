@@ -1,0 +1,209 @@
+#loginForm{
+    width: 400px;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#loginForm h1 {
+    font-size: 35px;
+    font-weight:800;
+    color: rgb(88, 88, 88);
+    text-align: center;
+    padding-bottom: 30px;
+}
+
+#loginForm input {
+    width: 300px;
+    border: 1px solid #c9c9c9;
+    border-radius: 0.25em;
+    padding: 11px 13px;
+    margin: 3px;
+    outline: 0;
+    font-size: 14px;
+}
+
+#loginForm input:focus {
+    background-color: #f7f7f7;
+    border: 1px solid rgb(245, 188, 0);
+}
+
+#loginForm ul {
+    padding-left: 18px;
+
+}
+
+#loginForm ul li {
+    width: 100%;
+    list-style: none;
+
+}
+
+/* 로그인버튼 */
+.btn {
+    width: 300px;
+    height: 45px;
+    padding: 11px 13px;
+    margin: 20px 3px;
+    margin-bottom: 30px;
+    border: 0;
+    border-radius: 0.25em;
+    font-size: 17px;
+    font-weight: 600;
+    color: #fff;
+    background-color: var(--main-color);
+    box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+}
+
+.btn:active {
+    background-color: rgb(255, 211, 66);
+    color: #747474;
+}
+
+section {
+    padding-left: 20px;
+}
+
+section p {
+    font-size: 14px;
+    font-weight: 500;
+    color: rgb(61, 61, 61);
+    text-align: center;
+    margin-right: 14px;
+    padding-bottom: 20px;
+}
+
+/* 공통 스타일 */
+.naver,
+.kakao,
+.google {
+    width: 300px;
+    height: 45px;
+    border-radius: 0.25em;
+    border: 0;
+    margin-bottom: 6px;
+    position: relative;
+    cursor: pointer;
+    box-shadow: 0 0 4px 1px rgba(39, 39, 39, 0.1);
+}
+
+
+/* 네이버 */
+.naver {
+    background-color: rgb(3, 199, 90);
+}
+
+.naver a {
+    display: block;
+    text-decoration: none;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 400;
+    text-align: center;
+    padding-top: 10px;
+    padding-left: 20px;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+.naver img {
+    position: absolute;
+    width: 17px;
+    transform: translateY(-111%);
+    left: 69px;
+}
+
+/* 카카오 */
+.kakao {
+    background-color: #FEE500;
+}
+
+.kakao a {
+    display: block;
+    text-decoration: none;
+    text-align: center;
+    font-size: 16px;
+    font-weight: 500;
+    color: #000;
+    padding-top: 10px;
+    padding-left: 20px;
+    font-family: 'Noto Sans KR', sans-serif;
+}
+
+.kakao img{
+    position: absolute;
+    width: 22px;
+    transform: translateY(-98%);
+    left: 67px;
+}
+
+/* 구글 */
+.google {
+    background-color: #fff;
+    /* border: 1px solid #ccc; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.google a {
+    display: inline-block;
+    color: #4b4b4b;
+    font-size: 16px;
+    text-decoration: none;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    padding-left: 36px;
+    position: relative;
+}
+
+.google img {
+    width: 22px;
+    position: absolute;
+    transform: translateX(-330%);
+}
+/*---------아이디, 비번 찾기 / 회원가입 -----------*/
+
+/*찾기 및 회원가입*/
+.find-signup-wrap{
+    height: 100px;
+    padding-top: 8px;
+    text-align: center;
+    padding-right: 10px;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.find-signup-wrap a{
+    color: rgb(150, 150, 150);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+/* 아이디찾기 */
+.find-id{
+    margin: 5px;
+    font-size: 14px;
+    padding-right: 7px;
+    border-right: 1px solid gainsboro;
+}
+
+/*비밀번호 찾기*/
+.find-pw{
+    margin: 5px;
+    font-size: 14px;
+    padding-left: 7px;
+    padding-right: 7px;
+    border-right: 1px solid gainsboro;
+}
+
+/*회원가입*/
+.sign-up{
+    margin: 5px;
+    padding-left: 7px;
+    font-size: 14px;
+}

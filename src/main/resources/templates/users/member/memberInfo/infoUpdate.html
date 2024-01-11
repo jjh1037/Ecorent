@@ -1,0 +1,473 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+          integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script th:src="@{/static/js/fragment.js}"></script>
+    <link rel="stylesheet" th:href="@{/static/css/style.css}">
+    <style>
+
+        .my-menu{
+            width: 100%;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+            box-shadow: 0 0 2px rgb(175, 175, 175);
+        }
+        .my-menu ul{
+            width: 100%;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .my-menu ul a{
+            text-decoration: none;
+            padding: 8px 12px;
+            margin: 0 20px;
+        }
+        .my-menu ul li{
+            width: 100%;
+            list-style: none;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: rgb(94, 94, 94);
+        }
+        .underline{
+            line-height: 1.2;
+            background-image: linear-gradient(transparent calc(100%-3px),#000 3px);
+            background-repeat: no-repeat;
+            background-size: 0% 100%;
+            transition: background-size 0.3s;
+            color:#000;
+        }
+        .underline.yellow{
+            background-image: linear-gradient(transparent 60%, #ffdb3b 40%);
+        }
+        .underline:hover {
+            background-size: 100% 100%;
+        }
+        .active {
+            line-height: 1.2;
+            background-repeat: no-repeat;
+            background-size: 0% 100%;
+            color:#000;
+            background-image: linear-gradient(transparent 60%, #ffdb3b 40%);
+            background-size: 100% 100%;
+        }
+
+        .wrapper {
+            width: var(--main-width);
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .wrapper {
+            width: 1300px;
+            min-height: 1000px;
+            /*background-color: pink;*/
+            /*padding: 40px;*/
+        }
+
+
+        .profile {
+            /*background-color: red;*/
+             width: 100%;
+            /*width: calc(100% - 120px);*/
+            height: 900px;
+            padding: 60px;
+            margin: 0 auto;
+            /*border: 1px solid rgb(201, 201, 201);*/
+            border-radius: 7px;
+            box-shadow: 0 1px 3px 0 rgba(0,0,0,.2);
+        }
+
+        .wrapper h2 {
+            margin-top: 30px;
+            margin-left: 60px;
+            padding-bottom: 30px;
+        }
+
+        f_table {
+            border-collapse: collapse;
+            table-layout: auto;
+        }
+
+        th {
+            padding: 25px 25px;
+            /*border: 1px solid #ddd; */
+            white-space: nowrap;
+        }
+
+
+        td {
+            /*border: 1px solid #ddd;*/
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .f_table .memberEmail {
+            margin-top: 10px;
+        }
+
+        .f_table input {
+            width: 500px;
+            padding: 13px;
+            /*margin-bottom: 5px;*/
+            border: 1px solid #d9d6d6;
+            border-radius: 0.25rem;
+        }
+
+        .f_table p {
+            color: #9e9e9e;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .addr-search input[type="text"] {
+            width: 355px;
+            padding: 13px;
+            margin-bottom: 5px;/
+        }
+
+        .addr .addr-search input[type="button"] {
+            width: 130px;
+            padding: 11px;
+            margin-left: 10px;
+            background-color: #f3f3f3;
+            border: 1px solid #ccc;
+            border-radius: 0.25rem;
+            color: #333;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .btn_confirm {
+            padding: 50px 0;
+            text-align: left;
+            display: flex;
+            justify-content: left;
+        }
+
+        .btn_confirm .customBtn  {
+            width: 250px;
+            height: 40px;
+            padding: 10px 50px;
+            font-size: 18px;
+            font-weight: bold;
+            background-color: var(--main-color);
+            border: 0;
+            border-radius: 4px;
+            color: #fff;
+            margin-left: 120px;
+        }
+
+        .btn_confirm .customBtn:active {
+            background-color: rgb(255, 211, 66);
+            color: #747474;
+        }
+
+        .cancelBtn {
+            width: 120px;
+            height: 40px;
+            margin-left: 130px;
+            background-color: #f3f3f3;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+
+    </style>
+</head>
+
+<body>
+
+<div th:replace="~{fragment/nav::nav}"></div>
+
+<div class="my-menu">
+    <ul>
+        <a href="/users/member/memberInfo/info">
+            <li class="underline yellow active">회원정보</li>
+        </a>
+        <a href="">
+            <li class="underline yellow">장바구니</li>
+        </a>
+        <a href="/users/member/memberInfo/receivedForms">
+            <li class="underline yellow">받은렌탈요청</li>
+        </a>
+        <a href="/users/member/memberInfo/sentForms">
+            <li class="underline yellow">보낸렌탈요청</li>
+        </a>
+        <a href="/users/member/memberInfo/messages">
+            <li class="underline yellow">메시지함</li>
+        </a>
+    </ul>
+</div>
+
+
+<div class="wrapper">
+
+    <div class="main" id="main1">
+        <h2>회원 정보수정</h2>
+
+        <form class="profile" onsubmit="return frmCheck()" action="/users/member/memberInfo/infoUpdate" method="post" enctype="multipart/form-data" autocomplete="off">
+            <div class="f_table">
+                <table>
+                    <colgroup>
+                        <col class="w100">
+                        <col>
+                    </colgroup>
+                    <tbody>
+                    <tr>
+                        <th>이름</th>
+                        <td>
+                            <input type="text" id="memberName" th:value="${member.memberName}" readonly>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>이메일</th>
+                        <td>
+                            <input type="text" class="memberEmail" th:value="${member.memberEmail}" readonly>
+                            <p>이름, 이메일을 변경하시려면 운영자에게 이메일을 보내주세요.</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>비밀번호<span>*</span></th>
+                        <td>
+                            <input type="text" name="memberPasswd" class="memberPasswd" placeholder="비밀번호 입력" th:value="${member.memberPasswd}" >
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>닉네임<span>*</span></th>
+                        <td>
+                            <input type="text" name="memberNickName" class="memberNickName" placeholder="닉네임 입력" th:value="${member.memberNickName}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>전화번호<span>*</span></th>
+                        <td>
+                            <input type="text" name="memberPhone" class="memberPhone" placeholder="휴대폰 번호 입력('-'제외)"  maxlength="11" th:value="${member.memberPhone}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>생년월일</th>
+                        <td>
+                            <input type="text" name="memberBirth" class="memberBirth" placeholder="생년월일(yyyy-MM-dd형식)" maxlength="10" th:value="${member.memberBirth} ?:''">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>회원 주소</th>
+                        <td class="address_selected">
+                            <div class="addr">
+                                <div class="addr-search"> <!--th:value="${member.memberPostcode}"---->
+                                    <input type="text" class="postcode" id="postcode" name="postcode" placeholder="우편번호"  size="5" >
+                                    <input type="button" value="우편번호 찾기" name="" onclick="Postcode()"><br />
+                                </div>
+                                <input type="text" class="address" th:value="${member.memberAddress}">
+
+                                <input type="hidden" id="firstAddress" name="addr1" placeholder="주소" ><br />
+                                <input type="hidden" id="detailAddress" name="addr2" placeholder="상세주소">
+                                <input type="hidden" id="extraAddress" name="addr3" placeholder="참고항목">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>관심사</th>
+                        <td>
+                            <input type="text" name="memberInterest" class="memberInterest" th:value="${member.memberInterest}" placeholder="관심사" >
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="btn_confirm">
+                    <input type="submit" value="회원정보 수정" class="btnConfirm customBtn">
+                    <button type="button" class="cancelBtn" th:onclick="remove([[${member.memberId}]])">탈퇴하기</button>
+                </div>
+            </div>
+
+            <input type="hidden" id="memberId" class="memberId" th:value = "${member.memberId}">
+        </form>
+    </div>
+</div>
+
+
+<script>
+    let btn = document.querySelector(".btnConfirm");
+
+
+    btn.addEventListener('click', (e) => {
+
+        let memberId = document.querySelector(".memberId");
+        let memberName = document.querySelector("#memberName");
+        let memberEmail = document.querySelector(".memberEmail");
+        let memberPasswd = document.querySelector(".memberPasswd");
+        let memberPhone = document.querySelector(".memberPhone");
+        let memberBirth = document.querySelector(".memberBirth");
+        let memberNickName = document.querySelector(".memberNickName");
+        let memberAddress = document.querySelector(".address");
+        let memberPostcode = document.querySelector(".postcode");
+        let memberInterest = document.querySelector(".memberInterest");
+
+
+        e.preventDefault();
+        if(memberPasswd.value == "") {
+            alert("비밀번호를 입력해주세요");
+            memberPasswd.focus();
+            return false;
+        }
+
+        if(memberNickName.value == "") {
+            alert("닉네임을 입력해주세요");
+            memberNickName.focus();
+            return false;
+        }
+
+        if(memberPhone.value == "") {
+            alert("휴대전화 번호를 입력해주세요");
+            memberPhone.focus();
+            return false;
+        }
+
+        let obj = {
+            memberName: memberName.value,
+            memberEmail: memberEmail.value,
+            memberId: memberId.value,
+            memberPasswd: memberPasswd.value,
+            memberPhone: memberPhone.value,
+            memberNickName: memberNickName.value,
+            memberBirth: memberBirth.value,
+            memberPostcode: memberPostcode.value,
+            memberAddress: memberAddress.value,
+            memberInterest: memberInterest.value,
+        };
+
+        console.log(obj)
+
+        $.ajax({
+            type: "post",
+            url: "/users/member/memberInfo/infoUpdate",
+            dataType: "json",
+            data: obj,
+            success: function(res) {
+                if(res.message == "login") {
+                    //alert("수정이 완료되었습니다.");
+                    location.href = "/users/member/login";
+                }else if (res.message == "success") {
+                    alert("수정 완료");
+                    location.href = "/users/member/memberInfo/info";
+                }else if(res.message == "failure") {
+                    alert("관리자에게 문의하세요")
+                    location.href = "/users/member/memberInfo/info";
+                }
+            }
+        });
+    })
+
+    /*function remove(memberId) {
+        if(confirm( "에코렌트를 탈퇴하시겠습니까?")) {
+            alert("탈퇴가 완료되었습니다.");
+            location.href = "/";
+        }
+    }*/
+
+    function remove(memberId) {
+    if(confirm("에코렌트를 탈퇴하시겠습니까?")) {
+        $.ajax({
+            type: "post",
+            url: "/users/member/memberInfo/memberCancel", // 탈퇴 처리를 위한 서버의 URL
+            data: { memberId: memberId },
+            success: function(response) {
+                // 성공적으로 처리되었을 때의 로직
+                alert("탈퇴가 완료되었습니다.");
+                location.href = "/";
+            },
+            error: function(error) {
+                // 오류가 발생했을 때의 로직
+                alert("오류가 발생했습니다. 다시 시도해주세요.");
+            }
+        });
+    }
+}
+
+/*---------------------------카카오 주소 API--------------------------------------*/
+
+    function Postcode() {
+            new daum.Postcode({
+                oncomplete: function (data) {
+                    // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+                    // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                    var addr = ''; // 주소 변수
+                    var extraAddr = ''; // 참고항목 변수
+
+                    //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                    if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                        addr = data.roadAddress;
+                    } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                        addr = data.jibunAddress;
+                    }
+
+                    // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+                    if (data.userSelectedType === 'R') {
+                        // 법정동명이 있을 경우 추가한다.
+                        // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                        if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+                            extraAddr += data.bname;
+                        }
+                        if (data.buildingName !== '' && data.apartment === 'Y') {
+                            extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                        }
+                        // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                        if (extraAddr !== '') {
+                            extraAddr = ' (' + extraAddr + ')';
+                        }
+                        // 조합된 참고항목을 해당 필드에 넣는다.
+                        document.getElementById("extraAddress").value = extraAddr;
+
+                    } else {
+                        document.getElementById("extraAddress").value = '';
+                    }
+
+                    // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                    document.getElementById("postcode").value = data.zonecode;
+                    document.getElementById("firstAddress").value = addr;
+
+                    // 커서를 상세주소 필드로 이동한다.
+                    document.getElementById("detailAddress").focus();
+
+                     let first = document.querySelector("#firstAddress").value;
+                     let extra = document.querySelector("#extraAddress").value;
+
+                     let realAddress = first + " " + extra;
+
+                     document.querySelector(".address").value = realAddress;
+            }
+        }).open();
+    }
+
+      function move() {
+          location.href = "/users/member/memberInfo/infoUpdate";
+      }
+
+</script>
+</body>
+
+</html>

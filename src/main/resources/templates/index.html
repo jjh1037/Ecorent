@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script th:src="@{/static/js/fragment.js}"></script>
+    <link rel="stylesheet" th:href="@{/static/css/style.css}">
+    <style>
+        .content {
+            width: 100%;
+            max-width: var(--main-width);
+            margin: 0 auto;
+            margin-top: 30px;
+            padding: 10px;
+        }
+
+        .content h2 {
+            color: rgb(59, 59, 59);
+        }
+        .wrapper_item {
+            width: 100%;
+            padding: 10px 0;
+        }
+
+        .wrapper_item ul {
+            width: 100%;
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+
+        }
+
+        .card {
+            background-color: white;
+            width: 285px;
+            height: 420px;
+            overflow: hidden;
+            margin: 10px 17.5px;
+            cursor:pointer;
+        }
+
+        .card-img {
+            width: 100%;
+            height: 65%;
+            overflow: hidden;
+            position: relative;
+            border-radius: 8px;
+
+        }
+
+        .card img {
+            height: 104%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-height: 104%;
+        }
+        .card-discription{
+            padding: 2px 8px;
+        }
+        .card-discription >*{
+            margin: 4px 0;
+        }
+        .card-discription h3{
+            color: rgb(68, 68, 68);
+            font-size: 17px;
+            font-family: 'Noto Sans KR', sans-serif;
+            width: 269px;
+            font-size: 18px;
+            white-space:nowrap;
+            overflow:hidden;
+            text-overflow:ellipsis;
+        }
+        .itemName h2{
+            color: rgb(50, 50, 50);
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+        .itemPeriod, .itemAge, .itemName{
+            display: flex;
+            color: grey;
+        }
+        .itemPrice{
+            text-align: right;
+        }
+        .itemPrice h2{
+            color: var(--sub-color);
+        }
+        .itemPrice .won{
+            font-size: 18px;
+            font-weight: bold;
+            color: rgb(72, 72, 72);
+        }
+        .itemPrice .month{
+            font-size: 16px;
+            font-weight: 500;
+            color: grey;
+        }
+    </style>
+
+</head>
+
+<body>
+
+
+    <div th:replace="~{fragment/nav::nav}"></div>
+
+    <!------------------------- 배너 시작------------------------------>
+
+    <div class="banner">
+        <div class="bannerBtnArea">
+            <button></button>
+            <button></button>
+        </div>
+        <div class="slides">
+            <div class="ad">
+                <img th:src="@{/static/images/main/girl.svg}" class="girl" alt="">
+                <img th:src="@{/static/images/main/girl2.svg}" class="girl2" alt="">
+                <div class="gradient-overlay1"></div>
+                <div class="ad-text1">
+                    <h2>품질좋은 중고장비 거래,</h2>
+                    <h2><span>에코렌트</span>에서 해결하세요!</h2>
+                    <p>효율적인 비즈니스 시작, 최상의 중고 장비를 간편하게!</p>
+                </div>
+                <div class="check no1"></div>
+                <div class="check no2"></div>
+            </div>
+            <div class="ad">
+                <img th:src="@{/static/images/main/ship.jpg}" alt="">
+                <div class="gradient-overlay2"></div>
+                <div class="ad-text2">
+                    <h2>렌탈도 글로벌하게!</h2>
+                    <h2>세계 어디든, 한국까지 안전 배송. <span>국제 운송</span>도 문제없어요!</h2>
+                    <p>에코렌트와 연계한 운송서비스로</p>
+                    <p>렌탈장비의 운송거리와 시간 걱정을 줄여드릴게요</p>
+                    <img th:src="@{/static/images/main/check.png}" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!------------------------- 배너 끝------------------------------>
+
+
+
+
+    <!------------------------- 카테고리 시작 -------------------------->
+
+    <div class="category">
+        <div class="category-item stage">
+            <a th:href="@{/users/category/{category}(category=${'stage'})}">
+                <div class="category-img">
+                    <img src="/static/images/main/e.png" alt="">
+                </div>
+            </a>
+            <p>무대∙방송</p>
+        </div>
+        <div class="category-item car">
+            <a href="/users/category/car">
+                <div class="category-img">
+                    <img src="/static/images/main/d.png" alt="">
+                </div>
+            </a>
+            <p>자동차</p>
+        </div>
+        <div class="category-item restaurant">
+            <a th:href="@{/users/category/{category}(category=${'restaurant'})}">
+                <div class="category-img">
+                    <img src="/static/images/main/h.png" alt="">
+                </div>
+            </a>
+            <p>상업용가전</p>
+        </div>
+        <div class="category-item office">
+            <a th:href="@{/users/category/{category}(category=${'office'})}">
+                <div class="category-img">
+                    <img src="/static/images/main/g.png" alt="">
+                </div>
+            </a>
+            <p>IT∙오피스</p>
+        </div>
+        <div class="category-item construction">
+            <a th:href="@{/users/category/{category}(category=${'construction'})}">
+                <div class="category-img">
+                    <img src="/static/images/main/j.png" alt="">
+                </div>
+            </a>
+            <p>현장장비</p>
+        </div>
+        <div class="category-item instrument">
+            <a th:href="@{/users/category/{category}(category=${'instrument'})}">
+                <div class="category-img">
+                    <img src="/static/images/main/a.png" alt="">
+                </div>
+            </a>
+            <p>악기</p>
+        </div>
+        <div class="category-item etc">
+            <a th:href="@{/users/category/{category}(category=${'etc'})}">
+                <div class="category-img">
+                    <img src="/static/images/main/c.png" alt="">
+                </div>
+            </a>
+            <p>기타장비</p>
+        </div>
+        <div class="category-item oversea">
+            <a th:href="@{/users/category/{category}(category=${'oversea'})}">
+                <div class="category-img">
+                    <img src="/static/images/main/b.png" alt="">
+                </div>
+            </a>
+            <p>해외운송</p>
+        </div>
+
+    </div>
+    <!------------------------- 카테고리 끝 -------------------------->
+
+
+
+    <!----------------------업데이트 최신 글 시작------------------------->
+
+    <div class="content">
+        <h2>최신글</h2>
+        <div class="wrapper_item">
+            <ul>
+
+            </ul>
+        </div>
+    </div>
+    <!-------------------------업데이트 최신 글 끝------------------------->
+
+
+
+    <div th:replace="~{fragment/nav::footer}"></div>
+
+
+
+<script>
+
+    //메인 배너 슬라이드 이동
+
+    document.addEventListener('DOMContentLoaded', function () {
+            var currentIndex = 0;
+            var buttons = document.querySelectorAll('.bannerBtnArea button');
+            var slides = document.querySelector('.slides');
+            var totalImages = slides.children.length;
+            var sliderWidth = window.innerWidth;
+
+             window.addEventListener('resize', ()=>{
+                sliderWidth = window.innerWidth; // 창 크기가 변경될 때 슬라이드 너비 업데이트
+                moveToImage(currentIndex); // 현재 슬라이드 위치 재조정
+             });
+
+            function updateButtonStyles() {
+                buttons.forEach(function (button, index) {
+                    button.style.backgroundColor = index === currentIndex ? 'rgba(255, 255, 255, 0.795)' : 'rgba(179, 179, 179, 0.795)';
+                });
+            }
+
+            buttons.forEach(function (button, index) {
+                button.addEventListener('click', function () {
+                    moveToImage(index);
+                    currentIndex = index;
+                    resetAutoSlide();
+                    updateButtonStyles();
+                });
+            });
+
+            function moveToImage(index) {
+                slides.style.transform = 'translateX(' + (-sliderWidth * index) + 'px)';
+                updateButtonStyles();
+            }
+
+            function moveToNextImage() {
+                currentIndex = (currentIndex + 1) % totalImages;
+                moveToImage(currentIndex);
+            }
+
+
+
+            var autoSlide = setInterval(moveToNextImage, 6000);
+
+            function resetAutoSlide() {
+                clearInterval(autoSlide);
+                autoSlide = setInterval(moveToNextImage, 6000);
+            }
+
+            updateButtonStyles(); // 초기 버튼 스타일 설정
+        });
+
+
+    //카테고리별 카드 클릭시 이동
+    function viewItem(id,category){
+        let car = "/users/category/car/viewCar?id=";
+        if(category==='자동차'){
+            location.href=car+id;
+        }else{
+            location.href="/users/category/viewProduct?id="+id;
+        }
+    }
+
+
+
+    //자동차면 카드양식다르게, 나머지는 같은 양식으로 최신글 출력
+    $.ajax({
+        type : "post",
+        url : "/index",
+        dataType : "json",
+        success : function(res){
+
+            let output="";
+
+            res.list.forEach((each)=>{
+                if(each.itemCategory==='자동차'){
+                    output+=`
+                    <li>
+                        <div class="card" onclick="viewItem(${each.itemId},'${each.itemCategory}')">
+                            <div class="card-img">
+                                <img src="/upload/${each.folderName}/${each.fileName}" alt="">
+                            </div>
+                            <div class="card-discription">
+                                <div class="itemTitle"><h3>${each.title}</h3></div>
+                                <div class="itemPeriod"><p>${each.rentalStartDate} ~ ${each.rentalEndDate}</p></div>
+                                <div class="itemAge"><p>${each.carAge} (연식)</p>&emsp;|&emsp;<p>${each.carFuelType}</p></div>
+                                <div class="itemPrice"><h2>${each.rentalPrice} <span class="won">원</span><span class="month"> / 월</span></h2></div>
+                            </div>
+                        </div>
+                    </li>`;
+                }else{
+                    output+=`
+                <li>
+                    <div class="card" onclick="viewItem(${each.itemId},'${each.itemCategory}')">
+                        <div class="card-img">
+                        <img src="/upload/${each.folderName}/${each.fileName}" alt="">
+                        </div>
+                        <div class="card-discription">
+                        <div class="itemTitle"><h3>${each.title}</h3></div>
+                        <div class="itemPeriod"><p>${each.rentalStartDate} ~ ${each.rentalEndDate}</p></div>
+                        <div class="itemName"><p>${each.name}</p></div>
+                        <div class="itemPrice"><h2>${each.rentalPrice} <span class="won">원</span><span class="month"> / 월</span></h2></div>
+                    </div>
+                </div>
+                </li>`;
+
+                }
+            });
+            document.querySelector(".wrapper_item ul").innerHTML=output;
+        }
+
+    });
+</script>
+</body>
+
+</html>

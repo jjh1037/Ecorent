@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="ko"  xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="fragment/_layout">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>게시판 관리 > 게시판 목록</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+          integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!--    <link rel="stylesheet" type="text/css" th:href="@{/static/css/layoutStyle.css}" />-->
+    <style>
+        .main {
+            background-color: white;
+            box-shadow: 0 0 3px 1px #ccc;
+            margin-bottom: 30px;
+        }
+        .main h3 {
+        padding: 10px 0 10px 15px;
+        border-bottom: 1px solid #888;
+        color: rgb(50, 50, 50);
+        }
+
+
+        /* ---------------------------------- main1 ---------------------------------- */
+    #main1 th, #main1 td {
+        padding: 8px 14px;
+        height: 50px;
+        text-align: left;
+        /* vertical-align: middle; */
+    }
+
+    #main1 tr {
+        border-bottom: 1px solid #dcdcdc;
+    }
+
+    #main1 .w100 {
+        width: 150px;
+    }
+
+    /* col {
+        display: table-column;
+    } */
+
+    #main1 th {
+        background-color: #eee;
+        /* white-space: nowrap; */
+        /* text-overflow: ellipsis; */
+        line-height: 1.3rem;
+        /* font-weight: 400; */
+    }
+
+    #main1 select, input{
+        height: 30px;
+    }
+    .name_view_link:hover {
+        font-weight: bold;
+        text-decoration: underline;
+    }
+    /* ---------------------------------- main1 ---------------------------------- */
+    /* ---------------------------------- main2 ---------------------------------- */
+    .count_wrap {
+        display: flex;
+        justify-content: space-between;
+        margin: 10px;
+    }
+
+    #main2 tr {
+        height: 40px;
+        text-align: center;
+    }
+
+    #main2 thead {
+        background-color: #eee;
+    }
+    #main2 th, #main2 td {
+        border: 1px solid #ccc;
+    }
+
+    #main2 th:nth-child(1) {
+        width: 5%;
+    }
+
+    #main2 th:nth-child(2) {
+        width: 8%;
+    }
+
+    #main2 th:nth-child(3) {
+        width: 8%;
+    }
+
+    #main2 th:nth-child(4) {
+    }
+
+    #main2 th:nth-child(5){
+        width: 15%;
+    }
+
+    #main2 th:nth-child(6){
+        width: 15%;
+    }
+
+    #main2 th:nth-child(7){
+        width: 14%;
+    }
+
+    .btn_confirm {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 60px;
+    }
+
+    .btn_confirm input {
+        border: none;
+        margin: 0 4px;
+    }
+
+    .btn2 {
+        padding: 5px 12px;
+        color:#fff;
+        border-radius: 3px;
+        font-size: 14px;
+        cursor:pointer;
+    }
+
+    .bottom {
+        display: block;
+        display: flex;
+        justify-content: center;
+        padding: 10px;
+    }
+
+    .name_view_link:hover {
+        font-weight: bold;
+        text-decoration: underline;
+    }
+    </style>
+</head>
+
+<body>
+<h2 layout:fragment="page_name">커뮤니티글 목록</h2>
+
+<div class="main_container" layout:fragment="main_container">
+    <div class="main" id="main1">
+        <h3>커뮤니티글 검색</h3>
+
+        <form action="/admin/communityList" name="fsearch" id="fsearch" method="get">
+            <div class="f_table">
+                <table>
+                    <colgroup>
+                        <col class="w100">
+                        <col>
+                    </colgroup>
+                    <tbody>
+                    <tr>
+                        <th>검색어</th>
+                        <td>
+                            <select name="searchType" class="searchType"><!-- postType -->
+                                <option value="">말머리 전체</option>
+                                <option value="고민">고민</option>
+                                <option value="자랑">자랑</option>
+                                <option value="자유">자유</option>
+                            </select>
+                            <select name="searchType2" class="searchType">
+                                <option value="postTitle">글제목</option>
+                                <option value="postWriter">글작성자</option>
+                            </select>
+                            <input type="text" name="words" class="words" size="30">
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="btn_confirm">
+                <input type="submit" value="검색" class="btn blue">
+                <a th:href="@{/admin/communityList}" class="btn gray">초기화</a>
+            </div>
+        </form>
+    </div>
+
+    <div class="main" id="main2">
+        <h3>커뮤니티글 검색결과</h3>
+        <div class="count_wrap">
+            <form action="/admin/communityList" method="get">
+                <p>전체결과 : <span><strong>[[${cnt}]]</strong></span>개</p>
+            </form>
+            <div>
+                <a href="#" class="btn red" onclick="seletedDelete()">선택삭제</a>
+            </div>
+        </div>
+
+        <table>
+            <thead>
+            <tr>
+                <th><input type="checkbox" class="chkDelete" name="checkAll" id="checkAll" style="display: flex; align-items: center; margin:0 auto;"/></th>
+                <th>코드</th>
+                <th>카테고리</th>
+                <th>글제목</th>
+                <th>글작성자</th>
+                <th>글작성일</th>
+                <th>비고</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="communityList: ${list}">
+                <td><input type="checkbox" class="chkDelete" name="check" th:value="${communityList.postNum}" style="display: flex; align-items: center; margin:0 auto;"></td>
+                <td>[[${communityList.postNum}]]</td>
+                <td>[[${communityList.postType}]]</td>
+                <td style="text-align: left;">
+                    <a th:href="@{/admin/communityView?(postNum=${communityList.postNum})}" class="name_view_link" style="margin-left: 10px;">[[${communityList.postTitle}]]</a>
+                </td>
+                <td>[[${communityList.postWriter}]]</td>
+                <td>[[${communityList.postDate}]]</td>
+                <td>
+                    <a th:href="@{/admin/communityView?(postNum=${communityList.postNum})}" class="btn blue">상세</a>
+                    <a th:href="@{/admin/communityUpdate?(postNum=${communityList.postNum})}" class="btn green">수정</a>
+                    <a href="#" class="btn red" th:onclick="removeItem([[${communityList.postNum}]])">삭제</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div class="bottom">
+            <div class="bottom-center">
+                <!-- preview arrow -->
+                <a href="#" th:if="${page.page <= 1}">
+                </a>
+                <a th:href="@{/admin/communityList?(page=${page.page-1})}" th:unless="${page.page <= 1}" style="margin: 10px">
+                    <i class="fa-solid fa-angle-left"></i>
+                </a>
+
+                <!-- page number -->
+                <a th:each="i : ${#numbers.sequence(page.startPage, page.endPage, 1)}" th:href="@{/admin/communityList?(page=${i})}">
+                    <th:block th:if="${page.page eq i}">
+                        <span style="color: rgb(255, 208, 0); margin-right: 3px;">
+                            <strong>[[${i}]]</strong>
+                        </span>
+                    </th:block>
+                    <th:block th:unless="${page.page eq i}">
+                        <span style="margin-right: 3px;">
+                            [[${i}]]
+                        </span>
+                    </th:block>
+                </a>
+
+                <!-- next arrow -->
+                <a href="#" th:if="${page.page >= page.totalPage}">
+                </a>
+                <a th:href="@{/admin/communityList?(page=${page.page+1})}" th:unless="${page.page >= page.totalPage}" style="margin: 10px">
+                    <i class="fa-solid fa-angle-right"></i>
+                </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script layout:fragment="script">
+    window.onload=function(){
+        $(".board_menu").show();
+        $(".board_menu_2").css({"background-color":"rgba(255, 255, 255, 0.1)", "border-radius":"4px"});
+    }
+
+    // 체크박스 전체선택, 해제
+    $(document).ready(function() {
+        $("#checkAll").click(function() {
+            if($("#checkAll").prop("checked")) {
+                $(".chkDelete").prop("checked", true);
+            }else {
+                $(".chkDelete").prop("checked", false);
+            }
+        });
+    });
+
+    // 체크박스 선택 삭제
+    function seletedDelete() {
+
+        let checkSelected = [];
+
+        document.querySelectorAll('input[name="check"]:checked').forEach((e) => {
+            checkSelected.push({
+                postNum : e.value
+            });
+        });
+
+        if(checkSelected.length === 0) {
+            alert("삭제할 항목을 선택해주세요.");
+            return;
+        }
+
+        $.ajax({
+            type:"post",
+            contentType: "application/json",
+            url:"/admin/communityDeleteSelected",
+            data: JSON.stringify(checkSelected),
+            success: function(res){
+                if(confirm("해당 게시글을 삭제 하시겠습니까?") ) {
+                        if(res.msg == "success") {
+                        location.reload();
+                    }
+                }
+            }
+        });
+    }
+
+    // 해당 게시글 삭제
+    function removeItem(postNum) {
+       if(confirm("해당 게시글을 삭제 하시겠습니까?") ) {
+            if(true) {
+            alert("삭제가 완료되었습니다.");
+                location.href = "/admin/communityDelete?postNum="+postNum;
+            }
+       }
+    }
+
+
+
+</script>
+
+</body>
+</html>

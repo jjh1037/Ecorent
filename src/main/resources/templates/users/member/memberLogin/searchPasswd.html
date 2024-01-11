@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ko">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>아이디, 비번찾기 </title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" th:href=@{/static/css/style.css}>
+    <link rel="stylesheet" th:href="@{/static/css/login/searchPasswd.css}">
+</head>
+<body>
+<div th:replace="~{fragment/nav::nav}"></div>
+
+<div class="container">
+    <div class="layout">
+        <h2>비밀번호 찾기</h2>
+    </div>
+</div>
+<form id="searchForm" action="/users/member/memberLogin/resultPasswd" method="post">
+    <main>
+        <section class="content">
+            <div class="search-tab-list" aria-label="찾을대상">
+                <a th:href="@{./searchEmail}" class="tab-list">이메일 찾기</a>
+                <a th:href="@{./searchPasswd}" class="tab-list active">비밀번호 찾기</a>
+            </div>
+            <div class="search-main">
+                <div class="center-wrapper">
+                <ul>
+                    <li>
+                        <input type="text" name="memberNickName" id="nickName" placeholder="닉네임 입력">
+                    </li>
+                    <li>
+                        <input type="text" name="memberEmail" id="email" placeholder="이메일 입력">
+                    </li>
+                </ul>
+                <button type="submit" id="sign" class="btn">비밀번호 찾기</button>
+            </div>
+        </div>
+        </section>
+    </main>
+</form>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        let form = document.getElementById('searchForm');
+        let btn = document.getElementById('sign');
+
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            let nickName = document.querySelector('#nickName');
+            let email = document.querySelector('#email');
+
+                 if(nickName.value == "") {
+                        alert("닉네임을 입력해주세요.")
+                        nickName.focus();
+                        return false;
+                 }
+
+                 if(email.value == "") {
+                        alert("이메일을 입력해주세요.")
+                        email.focus();
+                        return false;
+                 }
+
+                 form.submit();
+        });
+    });
+</script>
+</body>
+</html>

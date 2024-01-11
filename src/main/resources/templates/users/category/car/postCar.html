@@ -1,0 +1,347 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>제품 업로드</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+          integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script th:src="@{/static/js/fragment.js}"></script>
+    <link rel="stylesheet" th:href=@{/static/css/style.css}>
+    <style>
+        .content {
+            width: 100%;
+            max-width: var(--main-width);
+            margin: 0 auto;
+            margin-top: 30px;
+            margin-bottom: 160px;
+            padding: 10px;
+        }
+
+        .content h2 {
+            color: var(--sub-color);
+        }
+
+        .posting-rental {
+            margin: 30px 0;
+        }
+
+        .posting-rental form {
+            text-align: center;
+        }
+
+        .posting-rental table {
+            margin: 0 auto;
+            width: 700px;
+            font-size: 18px;
+            border-collapse: collapse;
+            text-align: center;
+            background-color: white;
+        }
+
+        .posting-rental table select {
+            width: 130px;
+            height: 28px;
+            border: 1px solid rgb(186, 186, 186);
+        }
+
+        .posting-rental table tr {
+            height: 60px;
+        }
+
+        .posting-rental table tr td:nth-child(1) {
+            text-align: right;
+            text-decoration: underline;
+            text-underline-offset: 0.4rem;
+            text-decoration-thickness: 2px;
+            text-decoration-color: var(--main-color);
+        }
+
+        .posting-rental table tr td:nth-child(2) {
+            text-align: left;
+            height: 60px;
+            /* .posting-rental table tr의 높이와 같게 */
+            padding: 10px 20px;
+        }
+
+        .posting-rental table tr:nth-child(2) input {
+            width: 160px;
+            height: 40px;
+            background-color: white;
+            border: 1px solid rgb(186, 186, 186);
+        }
+
+        .posting-rental table tr:last-child input {
+            background-color: white;
+        }
+
+        .posting-rental table input {
+            width: 100%;
+            height: 100%;
+            padding: 8px;
+            border: 0;
+            outline: 0;
+            font-size: 17px;
+            background-color: rgb(226, 226, 226);
+        }
+        .posting-rental .carrier{
+            display: flex;
+        }
+        .posting-rental .carrier select{
+            width: 160px;
+            height: 40px;
+            padding:5px;
+            margin-right: 8px;
+            background-color: white;
+            border: 1px solid rgb(186, 186, 186);
+            font-family: 'NanumSquare', sans-serif;
+            font-size: 15px;
+            font-weight: bold;
+            color:rgb(51, 51, 51);
+            outline: none;
+        }
+        .posting-rental table textarea {
+            width: 100%;
+            height: 350px;
+            padding: 8px;
+            outline: 0;
+            border: 0;
+            font-size: 17px;
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: rgb(226, 226, 226);
+        }
+
+        .postingRentalBtn {
+            margin: 30px auto;
+            width: 100px;
+            height: 40px;
+            border: 0;
+            background-color: #91aa85;
+            border-radius: 3px;
+            font-family: 'NanumSquare', sans-serif;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+<div th:replace="~{fragment/nav::nav}"></div>
+
+<div class="content">
+    <h2>렌탈등록</h2>
+    <div class="posting-rental">
+        <form method="post" action="/users/category/car/postCar" enctype="multipart/form-data" onsubmit="return check()">
+            <table>
+                <tr>
+                    <td>
+                        <p>차종류</p>
+                    </td>
+                    <td>
+                        <select class="carType" name="carType">
+                            <option value="">선택</option>
+                            <option value="소형">소형</option>
+                            <option value="중형">중형</option>
+                            <option value="대형">대형</option>
+                            <option value="전기차">전기차</option>
+                            <option value="수입차">수입차</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>렌탈기간</p>
+                    </td>
+                    <td><input type="date" name="rentalStartDate">
+                        &emsp;~&emsp;
+                        <input type="date" name="rentalEndDate">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>글제목</p>
+                    </td>
+                    <td><input type="text" name="title"></td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>차종</p>
+                    </td>
+                    <td><input type="text" name="name"></td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>연식</p>
+                    </td>
+                    <td><input type="text" name="carAge"></td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>연료종류</p>
+                    </td>
+                    <td><input type="text" name="carFuelType"></td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>위치</p>
+                    </td>
+                    <td><input type="text" name="address"></td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>가격</p>
+                    </td>
+                    <td><input type="text" name="rentalPrice"></td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>운송방식</p>
+                    </td>
+                    <td>
+                        <div class="carrier">
+                            <select class="carrierOption">
+                                <option value="선택">------ 선택 ------</option>
+                                <option value="owner">렌탈소유주가 선택</option>
+                                <option value="renter">렌탈요청자가 선택</option>
+                            </select>
+                            <select name="carrier" disabled>
+                                <option value="renter" selected>--- 운송사 선택 ---</option>
+                                <option value="OOCL">OOCL</option>
+                                <option value="CJ">CJ</option>
+                                <option value="KCTC">KCTC</option>
+                                <option value="Pantos">Pantos</option>
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>내용</p>
+                    </td>
+                    <td><textarea type="text" name="content"></textarea></td>
+                </tr>
+                <tr>
+                    <td>
+                        <p>사진첨부</p>
+                    </td>
+                    <td><input type="file" name="file"></td>
+                </tr>
+            </table>
+            <input type="submit" value="등록" class="postingRentalBtn">
+        </form>
+    </div>
+</div>
+<div th:replace="~{fragment/nav::footer}"></div>
+<script>
+
+    document.querySelector(".carrierOption").addEventListener('change',function(){
+        let carrierObtion=this.value;
+        let carrier=document.querySelector("select[name=carrier]");
+
+        if(carrierObtion==='owner'){
+            carrier.disabled=false;
+        }else{
+            carrier.disabled=true;
+            carrier.value='renter';
+        }
+
+    });
+
+    function check(){
+        let carType = document.querySelector("select[name='carType']");
+        let title = document.querySelector("input[name='title']");
+        let name = document.querySelector("input[name='name']");
+        let carAge = document.querySelector("input[name='carAge']");
+        let carFuelType = document.querySelector("input[name='carFuelType']");
+        let address = document.querySelector("input[name='address']");
+        let rentalPrice = document.querySelector("input[name='rentalPrice']");
+        let content = document.querySelector("textarea[name='content']");
+        let file = document.querySelector("input[name='file']");
+        let carrierOption=document.querySelector(".carrierOption");
+        let carrier=document.querySelector("select[name=carrier]");
+
+        if(carType.value==""){
+            alert("차종을 선택해주세요.");
+            return false;
+        }
+        if(title.value==""){
+            alert("글제목을 입력해주세요.");
+            title.focus();
+            return false;
+        }
+        if(name.value==""){
+            alert("자동차명을 입력해주세요.");
+            name.focus();
+            return false;
+        }
+        if(carAge.value==""){
+            alert("연식을 입력해주세요.");
+            carAge.focus();
+            return false;
+        }
+        if(carFuelType.value==""){
+            alert("연료타입을 입력해주세요.");
+            carFuelType.focus();
+            return false;
+        }
+        if(address.value==""){
+            alert("거래위치를 입력해주세요.");
+            address.focus();
+            return false;
+        }
+        if(carrierOption.value==='선택'){
+            alert("운송방식을 선택해주세요.");
+            return false;
+        }
+        if(carrierOption.value==='owner'&&carrier.value==='renter'){
+            alert("운송사를 선택해주세요.");
+            return false;
+        }
+        if(rentalPrice.value=="" || isNaN(rentalPrice.value)){
+            alert("제품의 렌탈비용을 정확히 입력해주세요.");
+            rentalPrice.focus();
+            return false;
+        }
+        if(content.value==""){
+            alert("글내용을 입력해주세요.");
+            content.focus();
+            return false;
+        }
+        if(file.files.length===0){
+            alert("제품사진을 첨부해주세요.");
+            return false;
+        }
+        if(carrierOption.value === 'renter' || carrier.disabled==true){
+            carrier.disabled=false;
+            carrier.value='renter';
+        }
+    }
+
+
+
+
+    window.onload = function () {
+        var today = new Date();
+        var day = String(today.getDate()).padStart(2, '0');
+        var month = String(today.getMonth() + 1).padStart(2, '0');
+        var year = today.getFullYear();
+
+        today = year + '-' + month + '-' + day;
+        let rentalStartDate = document.querySelector("input[name='rentalStartDate']");
+        let rentalEndDate = document.querySelector("input[name='rentalEndDate']");
+        rentalStartDate.setAttribute('min', today);
+        rentalEndDate.setAttribute('min', today);
+        rentalStartDate.value = today;
+        rentalEndDate.value = today;
+    };
+</script>
+</body>
+
+</html>

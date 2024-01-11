@@ -1,0 +1,475 @@
+<!doctype html>
+<html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>커뮤니티 게시판</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+          integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <link rel="stylesheet" th:href="@{/static/css/style.css}">
+    <link rel="stylesheet" th:href="@{/static/css/admin/u_shippingList_style.css}">
+    <style>
+        .content {
+                width: 100%;
+                max-width: var(--main-width);
+                margin: 0px auto;
+                margin-top: 30px;
+                padding: 10px;
+            }
+
+            .content h2 {
+                color: var(--sub-color);
+            }
+
+            .content-wrapper {
+                width: 100%;
+                padding: 10px 0;
+                margin: 30px 0;
+                margin-top: -9px;
+                padding-top: 0;
+                text-align: center;
+            }
+
+            .posts-info {
+                display: flex;
+                justify-content: end;
+
+                padding: 6px 0;
+                position: relative;
+            }
+
+            .posts-info p {
+                vertical-align: bottom;
+                position: absolute;
+                left: 0;
+                bottom: 3px;
+                color: rgb(58, 58, 58);
+            }
+
+            .posts-info span {
+                font-weight: bold;
+            }
+
+            .posts-info button {
+                border: 1px solid rgb(207, 207, 207);
+                padding: 6px 13px;
+                color: var(--sub-color);
+                background-color: white;
+                cursor: pointer;
+                text-align: right;
+            }
+
+            .content-wrapper table {
+                width: 100%;
+                border-collapse: collapse;
+                text-align: center;
+                margin: 3px 0 10px;
+            }
+            .content-wrapper table a{
+                text-decoration: none;
+                color: black;
+            }
+            .content-wrapper table thead tr{
+                border-top: 2px solid rgb(187, 186, 186);
+                border-bottom: 2px solid rgb(187, 186, 186);
+                height: 35px;
+            }
+
+            .content-wrapper table tr {
+                height: 40px;
+            }
+            .content-wrapper table tbody tr {
+                border-bottom: 1px solid rgb(230, 230, 230);
+                font-size: 15px;
+            }
+
+            .content-wrapper table th,
+            td {
+                background-color: white;
+            }
+
+            .content-wrapper table tbody td:nth-child(3) {
+            }
+
+            .content-wrapper table td:nth-child(1) {
+                width: 8%;
+            }
+            .content-wrapper table td:nth-child(3) {
+                width: 15%;
+            }
+            .content-wrapper table td:nth-child(4) {
+                width: 15%;
+            }
+            .content-wrapper table td:nth-child(5) {
+                width: 20%;
+            }
+            .content-wrapper table td:nth-child(6) {
+                width: 10%;
+            }
+
+            .top{
+                width:100%;
+                height:45px;
+                margin-top:50px;
+                display: flex;
+                item-aligns: center;
+                justify-content: space-between;
+            }
+            .top .count{
+                height:100%;
+                display: flex;
+                flex-direction: column;
+                justify-content:end;
+            }
+            .top .count p{
+            }
+            .searchFrm {
+                display: flex;
+                align-items: center;
+                justify-content: end;
+            }
+
+            .searchFrm>* {
+                margin: 0 5px;
+            }
+
+            .searchFrm select {
+                width: 100px;
+                height: 36px;
+                padding: 4px;
+                border: 1px solid rgb(165, 165, 165);
+            }
+
+            .searchFrm input {
+                height: 36px;
+                width: 240px;
+                outline: 0;
+                border: 1px solid rgb(165, 165, 165);
+                padding: 8px;
+            }
+
+            .searchFrm .searchBtn {
+                width: 50px;
+                border: 1px solid rgb(165, 165, 165);
+                background-color: white;
+                font-family: 'Noto Sans KR', sans-serif;
+                color: var(--sub-color);
+            }
+
+            .img-wrapper{
+                width:160px;
+                height: 60px;
+                overflow: hidden;
+                position: relative;
+            }
+            .img-wrapper img{
+                width: 100%;
+                height: auto;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                max-height: 100%;
+            }
+
+
+         /*-------------------------- 페이지 버튼---------------------------------*/
+        .bottom {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            item-aligns: center;
+        }
+
+        .bottom-left a.active {
+            background-color: #eee;
+            border: 1px solid #e2e2e2;
+            box-shadow: 0 1px 1px 0 #eee;
+            font-weight: bold;
+        }
+
+        table tbody tr td{
+            height: 65px;
+            align-items: center;
+        }
+
+        tbody tr td:nth-child(2){
+            display:flex;
+            justify-content:center;
+            item-aligns:center;
+        }
+        .bottom-left > *{
+            margin: 0 4px;
+        }
+        .bottom-left a {
+            color: #333;
+            margin-top:4px;
+            text-decoration: none;
+            display: inline-block;
+            padding: 3px 8px;
+            background-color: #fff;
+        }
+
+        .bottom-left a:first-child {
+            border-top-left-radius: 3px;
+            border-bottom-left-radius: 3px;
+        }
+
+        .bottom-left a:last-child {
+            border-top-right-radius: 3px;
+            border-bottom-right-radius: 3px;
+        }
+
+        .bottom-left a:not(first-child) {
+            margin-left: -6px;
+        }
+
+        .bottom .adminBtn{
+            width: 88px;
+            height: 38px;
+            border: 1px solid rgb(165, 165, 165);
+            background-color: white;
+            font-size:17px
+            font-family: 'Noto Sans KR', sans-serif;
+            color: var(--sub-color);
+            cursor:pointer;
+        }
+        /*-----------------------------------------------------------*/
+
+
+            .bottom-center a {
+                color: black;
+                text-decoration: none;
+            }
+
+    </style>
+</head>
+<body>
+<div th:replace="~{fragment/nav::nav}"></div>
+
+<div class="content">
+    <h2>운송사 목록</h2>
+    <div class="content-wrapper">
+        <!-- <div class="posts-info">
+            <p><span></span></p>
+        </div> -->
+
+        <div class="top">
+            <div class="count">
+                <p>전체결과 : <strong>[[${cnt}]]</strong>개</p>
+            </div>
+            <form action="/users/shipping/u_shippingList" method="get" class="searchFrm" style="margin-top: -1;">
+                <select name="searchType" class="searchType" id="domestic">
+                    <option value="2">전체</option>
+                    <option value="1">국내</option>
+                    <option value="0">해외</option>
+                </select>
+                <!--            <div class="selectbox_city">-->
+                <!--                <select name="korCity" id="korCity">-->
+                <!--                    <option value="">-&#45;&#45;&#45;&#45;지역-&#45;&#45;&#45;&#45;</option> &lt;!&ndash; 국내 &ndash;&gt;-->
+                <!--                    <option value="">서울</option>-->
+                <!--                    <option value="">경기</option>-->
+                <!--                    <option value="">인천</option>-->
+                <!--                    <option value="">강원</option>-->
+                <!--                    <option value="">대전/충청</option>-->
+                <!--                    <option value="">경북/대구</option>-->
+                <!--                    <option value="">경남/부산/울산</option>-->
+                <!--                    <option value="">광주/전라/제주</option>-->
+                <!--                </select>-->
+                <!--            </div>-->
+                <input type="text" name="words" class="words" placeholder="업체명 입력">
+                <input type="submit" value="검색" class="searchBtn">
+                <a th:href="@{/users/shipping/u_shippingList}" class="searchBtn"
+                   style="margin:0px 5px; padding: 8px; width: 60px; text-decoration: none; font-weight: normal; font-size: 12px;">초기화</a>
+            </form>
+        </div>
+        <table>
+            <thead>
+            <tr>
+                <td>국내/해외</td>
+                <td>운송사</td>
+                <td>업체명</td>
+                <td>지역명</td>
+                <td>전화번호</td>
+                <td>견적요청</td>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="shipList: ${list}">
+                <td>
+                    <th:block th:if="${#strings.equals(shipList.domestic, 'true')}">
+                        <p>국내</p>
+                    </th:block>
+                    <th:block th:unless="${#strings.equals(shipList.domestic, 'true')}">
+                        <p>해외</p>
+                    </th:block>
+                </td>
+                <td style="align-items: center;">
+                    <div class="img-wrapper">
+                        <img th:src="@{|/upload/${shipList.folderName}/${shipList.savedFileName}|}" alt="">
+                    </div>
+                </td>
+                <td>[[${shipList.name}]]</td>
+                <td>[[${shipList.city}]]</td>
+                <td>[[${shipList.comNum}]]</td>
+                <td>
+                    <a th:href="@{/users/shipping/u_shippingRequest?(id=${shipList.id})}" style="background-color: var(--sub-color);
+                        border: none; border: 1px solid #ccc; padding: 8px 14px; color: #eee;
+                        border-radius: 3px;">견적요청</a>
+                </td>
+            </tr>
+
+            </tbody>
+
+        </table>
+
+        <!--        <div class="bottom-center" style="float: right;">-->
+        <!--            &lt;!&ndash; preview arrow &ndash;&gt;-->
+        <!--            <a href="#" th:if="${page.page <= 1}">-->
+        <!--            </a>-->
+        <!--            <a th:href="@{/user/u_shippingList?(page=${page.page-1})}" th:unless="${page.page <= 1}" style="margin: 10px">-->
+        <!--                <i class="fa-solid fa-angle-left"></i>-->
+        <!--            </a>-->
+
+        <!--            &lt;!&ndash; page number &ndash;&gt;-->
+        <!--            <a th:each="i : ${#numbers.sequence(page.startPage, page.endPage, 1)}" th:href="@{/user/u_shippingList?(page=${i})}">-->
+        <!--                <th:block th:if="${page.page eq i}">-->
+        <!--                        <span style="color:#f00; margin-right: 3px;">-->
+        <!--                            <strong>[[${i}]]</strong>-->
+        <!--                        </span>-->
+        <!--                </th:block>-->
+        <!--                <th:block th:unless="${page.page eq i}">-->
+        <!--                        <span style="margin-right: 3px;">-->
+        <!--                            [[${i}]]-->
+        <!--                        </span>-->
+        <!--                </th:block>-->
+        <!--            </a>-->
+
+        <!--            &lt;!&ndash; next arrow &ndash;&gt;-->
+        <!--            <a href="#" th:if="${page.page >= page.totalPage}">-->
+        <!--            </a>-->
+        <!--            <a th:href="@{/user/u_shippingList?(page=${page.page+1})}" th:unless="${page.page >= page.totalPage}" style="margin: 10px">-->
+        <!--                <i class="fa-solid fa-angle-right"></i>-->
+        <!--            </a>-->
+        <!--        </div>-->
+
+        <div class="bottom">
+            <div></div>
+            <div class="bottom-left">
+                <!-- prevent arrow -->
+                <a href="#" th:if="${page.page <= 1}">
+                    <i class="fa-solid fa-angle-left"></i>
+                </a>
+                <a th:href="@{/users/shipping/u_shippingList?(page=${page.page-1})}" th:unless="${page.page <= 1}">
+                    <i class="fa-solid fa-angle-left"></i>
+                </a>
+
+
+                <th:block th:each="i : ${#numbers.sequence(page.startPage, page.endPage, 1)}"> <!-- i는 별명 -->
+                    <th:block th:if="${page.page eq i }">
+                        <a class="active" th:href="@{/users/shipping/u_shippingList?(page=${i})}">
+                            [[${i}]]
+                        </a>
+                    </th:block>
+                    <th:block th:unless="${page.page eq i }">
+                        <a th:href="@{/users/shipping/u_shippingList?(page=${i})}">
+                            [[${i}]]
+                        </a>
+                    </th:block>
+                </th:block>
+
+                <!-- next arrow -->
+                <a href="#" th:if="${page.page >= page.totalPage}">
+                    <i class="fa-solid fa-angle-right"></i>
+                </a>
+                <a th:href="@{/users/shipping/u_shippingList?(page=${page.page+1})}"
+                   th:unless="${page.page >= page.totalPage}">
+                    <i class="fa-solid fa-angle-right"></i>
+                </a>
+            </div>
+            <th:block th:if="${session.user!=null and session.user.memberRole=='Admin'}">
+                <div class="adminBtnArea">
+                    <button class="adminBtn" type="button">관리자 버전</button>
+                </div>
+            </th:block>
+            <th:block th:unless="${session.user!=null and session.user.memberRole=='Admin'}">
+                <div></div>
+            </th:block>
+        </div>
+
+    </div>
+</div>
+<div th:replace="~{fragment/nav::footer}"></div>
+<script>
+    window.onload = function() { // $(function() {} )
+        document.querySelector("input[name=words]").focus();
+    }
+    let adminBtn = document.querySelector(".adminBtn");
+
+    adminBtn.addEventListener('click', ()=>{
+        location.href='/shipping/shippingList';
+    });
+
+    // 유효성 검사
+    $(document).ready(function() {
+        $(".domestic").change(function () {
+            if($(".domestic").val() == 1) {
+                $(".selectbox_city").append(`
+                    <select name="korCity" id="korCity">
+                        <option value="">-----지역-----</option> <!-- 국내 -->
+                        <option value="">서울</option>
+                        <option value="">경기</option>
+                        <option value="">인천</option>
+                        <option value="">강원</option>
+                        <option value="">대전/충청</option>
+                        <option value="">경북/대구</option>
+                        <option value="">경남/부산/울산</option>
+                        <option value="">광주/전라/제주</option>
+                    </select>
+                `);
+                $("#country").remove();
+
+            }else if($(".domestic").val() == 0) {
+                $(".selectbox_city").append(`
+                    <select name="country" id="country"> <!-- 해외 -->
+                        <option value="">-----국가-----</option>
+                        <optgroup label="아시아">
+                            <option value="">일본</option>
+                            <option value="">중국</option>
+                            <option value="">베트남</option>
+                            <option value="">사우디아라비아</option>
+                        </optgroup>
+                        <optgroup label="유럽">
+                            <option value="">영국</option>
+                            <option value="">프랑스</option>
+                            <option value="">독일</option>
+                            <option value="">스페인</option>
+                        </optgroup>
+                        <optgroup label="남/북아메리카">
+                            <option value="">미국</option>
+                            <option value="">캐나다</option>
+                            <option value="">브라질</option>
+                            <option value="">멕시코</option>
+                        </optgroup>
+                        <optgroup label="오세아니아/아프리카">
+                            <option value="">호주</option>
+                            <option value="">뉴질랜드</option>
+                            <option value="">남아프리카공화국</option>
+                            <option value="">가나</option>
+                        </optgroup>
+                    </select>
+                `);
+
+                $("#korCity").remove();
+            }
+        });
+    });
+
+</script>
+</body>
+</html>

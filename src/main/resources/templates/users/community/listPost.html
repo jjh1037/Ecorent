@@ -1,0 +1,263 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>커뮤니티 게시판</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+          integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script th:src="@{/static/js/fragment.js}"></script>
+    <link rel="stylesheet" th:href=@{/static/css/style.css}>
+    <style>
+        .content {
+                width: 100%;
+                height:100%;
+                max-width: var(--main-width);
+                margin: 0 auto;
+                margin-top: 30px;
+                margin-bottom: 60px;
+                padding: 10px;
+            }
+            .content h2 {
+                color: var(--sub-color);
+            }
+
+            .content-wrapper {
+                width: 100%;
+                padding: 10px 0;
+                margin: 30px 0;
+                text-align: center;
+            }
+
+            .posts-info {
+                display: flex;
+                justify-content: end;
+
+                padding: 6px 0;
+                position: relative;
+            }
+
+            .posts-info p {
+                vertical-align: bottom;
+                position: absolute;
+                left: 0;
+                bottom: 3px;
+                color: rgb(58, 58, 58);
+            }
+
+            .posts-info span {
+                font-weight: bold;
+            }
+
+            .posts-info button {
+                border: 1px solid rgb(207, 207, 207);
+                padding: 6px 13px;
+                color: var(--sub-color);
+                background-color: white;
+                cursor: pointer;
+                text-align: right;
+            }
+
+            .content-wrapper table {
+                width: 100%;
+                border-collapse: collapse;
+                text-align: center;
+                margin: 3px 0 10px;
+            }
+            .content-wrapper table a{
+                text-decoration: none;
+                color: black;
+            }
+            .content-wrapper table thead tr{
+                border-top: 2px solid rgb(187, 186, 186);
+                border-bottom: 2px solid rgb(187, 186, 186);
+                height: 35px;
+            }
+
+            .content-wrapper table tr {
+                height: 40px;
+            }
+            .content-wrapper table tbody tr {
+                border-bottom: 1px solid rgb(230, 230, 230);
+                font-size: 15px;
+            }
+
+            .content-wrapper table th,
+            td {
+                background-color: white;
+            }
+
+            .content-wrapper table tbody td:nth-child(3) {
+                text-align: left;
+                padding-left: 10px;
+            }
+
+            .content-wrapper table td:nth-child(1) {
+                width: 5%;
+            }
+            .content-wrapper table td:nth-child(2) {
+                width: 10%;
+            }
+            .content-wrapper table td:nth-child(4) {
+                width: 10%;
+            }
+            .content-wrapper table td:nth-child(5) {
+                width: 8%;
+            }
+            .content-wrapper table td:nth-child(6) {
+                width: 10%;
+            }
+
+            .searchFrm {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 10px;
+            }
+
+            .searchFrm>* {
+                margin: 0 5px;
+            }
+
+            .searchFrm select {
+                width: 100px;
+                height: 36px;
+                padding: 4px;
+                border: 1px solid rgb(165, 165, 165);
+            }
+
+            .searchFrm input {
+                height: 36px;
+                width: 240px;
+                outline: 0;
+                border: 1px solid rgb(165, 165, 165);
+                padding: 8px;
+            }
+
+            .searchFrm .searchBtn {
+                width: 50px;
+                border: 1px solid rgb(165, 165, 165);
+                background-color: white;
+                font-family: 'Noto Sans KR', sans-serif;
+                color: var(--sub-color);
+            }
+
+            .bottom{
+                width:100%;
+                height:90px;
+                display:flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .bottom .pages a{
+                padding: 4px 8px;
+                text-decoration:none;
+                font-size: 12px;
+                color:rgb(78, 78, 78);
+            }
+
+            .active{
+                font-weight:bold;
+                border: 1px solid #e0e0e0;
+            }
+
+    </style>
+</head>
+<body>
+
+<div th:replace="~{fragment/nav::nav}"></div>
+
+<div class="wrapper content">
+    <h2>커뮤니티</h2>
+    <div class="content-wrapper">
+        <div class="posts-info">
+            <p>total <span>[[${searchCount}]]</span></p>
+            <th:block th:if="${#strings.isEmpty(session.user)}">
+            </th:block>
+            <th:block th:unless="${#strings.isEmpty(session.user)}">
+                <button onclick="postBtn()">글쓰기</button>
+            </th:block>
+        </div>
+        <table>
+            <thead>
+            <tr>
+                <td>글번호</td>
+                <td>말머리</td>
+                <td>글제목</td>
+                <td>작성자</td>
+                <td>추천수</td>
+                <td>작성날짜</td>
+            </tr>
+            </thead>
+            <tbody>
+            <th:block th:if="${not #lists.isEmpty(board)}">
+            <tr th:each="board : ${board}">
+                <td>[[${board.postNum}]]</td>
+                <td>[[${board.postType}]]</td>
+                <td><a href="#" th:onclick="'viewPost('+${board.postNum}+')'">[[${board.postTitle}]]</a></td>
+                <td>[[${board.postWriter}]]</td>
+                <td>[[${board.countLove}]]</td>
+                <td>[[${board.postDate}]]</td>
+            </tr>
+            </th:block>
+            <th:block th:unless="${not #lists.isEmpty(board)}">
+                <tr>
+                    <td colspan='6' style="height : 50px;">
+                        <p>등록된 게시글이 없습니다. 게시글을 등록해주세요.</p>
+                    </td>
+                </tr>
+            </th:block>
+            </tbody>
+        </table>
+        <div class="bottom">
+            <div class="pages">
+                <a href="#" th:if="${page.page<=1}"><i class="fa-solid fa-angle-left"></i></a>
+                <a th:href="@{/users/community/listPost?(page=${page.page-1})}" th:unless="${page.page<=1}"><i class="fa-solid fa-angle-left"></i></a>
+
+
+                <th:block th:each="i : ${#numbers.sequence(page.startPage,page.endPage,1)}">
+                    <th:block th:if="${page.page eq i}">
+                        <a class="active" th:href="@{/users/community/listPost?(page=${i})}">[[${i}]]</a>
+                    </th:block>
+                    <th:block th:unless="${page.page eq i}">
+                        <a th:href="@{/users/community/listPost?(page=${i})}">[[${i}]]</a>
+                    </th:block>
+                </th:block>
+
+
+                <a href="#" th:if="${page.page>=page.totalPage}"><i class="fa-solid fa-angle-right"></i></a>
+                <a th:href="@{/users/community/listPost?(page=${page.page+1})}" th:unless="${page.page>=page.totalPage}"><i class="fa-solid fa-angle-right"></i></a>
+            </div>
+        </div>
+        <form method="get" action="/users/community/listPost" class="searchFrm">
+            <select class="searchType" name="searchType" id="searchType">
+                <option value="">말머리 선택</option>
+                <option value="고민">고민</option>
+                <option value="자랑">자랑</option>
+                <option value="자유">자유</option>
+            </select>
+            <input type="text" name="words" placeholder="검색어 입력">
+            <input type="submit" value="검색" class="searchBtn">
+        </form>
+    </div>
+</div>
+
+<div th:replace="~{fragment/nav::footer}"></div>
+
+<script>
+    function postBtn(){
+        location.href = "/users/community/post";
+    }
+
+    function viewPost(id){
+        location.href = "/users/community/viewPost?id="+id;
+    }
+
+</script>
+</body>
+</html>

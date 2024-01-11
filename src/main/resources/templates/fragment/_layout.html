@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ko"  xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Page</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+          integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" type="text/css" th:href="@{/static/css/admin/layoutStyle.css}" />
+</head>
+
+<body>
+<div class="container" >
+    <!-- --------------------- left_container --------------------- -->
+    <div class="left_container">
+        <div class="logo_wrap">
+            <h2><a href="/admin">ECORENT</a></h2>
+            <img src="/static/images/main/leaf.png" alt="">
+        </div>
+        <hr style="background-color: red;"/>
+        <p>사이트 관리</p>
+        <ul>
+            <li class="menu">
+                <a href="/admin" class="index-category"><i class="fa-solid fa-table-columns"></i>대시보드</a>
+            </li>
+            <li class="menu">
+                <a class="member-category"><i class="fa-regular fa-user"></i>회원관리</a>
+                <ul class="hide member_menu">
+                    <li><a th:href="@{/admin/member/memberList}" class="member_menu_1">회원정보</a></li>
+                    <li><a th:href="@{/memberReport}" class="member_menu_4">회원신고</a></li>
+                </ul>
+            </li>
+            <li class="menu">
+                <a class="board-category"><i class="fa-regular fa-clipboard"></i>게시글관리</a>
+                <ul class="hide board_menu">
+                    <li><a th:href="@{/admin/boardList}" class="board_menu_1">게시판 목록</a></li>
+                    <li><a th:href="@{/admin/communityList}" class="board_menu_2">커뮤니티 목록</a></li>
+                </ul>
+            </li>
+            <li class="menu">
+                <a class="ship-category"><i class="fa-solid fa-truck"></i>운송사관리</a>
+                <ul class="hide ship_menu">
+                    <li><a th:href="@{/shipping/shippingList}" class="ship_menu_1">운송사 목록</a></li>
+                    <li><a th:href="@{/shipping/shippingWrite}" class="ship_menu_2">운송사 신규등록</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <!-- -------------------------------------------->
+
+    <section >
+        <!-- --------------------- nav ----------------------->
+        <header>
+            <nav>
+                <div class="nav_container">
+                    <h2 layout:fragment="page_name">ADMIN PAGE</h2>
+                    <a href="/"><button type="button" class="btn red" style="border: none; height: 35px;">유저 페이지로 전환</button></a>
+                </div>
+            </nav>
+        </header>
+        <!-- -------------------------------------------->
+
+        <!-- --------------------- main_container ----------------------->
+        <div class="main_container" layout:fragment="main_container">
+            <p>내용 들어오는곳</p>
+        </div>
+        <!-- -------------------------------------------->
+
+    </section>
+</div>
+
+
+<footer>
+
+</footer>
+
+
+<script>
+    // left_container 메뉴 슬라이드 이벤트
+    $(document).ready(function () {
+        $(".menu>a").click(function () {
+            // $(this).next("ul").toggleClass("hide"); // No transition
+            var submenu = $(this).next("ul");
+
+            if (submenu.is(":visible")) {
+                submenu.slideUp();
+            } else {
+                submenu.slideDown();
+            }
+        });
+    });
+    // ------------------------------------------------------
+
+    // left_container a태그 click시 색 변경 이벤트
+    const nonClick = document.querySelectorAll(".menu a");
+
+    function handleClick(event) {
+        nonClick.forEach((e) => {
+            e.classList.remove("click");
+        });
+        event.target.classList.add("click");
+
+    }
+
+    nonClick.forEach((e) => {
+        e.addEventListener("click", handleClick)
+    });
+    // ------------------------------------------------------
+</script>
+
+<script layout:fragment="script">
+
+</script>
+</body>
+
+</html>

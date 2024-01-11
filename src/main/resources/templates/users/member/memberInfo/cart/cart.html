@@ -1,0 +1,571 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+          integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script th:src="@{/static/js/fragment.js}"></script>
+    <link rel="stylesheet" th:href="@{/static/css/style.css}">
+    <style>
+        /* new style */
+        .my-menu {
+            width: 100%;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 40px;
+            box-shadow: 0 0 2px rgb(175, 175, 175);
+        }
+
+        .my-menu ul {
+            width: 100%;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .my-menu ul a {
+            text-decoration: none;
+            padding: 8px 12px;
+            margin: 0 20px;
+        }
+
+        .my-menu ul li {
+            width: 100%;
+            list-style: none;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: rgb(94, 94, 94);
+        }
+
+        .underline {
+            line-height: 1.2;
+            background-image: linear-gradient(transparent calc(100%-3px), #000 3px);
+            background-repeat: no-repeat;
+            background-size: 0% 100%;
+            transition: background-size 0.3s;
+            color: #000;
+        }
+
+        .underline.yellow {
+            background-image: linear-gradient(transparent 60%, #ffdb3b 40%);
+        }
+
+        .underline:hover {
+            background-size: 100% 100%;
+        }
+
+        .active {
+            line-height: 1.2;
+            background-repeat: no-repeat;
+            background-size: 0% 100%;
+            color: #000;
+            background-image: linear-gradient(transparent 60%, #ffdb3b 40%);
+            background-size: 100% 100%;
+        }
+
+
+
+
+        /*장바구니 본문*/
+
+        .wrapper {
+            width: var(--main-width);
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .notification{
+            width: 50%;
+            height: 110px;
+            display: flex;
+            justify-content:center;
+            align-items: center;
+            background-color: #f6f6f6;
+            padding: 20px;
+            font-size: 17px;
+            font-weight:bold;
+            line-height: 1.7;
+        }
+        .notification p, .notification strong{
+            color:#4b4b4b;
+            text-align:center;
+        }
+        .notification span{
+            color:coral;
+            font-size: 19px;
+        }
+
+        .form-wrapper {
+            width: 100%;
+            margin: 20px auto;
+        }
+
+        .form-wrapper h2 {
+            margin: 20px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+        }
+
+        table th,
+        td {
+            border-top: 1px solid rgb(211, 211, 211);
+            border-bottom: 1px solid rgb(211, 211, 211);
+        }
+
+        table td {
+            font-size: 18px;
+            font-weight: bold;
+            color: rgb(78, 78, 78);
+        }
+        .btnArea {
+            width: 100%;
+            margin: 18px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .btnArea button {
+            width: 100px;
+            height: 40px;
+            border: 0;
+            border-radius: 5px;
+            font-size: 16px;
+            font-family: 'Noto Sans KR', sans-serif;
+            color: white;
+            margin: 0 8px;
+            cursor: pointer;
+        }
+
+        .rentalSheetBtn button {
+            width: 40px;
+            height: 40px;
+            border: 0;
+            border-radius: 5px;
+            font-size: 16px;
+            font-family: 'Noto Sans KR', sans-serif;
+            color: white;
+            margin: 0 8px;
+            cursor: pointer;
+        }
+
+        .coral {
+            background-color: coral;
+        }
+
+        .green {
+            background-color: rgb(107, 153, 86);
+        }
+
+        .confirmed {
+            color: var(--sub-color);
+        }
+
+        .waiting {
+            color: grey;
+        }
+
+        .rejected {
+            color: coral;
+        }
+
+        /* 장바구니  */
+        .form-wrapper table thead tr {
+            height: 36px;
+        }
+
+        .form-wrapper table tbody tr {
+            height: 140px;
+        }
+
+        .form-wrapper table tbody img {
+            max-width: 210px;
+            max-height: 108px;
+            border-radius:3px;
+        }
+
+        .form-wrapper table td:nth-child(1) {
+            width: 5%;
+        }
+
+        .form-wrapper table td:nth-child(2) {
+            width: 15%;
+        }
+        .form-wrapper table td:nth-child(4) {
+            width: 7%;
+        }
+
+        .form-wrapper table td:nth-child(5) {
+            width: 27%;
+        }
+
+        .form-wrapper table td:nth-child(6) {
+            width: 10%;
+        }
+
+        .form-wrapper table td {
+            text-align: center;
+        }
+
+        .cclist a {
+            color: black;
+        }
+
+        .cartNameInfo {
+            text-align: start;
+            line-height: 1.6;
+        }
+        .cartNameInfo p:nth-child(1){
+            font-size:16px;
+            color: rgb(184, 184, 184);
+        }
+
+        .form-top {
+            width:100%;
+            height:35px;
+            display: flex;
+            justify-content: space-between;
+            align-items:center;
+            margin-top: 30px;
+            margin-bottom: 6px;
+        }
+        .cart-count{
+            height:100%;
+            display:flex;
+            flex-direction:column;
+            justify-content:end;
+        }
+        .form-top h3{
+            font-size:17px;
+        }
+
+        .form-top .selectDeleteBtn {
+            width: 90px;
+            height: 30px;
+            color: rgb(160, 160, 160);
+            border: 1px solid rgb(200, 200, 200);
+            background-color: white;
+            padding: 4px 6px;
+            cursor: pointer;
+        }
+        .form-top .selectDeleteBtn span{
+            color:coral;
+        }
+
+        .chkDelete {
+            accent-color: #0288D1;
+        }
+    </style>
+</head>
+
+<body>
+<div th:replace="~{fragment/nav::nav}"></div>
+
+<div class="my-menu">
+    <ul>
+        <a href="/users/member/memberInfo/info">
+            <li class="underline yellow">회원정보</li>
+        </a>
+        <a href="/users/member/cart">
+            <li class="underline yellow active">장바구니</li>
+        </a>
+        <a href="/users/member/memberInfo/receivedForms">
+            <li class="underline yellow">받은렌탈요청</li>
+        </a>
+        <a href="/users/member/memberInfo/sentForms">
+            <li class="underline yellow">보낸렌탈요청</li>
+        </a>
+        <a href="/users/member/memberInfo/messages">
+            <li class="underline yellow">메시지함</li>
+        </a>
+    </ul>
+</div>
+
+<div class="wrapper">
+    <input type="hidden" class="memberId" th:value="${session.user.memberId}">
+
+    <div class="notification">
+        <p>* 렌탈은 구매가 아니므로, 결제없이 <span>신청</span>만 접수됩니다.<br/><span>렌탈폼 작성 후</span> 신청이 가능합니다.</p>
+    </div>
+
+    <div class="form-wrapper">
+        <div class="form-top">
+            <div class="cart-count"><h3>장바구니 담긴 상품 (<span class="cnt" style="color: coral; font-weight: bold;"></span>)</h3></div>
+            <button class="selectDeleteBtn" onclick="seletedDelete()"><span><i class="fa-solid fa-caret-right"></i></span> 선택 삭제</button>
+        </div>
+        <table>
+            <thead>
+            <tr>
+                <th>
+                    <input type="checkbox" class="chkDelete" name="checkAll" id="checkAll" />
+                </th>
+                <th colspan="2">상품정보</th>
+                <th style="text-align: center;">렌탈가격</th>
+                <th>렌탈일자</th>
+                <th>렌탈폼 작성</th>
+            </tr>
+            </thead>
+            <tbody class="cclist">
+            <tr>
+                <td>nignignignig</td>
+            </tr>
+
+
+
+            </tbody>
+        </table>
+
+
+        <div class="btnArea">
+            <button style="background-color: #333; width: 120px;" onclick="sendFormSelected()">선택상품 렌탈</button>
+            <button class="green" style="width: 120px;" onclick="sendFormAll()">전체상품 렌탈</button>
+
+        </div>
+    </div>
+
+</div>
+<script>
+    /*
+    전체상품 렌탈 클릭 -> 미작성 폼 확인 -> 다 작성시 formStatus waiting으로 변경 -> 장바구니 삭제
+    선택상품 렌탈 클릭 -> 미작성 폼 확인 -> 다 작성시 formStatus waiting으로 변경 -> 장바구니 삭제
+
+    렌탈폼
+    - SELECT COUNT(*) FROM rentalforms WHERE itemId = #{itemId} AND renterID = #{renterID} AND formStatus = 'saving'; 값 확인
+    - COUNT(*) = 0 이면 미작성
+    - COUNT(*) = 1 이면 작성
+    - COUNT(*) = 1 일때 saving 이면 waiting으로 변경
+    */
+
+
+
+    let memberId = document.querySelector(".memberId").value;
+    let cartCnt = 0;
+
+
+    $.ajax({
+        type: "post",
+        url: "/users/member/cart",
+        dataType: "json",
+        data: { memberId },
+        success: function (res) {
+            let output = "";
+
+
+            console.log(res.list.length);
+
+            if (res.list.length == 0) {
+                output += `
+                    <tr>
+                        <td colspan='6'>
+                            <p>장바구니에 등록된 상품이 없습니다.</p>
+                        </td>
+
+                    </tr>
+                `;
+            } else {
+                res.list.forEach((each) => {
+                    ++cartCnt;
+                    output += `
+                    <tr>
+                        <td>
+                            <input type="hidden" class="itemId" value="${each.itemId}"/>
+                            <input type="checkbox" class="chkDelete" name="check" value="${each.cartId}" data-itemId="${each.itemId}" data-memberId="${each.memberId}">
+                        </td>
+                        <td>
+                            <img src="/upload/${each.folderName}/${each.fileName}" alt="">
+                        </td>
+                        <td>
+                            <div class="cartNameInfo" style="margin-left:10px;">
+                                <p>[${each.itemCategory}]</p>
+                                <p><strong>${each.title}</strong></p>
+                            </div>
+                        </td>
+                        <td>${each.rentalPrice}</td>
+                        <td>${each.rentalStartDate} ~ ${each.rentalEndDate}</td>
+                        <td>
+                            <div class="rentalSheetBtn">
+                `;
+                    if (each.formWritten == 0) {
+                        output += `
+                            <button onclick="rentalForm(${each.itemId})" style="background-color: rgb(175, 175, 175); width: 80px;">미작성</button>
+                            <input type="hidden" class="formWritten" name="formWritten" value="0" />
+                            </div>
+                        </td>
+                    </tr>
+                    `;
+                    } else {
+                        output += `
+                            <button onclick="rentalForm(${each.itemId})" style="background-color: rgb(245, 188, 0); width: 80px;">작성완료</button>
+                            <input type="hidden" class="formWritten" name="formWritten" value="1" />
+                            </div>
+                        </td>
+                    </tr>
+                    `;
+                    }
+                });
+            }
+            document.querySelector(".cclist").innerHTML = output;
+            document.querySelector(".cnt").innerHTML = cartCnt;
+        }
+    });
+
+    // 렌탈폼 작성 버튼 클릭 이벤트
+    function rentalForm(id) {
+        location.href = "/users/member/cart/cartSavingFormCar?id=" + id;
+
+    }
+
+    // 체크박스 전체선택, 해제
+    $(document).ready(function () {
+        $("#checkAll").click(function () {
+            if ($("#checkAll").prop("checked")) {
+                $(".chkDelete").prop("checked", true);
+            } else {
+                $(".chkDelete").prop("checked", false);
+            }
+        });
+
+        $(".chkDelete").click(function () {
+            if ($("input[name='check']:checked").length == cartCnt) {
+                $("#checkAll").prop("checked", true);
+            } else {
+                $("#checkAll").prop("checked", false);
+            }
+        });
+    });
+
+    // 체크박스 선택 삭제
+    function seletedDelete() {
+
+        let checkSelected = [];
+
+        document.querySelectorAll('input[name="check"]:checked').forEach((e) => {
+            checkSelected.push({
+                cartId: e.value
+            });
+        });
+        console.log(checkSelected);
+
+        if (checkSelected.length === 0) {
+            alert("삭제할 항목을 선택해주세요.");
+            return;
+        }
+
+        $.ajax({
+            type: "post",
+            contentType: "application/json",
+            url: "/deleteSelected",
+            data: JSON.stringify(checkSelected),
+            success: function (res) {
+                if (res.msg == "success") {
+                    alert("장바구니 삭제 완료!");
+                    location.reload();
+                }
+            }
+        });
+    }
+
+    // 선택 렌탈폼 전달
+    function sendFormSelected() {
+        let sendFormSelected = [];
+
+        document.querySelectorAll('input[name="check"]:checked').forEach((e) => {
+            sendFormSelected.push({
+                cartId: e.value,
+                itemId: e.getAttribute('data-itemId'),
+                memberId: e.getAttribute('data-memberId')
+            });
+        });
+        console.log(sendFormSelected);
+
+        if (sendFormSelected.length == 0) {
+            alert("선택된 상품이 없습니다. 상품을 선택하신후 다시 시도해주세요");
+        } else {
+            $.ajax({
+                type: "post",
+                contentType: "application/json",
+                url: "/changeToWaiting",
+                data: JSON.stringify(sendFormSelected),
+                success: function (res) {
+                    if (res.msg == "failure") {
+                        alert("미작성된 렌탈폼이 있습니다!\n렌탈폼을 작성 후 다시 시도해주세요!");
+                        location.reload();
+                    } else if (res.msg == "success") {
+                        alert("폼 전달 완료!!!");
+                        location.reload();
+                    } else {
+                        alert("오류가 발생했습니다. 관리자에게 문의하세요!");
+                        location.reload();
+                    }
+                }
+            });
+        }
+    }
+
+    // 전체 렌탈폼 전달
+    function sendFormAll() {
+        let sendFormAll = [];
+
+        document.querySelectorAll('input[name="check"]').forEach((e) => {
+            sendFormAll.push({
+                cartId: e.value,
+                itemId: e.getAttribute('data-itemId'),
+                memberId: e.getAttribute('data-memberId')
+            });
+        });
+        console.log(sendFormAll);
+
+        $.ajax({
+            type: "post",
+            contentType: "application/json",
+            url: "/changeToWaiting",
+            data: JSON.stringify(sendFormAll),
+            success: function (res) {
+                if (res.msg == "failure") {
+                    alert("미작성된 렌탈폼이 있습니다!\n렌탈폼을 작성 후 다시 시도해주세요!");
+                    location.reload();
+                } else if (res.msg == "success") {
+                    alert("폼 전달 완료!!!");
+                    location.reload();
+                } else {
+                    alert("오류가 발생했습니다. 관리자에게 문의하세요!");
+                    location.reload();
+                }
+            }
+        });
+    }
+
+    // 아이콘 클릭시 삭제 -- 미사용
+    function remove(cartId) {
+        if (confirm(cartId + "번 물건을 삭제 하시겠습니까?")) {
+            if (true) {
+                alert("삭제가 완료되었습니다.");
+                location.href = "/deleteCart?cartId=" + cartId;
+            }
+        }
+    }
+
+</script>
+</body>
+
+</html>

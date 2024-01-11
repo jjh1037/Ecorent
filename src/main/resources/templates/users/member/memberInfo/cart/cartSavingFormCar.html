@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+          integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script th:src="@{/static/js/fragment.js}"></script>
+    <link rel="stylesheet" th:href="@{/static/css/style.css}">
+    <style>
+        .title {
+            width: 100%;
+            max-width: var(--main-width);
+            margin: 0px auto;
+            margin-top: 30px;
+            padding: 10px;
+            color: var(--sub-color);
+        }
+
+        .formWrapper {
+            width: 100%;
+            height: 920px;
+            max-width: 1300px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .applyForm {
+            width: 40%;
+            height: 100%;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .applyForm h2 {
+            margin: 20px 0;
+            color: rgb(104, 104, 104);
+            text-decoration: underline;
+            text-underline-offset: 0.6rem;
+            text-decoration-thickness: 2px;
+            text-decoration-color: var(--main-color);
+        }
+
+        .applyForm .formSide {
+            width: 100%;
+        }
+
+        .applyForm ul {
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .applyForm ul li {
+            list-style: none;
+            position: relative;
+            margin: 16px 0;
+        }
+
+        .applyForm label {
+            display: inline-block;
+            position: absolute;
+            padding: 2px;
+            top: -10px;
+            left: 14px;
+            font-size: 14px;
+            background-color: white;
+        }
+
+        .applyForm label span {
+            color: rgb(255, 82, 19);
+            vertical-align: -1px;
+            padding-right: 3px;
+        }
+
+        .applyForm input {
+            width: 370px;
+            height: 60px;
+            border: 0;
+            outline: 0;
+            border: 2px solid #dddddd;
+            border-radius: 8px;
+            font-size: 16px;
+            padding: 12px;
+        }
+        .applyForm .rentalDate{
+            width: 370px;
+            height: 64px;
+            border: 0;
+            border: 2px solid #dddddd;
+            border-radius: 8px;
+            font-size: 16px;
+            padding: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .applyForm .rentalDate input{
+            width: 140px;
+            height: 24px;
+            margin: 0 4px;
+            border: 1px solid #dddddd;
+            border-radius: 0;
+            padding: 12px;
+            font-family: 'NanumSquare', sans-serif;
+            font-size:15px;
+        }
+
+        .applyForm .address {
+            width: 370px;
+            height: 250px;
+            border: 0;
+            border: 2px solid #dddddd;
+            border-radius: 8px;
+            font-size: 16px;
+            padding: 8px;
+        }
+
+        .applyForm .postCode {
+            width: 100%;
+            height: 15%;
+            padding-top: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .applyForm .address input {
+            width: 120px;
+            height: 24px;
+            margin: 0 4px;
+            border: 1px solid #dddddd;
+            border-radius: 0;
+            padding: 12px;
+        }
+
+
+        .applyForm .address input[type=button] {
+            width: 80px;
+            height: 25px;
+            margin: 0 4px;
+            border: 1px solid #dddddd;
+            border-radius: 0;
+            padding: 0px;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .applyForm .address-detail {
+            width: 100%;
+            height: 85%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .applyForm ul li .address-detail .address-input {
+            width: 85%;
+            height: 40px;
+            margin: 4px 0;
+            font-size: 15px;
+        }
+
+
+        .applyForm .delivery {
+            width: 370px;
+            height: 60px;
+            border: 0;
+            border: 2px solid #dddddd;
+            border-radius: 8px;
+            font-size: 16px;
+            padding: 12px 6px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .delivery input{
+            width: 100%;
+            height: 50px;
+            margin: 0 4px;
+            border: 0;
+            border-radius: 0;
+            padding: 4px;
+        }
+
+        .applyForm .delivery select {
+            width: 200px;
+            height: 32px;
+            border: 1px solid rgb(212, 212, 212);
+            background-color: rgb(241, 241, 241);
+            padding: 4px;
+            color: rgb(70, 70, 70);
+            outline: none;
+        }
+
+        .applyForm input::placeholder {
+            color: rgb(184, 184, 184);
+            font-size: 14px;
+        }
+
+        .applyForm textarea {
+            width: 370px;
+            height: 220px;
+            padding: 24px;
+            font-size: 18px;
+            border: 0;
+            outline: 0;
+            border: 2px solid #dddddd;
+            border-radius: 8px;
+            resize: none;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        .preview {
+            width: 36%;
+            height: 100%;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .preview-img {
+            width: 100%;
+            height: 35%;
+            overflow: hidden;
+            position: relative;
+            border-radius: 12px;
+        }
+
+        .preview-img img {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-height: 100%;
+        }
+
+        .preview-detail {
+            width: 100%;
+            height: 15%;
+            margin: 12px 0;
+            padding: 12px;
+            background-color: rgb(243, 243, 243);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .preview-detail h2 {
+            color: var(--sub-color);
+            font-size: 22px;
+        }
+
+        .preview-detail p {
+            margin-top: 8px;
+            font-size: 16px;
+            color: rgb(90, 90, 90);
+        }
+
+        .preview-detail span {
+            color: coral;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .preview button {
+            border: 0;
+            border-radius: 8px;
+            width: 300px;
+            height: 60px;
+            font-size: 17px;
+            background-color: gold;
+            margin: 16px 0;
+            font-family: 'NanumSquare', sans-serif;
+            cursor: pointer;
+        }
+
+        .itemPrice {
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+
+<body>
+<div class="wrapper">
+<div th:replace="~{fragment/nav::nav}"></div>
+
+<div class="title">
+    <h2>렌탈신청</h2>
+</div>
+<form class="formWrapper" method="post" action="/users/member/cart/cartSavingFormCar">
+
+    <div class="applyForm">
+        <div class="formSide">
+            <ul>
+                <li>
+                    <h2>신청인 정보</h2>
+                </li>
+                <li>
+                    <label>이름<span> *</span></label>
+                    <input type="text" name="userName" placeholder="이름을 입력해주세요">
+                </li>
+                <li>
+                    <label>연락처<span> *</span></label>
+                    <input type="text" name="userPhone" placeholder="연락처를 입력해주세요">
+                </li>
+                <li>
+                    <label>렌트날짜<span> *</span></label>
+                    <div class="rentalDate">
+                        <input type="date" name="rentalStartDate" th:value="${list.rentalStartDate}">
+                        &emsp;~&emsp;
+                        <input type="date" name="rentalEndDate" th:value="${list.rentalEndDate}">
+                    </div>
+                </li>
+                <li>
+                    <label>설치주소<span> *</span></label>
+                    <div class="address">
+                        <div class="postCode">
+                            <input type="text" name="postcode" id="postcode" placeholder="">
+                            <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호">
+                        </div>
+                        <div class="address-detail">
+                            <input type="text" class="address-input" name="firstAddress" id="firstAddress"
+                                   placeholder="주소를 입력해주세요">
+                            <input type="text" class="address-input" name="detailAddress" id="detailAddress"
+                                   placeholder="상세주소를 입력해주세요">
+                            <input type="text" class="address-input" name="extraAddress" id="extraAddress"
+                                   placeholder="참고항목">
+                            <input type="hidden" name="address" id="address">
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <label>운송사<span> *</span></label>
+                    <div class="delivery">
+                        <th:block th:if="${list.carrier=='renter'}">
+                            <input type="text" name="carrier" placeholder="이용하실 운송사를 입력해주세요.">
+                        </th:block>
+                        <th:block th:unless="${list.carrier=='renter'}">
+                            <input type="text" name="carrier" style="text-align:center;font-family: 'NanumSquare', sans-serif;" th:value="${list.carrier}" readonly>
+                        </th:block>
+                    </div>
+                </li>
+                <li>
+                    <label>기타문의<span> </span></label>
+                    <textarea type="text" name="userContent"></textarea>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="preview">
+        <div class="preview-img">
+            <img th:src="@{|/upload/${list.folderName}/${list.fileName}|}">
+        </div>
+        <div class="preview-detail">
+            <div>
+                <h2>[[${list.title}]]</h2>
+            </div>
+            <div>
+                <p>[[${list.name}]] | [[${list.carAge}]] | [[${list.carFuelType}]]</p>
+            </div>
+            <div class="itemPrice">
+                <p>렌더 [[${list.memberName}]]</p>
+                <p><span>[[${list.rentalPrice}]]</span> 원 / 월</p>
+            </div>
+        </div>
+        <input type="hidden" name="itemId" th:value="${list.itemId}">
+        <input type="hidden" name="ownerId" th:value="${list.memberId}">
+        <input type="hidden" name="renterId" th:value="${session.user.memberId}">
+        <button type="button" onclick="assemble()">렌탈폼 저장</button>
+    </div>
+
+</form>
+</div>
+<div th:replace="~{fragment/nav::footer}"></div>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+
+    //카카오주소 하나로 묶는 함수
+    function assemble() {
+        let firstAddress = document.querySelector("input[name='firstAddress']");
+        let detailAddress = document.querySelector("input[name='detailAddress']");
+        let extraAddress = document.querySelector("input[name='extraAddress']");
+        let address = firstAddress.value + " " + detailAddress.value + extraAddress.value;
+
+        document.getElementById("address").value = address;
+
+        document.querySelector(".formWrapper").submit();
+    }
+
+    window.onload = function () {
+        var today = new Date();
+        var day = String(today.getDate()).padStart(2, '0');
+        var month = String(today.getMonth() + 1).padStart(2, '0');
+        var year = today.getFullYear();
+
+        today = year + '-' + month + '-' + day;
+        let rentalStartDate = document.querySelector("input[name='rentalStartDate']");
+        let rentalEndDate = document.querySelector("input[name='rentalEndDate']");
+        rentalStartDate.setAttribute('min', today);
+        rentalEndDate.setAttribute('min', today);
+    };
+
+
+    function sample6_execDaumPostcode() {
+        new daum.Postcode({
+            oncomplete: function (data) {
+                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+                // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                var addr = ''; // 주소 변수
+                var extraAddr = ''; // 참고항목 변수
+
+                //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                    addr = data.roadAddress;
+                } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                    addr = data.jibunAddress;
+                }
+
+                // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+                if (data.userSelectedType === 'R') {
+                    // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                    // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                    if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+                        extraAddr += data.bname;
+                    }
+                    // 건물명이 있고, 공동주택일 경우 추가한다.
+                    if (data.buildingName !== '' && data.apartment === 'Y') {
+                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                    }
+                    // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                    if (extraAddr !== '') {
+                        extraAddr = ' (' + extraAddr + ')';
+                    }
+                    // 조합된 참고항목을 해당 필드에 넣는다.
+                    document.getElementById("extraAddress").value = extraAddr;
+
+                } else {
+                    document.getElementById("extraAddress").value = '';
+                }
+
+                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                document.getElementById('postcode').value = data.zonecode;
+                document.getElementById("firstAddress").value = addr;
+                // 커서를 상세주소 필드로 이동한다.
+                document.getElementById("detailAddress").focus();
+            }
+        }).open();
+    }
+</script>
+</body>
+
+</html>

@@ -1,0 +1,310 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <style>
+        /* 메뉴 및 메인폰트 */
+        @import url(https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@2.0/nanumsquare.css);
+        /* 임시로고 폰트 */
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+        /* 카테고리 임시폰트 */
+        @import url('https://fonts.googleapis.com/css2?family=Gowun+Dodum&display=swap');
+        /*Noto Sans 폰트*/
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap');
+
+        :root {
+            --main-color: rgb(245, 188, 0);
+            --sub-color: #6D955B;
+            --main-width: 900px;
+            --font-black-color: rgb(61, 61, 61);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'NanumSquare', sans-serif;
+            min-height: 100vh;
+            /* 상단 네비메뉴의 높이와 같음 */
+        }
+
+        .wrapper {
+            width: var(--main-width);
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .form-wrapper {
+            width: 80%;
+            margin: 20px auto;
+        }
+
+        .form-wrapper h2 {
+            margin: 20px 0;
+        }
+        .notice{
+            width: 100%;
+            height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .notice-text{
+            width: 60%;
+            height: 100%;
+            font-size: 30px;
+            font-weight: 800;
+            color: grey;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .logo {
+            color: var(--main-color);
+            padding: 2px;
+            font-size: 36px;
+            font-weight: bold;
+            letter-spacing: 0.08em;
+            font-family: 'Bebas Neue', sans-serif;
+            cursor: pointer;
+        }
+
+        .logo-img {
+            width: 21px;
+            margin-top: -5px;
+        }
+        .notice-img{
+            width: 22%;
+            height: 200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .notice-img img{
+            height: 80%;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+        }
+
+        table th,
+        td {
+            border-top: 1px solid rgb(211, 211, 211);
+            border-bottom: 1px solid rgb(211, 211, 211);
+        }
+
+        table td {
+            padding-left: 30px;
+            font-size: 18px;
+            font-weight: bold;
+            color: rgb(78, 78, 78);
+        }
+
+        table tr:nth-child(1) {
+            height: 70px;
+            color: #3b3b3b;
+            text-align: left;
+            border-top: 2px solid white;
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        table tr:nth-child(1) p i {
+            color: var(--sub-color);
+        }
+
+        table tr:nth-child(2) {
+            border-top: 3px solid rgb(121, 121, 121);
+        }
+
+        table tr:nth-child(2) th,
+        table tr:nth-child(3) th,
+        table tr:nth-child(4) th,
+        table tr:nth-child(5) th,
+        table tr:nth-child(6) th,
+        table tr:nth-child(7) th,
+        table tr:nth-child(8) th {
+
+            /* background-color: rgb(238, 238, 238); */
+            color: rgb(65, 65, 65);
+            color:#c47730;
+            width: 30%;
+            height: 68px;
+            padding-right: 10px;
+            text-align: center;
+            text-decoration: underline;
+            text-underline-offset: 0.5rem;
+            text-decoration-thickness: 2px;
+            text-decoration-color: var(--main-color);
+        }
+
+        table tr:last-child {
+            height: 200px;
+            border-bottom: 3px solid rgb(121, 121, 121);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="wrapper" style="width: 800px;
+            margin: 0 auto;
+            flex-direction: column;
+            align-items: center;">
+        <div class="form-wrapper" style="width: 80%;
+            margin: 20px auto;">
+            <div class="notice" style="width: 100%;
+            height: 200px;">
+                <div class="notice-text" style="width: 100%;
+            height: 100%;
+            font-size: 30px;
+            font-weight: 800;
+            color: grey;">
+                    <p><span class="logo" style="color:#f5bc00;">ECORENT</span>
+                        고객님의 <br/><span style="color:#6D955B; font-size: 36px;">운송요청 내역</span>을 전달드립니다.
+                    </p>
+                </div>
+            </div>
+            <table style="width: 100%;
+            border-collapse: collapse;
+            background-color: white;">
+
+                <tr style="height: 70px;
+            color: #3b3b3b;
+            text-align: left;
+            border-top: 3px solid white;
+            font-size: 20px;
+            font-weight: 800;">
+                    <th colspan="2">
+                        <p>✔ 주문자 정보</p>
+                    </th>
+                </tr>
+                <tr style="border-top: 3px solid rgb(121, 121, 121);">
+                    <th style=" color:#4e4e4e;
+                    font-weight:bold;
+                    font-size:18px;
+                    font-family:Tahoma;
+            width: 30%;
+            height: 68px;
+            padding-right: 10px;
+            text-align: center;">주문자 이름</th>
+                    <td style="padding-left: 30px;
+            font-size: 16px;
+            font-weight: bold;
+            font-family:Verdana ;
+            color: #6e6e6e;">[[${form.renterName}]]</td>
+                </tr>
+                <tr>
+                    <th style=" color:#4e4e4e;
+                    font-weight:bold;
+                    font-size:18px;
+                    font-family:Verdana ;
+            width: 30%;
+            height: 68px;
+            padding-right: 10px;
+            text-align: center;">주문자 연락처</th>
+                    <td style="padding-left: 30px;
+            font-size: 16px;
+            font-weight: bold;
+            font-family:Verdana ;
+            color: #6e6e6e;">[[${form.renterPhone}]]</td>
+                </tr>
+                <tr>
+                    <th style=" color:#4e4e4e;
+                    font-weight:bold;
+                    font-size:18px;
+            width: 30%;
+            height: 68px;
+            padding-right: 10px;
+            text-align: center;">물품 분류</th>
+                    <td style="padding-left: 30px;
+            font-size: 16px;
+            font-weight: bold;
+            font-family:Verdana ;
+            color: #6e6e6e;">[[${form.itemCategory}]]</td>
+                </tr>
+                <tr>
+                    <th style=" color:#4e4e4e;
+                    font-weight:bold;
+                    font-size:18px;
+            width: 30%;
+            height: 68px;
+            padding-right: 10px;
+            text-align: center;">운송예정일</th>
+                    <td style="padding-left: 30px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #6e6e6e;">[[${form.rentalStartDate}]]</td>
+                </tr>
+                <tr>
+                    <th style=" color:#4e4e4e;
+                    font-weight:bold;
+                    font-size:18px;
+            width: 30%;
+            height: 68px;
+            padding-right: 10px;
+            text-align: center;">렌탈 배송 주소</th>
+                    <td style="padding-left: 30px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #6e6e6e;">[[${form.renterAddress}]]</td>
+                </tr>
+                <tr>
+                    <th style=" color:#4e4e4e;
+                    font-weight:bold;
+                    font-size:18px;
+            width: 30%;
+            height: 68px;
+            padding-right: 10px;
+            text-align: center;">요청 운송사</th>
+                    <td style="padding-left: 30px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #6e6e6e;">
+                        <p>[[${form.renterCarrier}]]</p>
+                    </td>
+                </tr>
+                <tr style="height: 200px;
+            border-bottom: 3px solid rgb(121, 121, 121);">
+                    <th style=" color:#4e4e4e;
+                    font-weight:bold;
+                    font-size:18px;
+            width: 30%;
+            height: 68px;
+            padding-right: 10px;
+            text-align: center;">문의사항</th>
+                    <td style="padding-left: 30px;
+            font-size: 16px;
+            font-weight: bold;
+            color: #6e6e6e;">[[${form.renterContent}]]</td>
+                </tr>
+            </table>
+        
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

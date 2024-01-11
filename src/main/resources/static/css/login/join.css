@@ -1,0 +1,330 @@
+.wrapper {
+    width: 100%;
+    min-height: 1300px;
+    position: relative;
+    padding-bottom: 180px;
+}
+
+.content {
+    width: 400px;
+    min-width: 450px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.content h1{
+    font-weight:800;
+    color: rgb(77, 77, 77);
+    margin-bottom: 36px;
+}
+.box {
+    width: 100%;
+    height: 43px;
+    padding: 5px 0 5px 15px;
+    margin: 3px 0 4px 0;
+    border-radius: 0.25rem;
+    border: 1px solid #d9d6d6;
+    color: #383838;
+    font-weight: 400;
+    outline: 0;
+}
+
+section {
+    margin: 30px 0 5px 0;
+}
+
+input:focus {
+    background-color: #f7f7f7;
+    border: 1px solid rgb(245, 188, 0);
+}
+
+/* reference */
+.reference {
+    font-size: 13px;
+    color: rgba(0, 0, 0, 0.5);
+    font-family: 'Noto Sans KR', sans-serif;
+
+}
+
+/* SECTION - EMAIL */
+.info #member_email {
+    display: flex;
+    align-items: center;
+}
+
+.info #member_email #email{
+    width: 100%;
+}
+
+/* member_nickname */
+.member_nick {
+    display: flex;
+}
+
+button#nameChk {
+    width: 150px;
+    height: 43px;
+    margin-left: 10px;
+    background-color: #f3f3f3;
+    border: 1px solid #ccc;
+    border-radius: 0.25rem;
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+    margin-top: 3px;
+}
+
+button#nameChk:active {
+    background-color: #fff;
+    color: black;
+}
+
+
+/* Birth */
+.info #member_birth {
+    display: flex;
+}
+
+.info #member_birth select {
+    margin-left: 7px;
+    color: #a0a0a0;
+}
+
+.info #member_birth select:first-child {
+    margin-left: 0px;
+}
+
+
+button#sign {
+    width: 90%;
+    height: 40px;
+    /*background-color: rgb(255, 208, 55);*/
+    background-color: var(--main-color);
+    box-shadow: 0px 2px 3px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgb(249, 205, 60);
+    border-radius: 0.25rem;
+    color: #f8f8f8;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 16px;
+    font-family: 'NanumSquare', sans-serif;
+    transition: 0.1s;
+}
+
+button#sign:active {
+    background-color: rgb(255, 211, 66);
+    color: #747474;
+}
+
+.info {
+    margin-bottom: 13px;
+}
+
+/* ------------- 주소 ---------------- */
+
+.addr{
+    margin-bottom: 50px;
+}
+
+.info #member_addr {
+    margin-bottom: 40px;
+}
+
+.addr input {
+    width: 100%;
+    height: 40px;
+    border: 1px solid #d9d6d6;
+    border-radius: 0.25rem;
+    color: #383838;
+    font-weight: 400;
+    padding: 5px 15px;
+    margin-bottom: 5px;
+}
+
+.addr-search {
+    display: flex;
+}
+
+.addr-search input[type="button"] {
+    width: 150px;
+    height: 40px;
+    margin-left: 10px;
+    background-color: #f3f3f3;
+    border: 1px solid #ccc;
+    border-radius: 0.25rem;
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.addr-search input[type="button"]:active {
+    background-color: #ffffff;
+    color: black;
+}
+
+/*    interest   */
+.info {
+    position: relative;
+}
+
+.nameTag {
+    font-size: 14px;
+    font-weight: 600;
+}
+
+
+.nameTag#nameTag_interest {
+    position: absolute;
+    top: -30px;
+    left: -2px;
+    margin-bottom: 10px;
+}
+
+
+.interest {
+    /* 필요한 스타일들... */
+    position: relative;
+    margin-top: 4px;
+}
+
+
+.interest label {
+    padding: 0 30px;
+}
+
+.info#member_interest{
+    width: 100%;
+    height: 70px;
+    border: 1px solid #d9d6d6;
+    border-radius: 0.25rem;
+    color: #383838;
+    font-weight: 400;
+    line-height: 30px;
+    font-size: 14px;
+    /*padding: 0 30px;*/
+}
+
+.info label {
+    margin-bottom: 3px;
+}
+
+[type="radio"]:hover {
+  cursor: pointer;
+}
+
+
+/*--------ERROR MESSAGE-------*/
+
+.info {
+    position: relative;
+}
+
+.info .error-msg {
+    position: absolute;
+    font-size: 12px;
+    font-weight: 600;
+    color: rgb(255, 51, 51);
+    padding: 4px;
+}
+/*이메일 유효성 에러*/
+.emailError{
+    top: -2px;
+    left: 135px;
+}
+.nameTag {
+    position: relative;
+}
+/*비밀번호 양식 에러*/
+.pwdError {
+    position: absolute;
+    top: -18px;
+    left: 70px;
+    white-space: pre-wrap;
+}
+
+/*비밀번호 불일치 에러*/
+.rePwdError {
+    position: absolute;
+    top: -2px;
+    left: 104px;
+}
+
+/*휴대폰 번호 양식 에러*/
+.phoneError {
+    position: absolute;
+    top: -3px;
+    left: 70px;
+}
+/*닉네임 유효성 에러*/
+.nickError {
+    position: absolute;
+    top: -2px;
+    left: 55px;
+}
+
+/*생일 양식 에러*/
+.birthError {
+    position: absolute;
+    top: -3px;
+    left: 58px;
+}
+
+.result {
+    font-size: 11px;
+    font-weight: 600;
+    color: red;
+    margin: 0 0 0 10px;
+}
+
+
+/* select box */
+select.box{
+    width: 100%;
+    height: 43px;
+    box-sizing: border-box;
+    margin-left: 5px;
+    padding: 5px 0 5px 10px;
+    border-radius: 0.25rem;
+    border: 1px solid #d9d6d6;
+    color: #383838;
+    background-color: #fff;
+}
+
+option {
+    font-size: 16px;
+}
+
+/* 실패시 */
+#result-fail {
+    width: 100%;
+    height: 20px;
+    margin-bottom: 5px;
+    text-align: center;
+    color: red;
+    font-size: 13px;
+}
+
+.exist {
+    font-size: 13px;
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+
+.exist a{
+    margin-left: 3px;
+    text-decoration: none;
+    font-weight: 700;
+    color: #585858;
+    transition: 0.1s;
+}
+
+.exist a:hover {
+    text-decoration: none;
+    color: #9e9e9e;
+}
+

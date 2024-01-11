@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="ko"  xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="fragment/_layout">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>회원 관리 > 회원신고 상세보기</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <!--  <link rel="stylesheet" type="text/css" th:href="@{/static/css/layoutStyle.css}" />-->
+  <style>
+    .main {
+        background-color: white;
+        box-shadow: 0 0 3px 1px #ccc;
+        margin-bottom: 30px;
+    }
+    .main h3 {
+    padding: 10px 0 10px 15px;
+    border-bottom: 1px solid #888;
+    color: rgb(50, 50, 50);
+    }
+
+    /* ---------------------------------- main1 ---------------------------------- */
+    #main1 tr{
+        border-bottom: 1px solid #dcdcdc;
+    }
+
+    #main1 th, #main1 td{
+        padding: 8px 14px;
+        height: 50px;
+        text-align: left;
+    }
+
+    #main1 th {
+        background-color: #eee;
+        width: 10%;
+        line-height: 1.3rem;
+    }
+
+    #main1 td {
+        width: 40%;
+    }
+
+    #main1 .w100 {
+        width: 150px;
+    }
+
+    /* col {
+        display: table-column;
+    } */
+
+    #main1 select{
+        width: 193px;
+        height: 30px;
+    }
+
+    #main1 input {
+        height: 30px;
+        padding: 0 10px
+    }
+
+    #main1 p {
+      border: 1px solid #767676;
+      border-radius: 3px;
+      width: 193px;
+      height: 30px;
+      padding: 0 10px;
+      align-items: center;
+
+    }
+
+    #view_address p {
+      margin-bottom: 8px;
+    }
+
+    .btn_wrap {
+        display: flex;
+        align-items: center;
+        height: 40px;
+    }
+
+    .btn_wrap input {
+        border: none;
+        margin: 0 4px;
+    }
+    /* ------------------------------------------------------------------- */
+
+    /* ---------------------------------- main2 ---------------------------------- */
+
+    #main2 tr {
+        height: 40px;
+        text-align: center;
+    }
+
+    #main2 thead {
+        background-color: #eee;
+    }
+    #main2 th, #main2 td {
+        border: 1px solid #ccc;
+    }
+    /* -------------------------------------------------------------------- */
+
+
+  .red_border{ /* 값 미입력시 색 변경 이벤트 클래스*/
+    border: 1px solid red;
+    outline: red;
+  }
+
+  span {
+      color: rgb(220, 20, 20);
+  }
+
+  p {
+      margin: 0;
+  }
+
+  .btn_confirm {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+    padding: 0 15px;
+  }
+
+  .btn_confirm input {
+      border: none;
+      margin: 0 4px;
+  }
+
+  .btn_confirm a {
+    }
+
+  </style>
+</head>
+
+<body>
+<h2 layout:fragment="page_name">회원신고 상세정보</h2>
+
+<div class="main_container" layout:fragment="main_container">
+  <div class="main" id="main1">
+    <h3>회원신고 정보</h3>
+
+    <form>
+      <div class="f_table">
+        <table>
+          <colgroup>
+            <col class="w100">
+            <col>
+          </colgroup>
+          <tbody>
+          <tr>
+            <th>신고코드</th>
+            <td>[[${view.reportId}]]</td>
+          </tr>
+          <tr>
+            <th>신고사유</th>
+            <td>
+              <p>[[${view.reportType}]]</p>
+            </td>
+            <th>신고자</th>
+            <td>
+              <p>[[${view.renterNickName}]]</p>
+            </td>
+          </tr>
+          <tr>
+            <th>글제목</th>
+            <td>
+              <p>[[${view.title}]]</p>
+            </td>
+            <th>글작성자</th>
+            <td>
+              <p>[[${view.ownerNickName}]]</p>
+            </td>
+          </tr>
+          <tr>
+            <th>신고내용</th>
+            <td colspan="3">
+              <p style="width: 100%; height: 130px;">[[${view.reportContent}]]</p>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="btn_confirm">
+        <div class="btn_left">
+          <a href="#" class="btn trueRed" th:onclick="removeItem([[${view.itemId}]])">해당글 삭제</a>
+          <a href="#" class="btn red" th:onclick="removeMember([[${view.ownerId}]])">유저 차단</a>
+        </div>
+        <div class="btn_right">
+          <a href="#" class="btn blue" th:onclick="viewItem([[${view.itemId}]])">해당글 보기</a>
+          <a href="javascript:window.history.back();" class="btn gray">확인</a>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>
+<script layout:fragment="script">
+  window.onload=function(){
+      $(".member_menu").show();
+      $(".member_menu_4").css({"background-color":"rgba(255, 255, 255, 0.1)", "border-radius":"4px"});
+  }
+
+  // 해당 게시글 삭제
+    function removeItem(itemId) {
+       if( confirm("해당 게시글을 삭제 하시겠습니까?") ) {
+            if(true) {
+                alert("삭제가 완료되었습니다.");
+                location.href = "/report/deleteItem?itemId="+itemId;
+            }
+       }
+    }
+  // 해당 게시글 이동
+  function viewItem(itemId) {
+  $.ajax({
+        url: "/report/checkIsCar",
+        type: "POST",
+        data: { itemId: itemId },
+        traditional: true,
+        success: function(res) {
+            location.href = res+itemId;
+        }
+    });
+  }
+
+  // 글쓴이 회원 삭제
+    function removeMember(ownerId) {
+       if( confirm("해당 회원을 삭제 하시겠습니까?") ) {
+            if(true) {
+                alert("삭제가 완료되었습니다.");
+                location.href = "/report/MemberDelete?ownerId="+ownerId;
+            }
+       }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,508 @@
+<!DOCTYPE html>
+<html lang="ko">
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+          integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <link rel="stylesheet" th:href="@{/static/css/style.css}">
+    <link rel="stylesheet" th:href="@{/static/css/login/join.css}">
+</head>
+
+<body>
+
+<div th:replace="~{fragment/nav::nav}"></div>
+
+<div class="wrapper">
+    <div class="content">
+        <h1>회원가입</h1>
+        <section>
+            <form id="signupForm" action="/member/signup" method="post">
+                <div class="info" id="emailCheck">
+                    <label for="email" class="nameTag">
+                    이메일 *
+                    <span class="reference">('*' 필수항목)</span>
+                    </label>
+                    <span class="error-msg emailError" id="error"></span>
+                    <div id="member_email">
+                        <input type="text" id="email" class="box" onchange="checkEmail()" maxlength="50"
+                               placeholder="이메일 입력" autofocus>
+                    </div>
+                </div>
+
+                <div class="info" id="member_passwd">
+                    <label for="passwd" class="nameTag">비밀번호 *</label>
+                    <input type="password" class="box" id="passwd" placeholder="비밀번호 입력(영문, 숫자, 특수문자 포함 8자 이상)" autocomplete="new-password">
+                    <div class="error-msg pwdError" id="pwdError"></div>
+                </div>
+
+
+                <div class="info" id="member_repasswd">
+                    <label for="repasswd" class="nameTag">비밀번호 확인 *</label>
+                    <input type="password" class="box" id="repasswd" placeholder="비밀번호 재입력" autocomplete="new-password">
+                    <div class="error-msg rePwdError" id="rePwdError"></div>
+                </div>
+
+                <div class="info" id="member_name">
+                    <label for="name" class="nameTag">이름 *</label>
+                    <input type="text" class="box" id="name" placeholder="이름" maxlength="6">
+                    <div class="error-msg" id="nameError"></div>
+                </div>
+
+                <div class="info" id="member_phone">
+                    <label for="phone" class="nameTag">전화번호 *</label>
+                    <input type="text" class="box" id="phone" placeholder="휴대폰 번호 입력('-'제외)" maxlength="11">
+                    <div class="error-msg phoneError" id="phoneError"></div>
+                </div>
+
+                <div class="info" id="member_nickname">
+                    <label for="nickName" class="nameTag">닉네임 *</label>
+                    <div class="member_nick">
+                        <input type="text" class="box" id="nickName" name="nickname" placeholder="닉네임 입력(2 ~ 10자)"
+                               minlength="2" maxlength="10">
+                        <button class="nameChk" type="button" id="nameChk" value="N"
+                                data-checked="false">중복확인</button>
+                    </div>
+                    <div class="error-msg nickError" id="nickError"></div>
+                </div>
+
+
+                <div class="info" id="member_birth">
+                    <label for="date" class="nameTag">생년월일</label>
+                    <input type="text" id="date" class="box" placeholder="YYYY-MM-DD ('-'없이 입력)" maxlength="10">
+                    <div class="error-msg birthError" id="birthError"></div>
+                </div>
+
+
+                <div class="info" id="member_addr">
+                    <label for="postcode" class="nameTag">주소</label>
+                    <div class="addr">
+                        <div class="addr-search">
+                            <input type="text" id="postcode" name="postcode" placeholder="우편번호" size="5" readonly>
+                            <input type="button" value="우편번호 찾기" name="" onclick="Postcode()"><br />
+                        </div>
+                        <input type="text" id="firstAddress" name="addr1" placeholder="주소" readonly><br />
+                        <input type="text" id="detailAddress" name="addr2" placeholder="상세주소">
+                        <input type="text" id="extraAddress" name="addr3" placeholder="참고항목">
+                    </div>
+                </div>
+
+                <div class="info" id="member_interest">
+                    <label class="nameTag" id="nameTag_interest">관심 항목</label>
+                    <div class="interest">
+                        <label>
+                            <input type="checkbox" name="chk_hobby" value="차량">
+                            <span>차량</span>
+                        </label>
+                        <label>
+                            <input type="checkbox" name="chk_hobby" value="가전">
+                            <span>가전</span>
+                        </label>
+                        <label>
+                            <input type="checkbox" name="chk_hobby" value="방송">
+                            <span>방송</span>
+                        </label>
+                        <br />
+                        <label>
+                            <input type="checkbox" name="chk_hobby" value="악기">
+                            <span>악기</span>
+                        </label>
+                        <label>
+                            <input type="checkbox" name="chk_hobby" value="건설">
+                            <span>건설</span>
+                        </label>
+                    </div>
+                </div>
+            </form>
+        </section>
+        <button type="submit" id="sign" class="btn">가입하기</button>
+
+        <div id="fail"></div>
+        <div class="exist">
+            <span>이미 회원이신가요?</span>
+            <a th:href="@{./login}">로그인 하러가기</a>
+        </div>
+    </div>
+</div>
+<div th:replace="~{fragment/nav::footer}"></div>
+<script>
+
+    let btn = document.getElementById('sign');
+    let account = {};   //account 쓰기 위해 전역으로 넣어놓음.
+
+    btn.addEventListener('click', function (e) {
+        e.preventDefault();
+
+        let emailInput = document.querySelector("#member_email input[type='text']");
+        let passwdInput = document.querySelector("#member_passwd input[type='password']");
+        let repasswdInput = document.querySelector("#member_repasswd input[type='password']");
+        let nameInput = document.querySelector("#member_name input[type='text']");
+        let phoneInput = document.querySelector("#member_phone input[type='text']");
+        let nickNameInput = document.querySelector("#member_nickname input[type='text']");
+
+        if (emailInput.value == "" || document.querySelector(".emailError").innerText!=="") {
+            alert("이메일을 확인해주세요.")
+            emailInput.focus();
+            return false;
+        }
+
+
+        if (passwdInput.value == "" || document.querySelector(".pwdError").innerText!=="") {
+            alert("비밀번호를 확인해주세요.")
+            passwdInput.focus();
+            return false;
+        }
+
+        if (repasswdInput.value == "" || document.querySelector(".rePwdError").innerText!=="") {
+            alert("비밀번호 확인란이 비었거나 잘못입력되었습니다.")
+            repasswdInput.focus();
+            return false;
+        }
+
+        if (nameInput.value == "") {
+            alert("이름을 입력해주세요.")
+            nameInput.focus();
+            return false;
+        }
+
+        if (phoneInput.value == "" || document.querySelector(".phoneError").innerText!=="") {
+            alert("휴대폰 번호를 확인해주세요.")
+            phoneInput.focus();
+            return false;
+        }
+
+        if (nickNameInput.value == "" || nickNameInput.value!==confirmedNick || document.querySelector(".nickError").innerText!=="") {
+            alert("닉네임을 확인해주세요.")
+            nickNameInput.focus();
+            return false;
+        }
+        if(confirmedNick==""){
+            alert("닉네임 중복확인을 해주세요.")
+            nickNameInput.focus();
+            return false;
+        }
+
+        if(document.querySelector(".birthError").innerText!==""){
+            alert("생년월일 양식을 확인해주세요.")
+            document.querySelector("#date").focus();
+            return false;
+        }
+
+        // 체크박스 여러개 선택 시 들고오는 것
+        var memberInterest = [];
+        $("input[name='chk_hobby']:checked").each(function() {
+            var chkInterest = $(this).val();
+            memberInterest.push(chkInterest);
+        });
+
+        let memberAddress = $('#firstAddress').val() + " " + $('#detailAddress').val() + $('#extraAddress').val();
+        let obj = {
+            memberEmail: $('#email').val(),
+            memberPasswd: $('#passwd').val(),
+            memberName: $('#name').val(),
+            memberPhone: $('#phone').val(),
+            memberNickName: $('#nickName').val(),
+            memberBirth: $('#date').val(),
+            memberPostcode: $('#postcode').val(),
+            memberAddress: memberAddress,
+            //memberInterest: $("input[name='chk_hobby']:checked").val() // 선택된 관심 항목의 값을 가져옴
+            memberInterest: memberInterest
+        };
+            console.log(obj);
+
+        $.ajax({
+            type: "post",
+            url: "/users/member/memberLogin/join",
+            dataType: "json",
+            data: obj,
+            success: function (res) {
+                if (res.message === "success") {
+                    alert("회원 가입이 완료되었습니다.");
+                    location.href = "/";
+                } else if (res.message === "failure") {
+                    alert("회원 가입에 실패했습니다.");
+                    location.href = "/users/member/join";
+                }
+            }
+        });
+
+    });
+
+/*---------------------- email 유효성 검사(중복확인) onchange 사용  -----------------------*/
+
+    function checkEmail() {
+        var memberEmail = $('#email').val();
+        var errorMsg = $("#emailCheck .error-msg");
+
+        $.ajax({
+            url: '/users/member/memberLogin/join/emailCheck',
+            type: 'post',
+            dataType: 'json',
+            data: { memberEmail: memberEmail },
+            success: function (res) {
+                console.log('Server Response:', res);
+                if(res.result == "good") {
+                    console.log("사용가능");
+                    document.querySelector(".emailError").innerText="";
+                    //errorMsg.text('중복되지 않은 이메일입니다.');
+                    //errorMsg.css('color', 'green');
+                }else{
+                    console.log("사용불가");
+                    errorMsg.text('중복된 이메일입니다.');
+                    errorMsg.css('color', 'red');
+                }
+            },
+            error: function () {
+                alert("에러입니다");
+            }
+        });
+    }
+
+
+
+
+/* ------------------------ 에러 메세지 객체 ----------------------------- */
+        let errMsg = {
+            pw: "8~20자의 영문, 숫자, 특수문자를\n모두 포함한 비밀번호를 입력해주세요",
+            pwRe: {
+                success: "비밀번호가 일치합니다",
+                fail: "비밀번호가 일치하지 않습니다"
+            },
+            phone: {
+                invalid: "‘-’ 제외 11자리를 입력해주세요"
+            },
+            birth: {
+                fail: "올바른 생년월일 형식이 아닙니다"
+            }
+        }
+
+
+
+
+/* ---------------------------------- passwd 조건에 부합 ---------------------------------- */
+
+        // pwVal: 패스워드, pwdReVal: 패스워드 재입력, isPwdValid: 패스워드 유효 여부
+
+        let pwdVal = "", pwdReVal = "", isPwdValid = false
+        let pwdInput = document.querySelector('#member_passwd input')
+        let pwdErrorMsg = document.querySelector('#member_passwd .error-msg')
+
+        pwdInput.addEventListener('input', () => {
+            let pwdReg = /^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$/
+            pwdVal = pwdInput.value
+            if (pwdReg.test(pwdInput.value)) { // 정규식 조건 만족 O
+                isPwdValid = true
+                pwdErrorMsg.textContent = ""
+            }
+            else { // 정규식 조건 만족 X
+                isPwdValid = false
+                pwdErrorMsg.textContent = errMsg.pw
+            }
+            checkPwdValid()
+            console.log(pwdVal, pwdReVal, isPwdValid, account)
+        });
+
+
+
+
+
+/* -------------------------- repassw와 passwd값 일치 검사 ----------------------------- */
+
+        let pwdReInput = document.querySelector('#member_repasswd input')
+        let pwdReErrorMsg = document.querySelector('#member_repasswd .error-msg')
+
+        pwdReInput.addEventListener('input', () => {
+            pwdReVal = pwdReInput.value
+            checkPwdValid()
+            console.log(pwdVal, pwdReVal, isPwdValid, account)
+        });
+
+        // 비밀번호와 재입력 값 일치 여부
+        function checkPwdValid() {
+            account.pw = null // default null 처리
+            if (pwdReVal === '') { // 미입력
+                pwdReErrorMsg.textContent = ""
+            } else if (pwdVal === pwdReVal) { // 비밀번호 재입력 일치
+                if (isPwdValid) {
+                    account.pw = pwdVal
+                }
+                pwdReErrorMsg.textContent = ""
+                //pwdReErrorMsg.style.color = "green"
+                //pwdReErrorMsg.textContent = errMsg.pwRe.success
+            } else { // 비밀번호 재입력 불일치
+                pwdReErrorMsg.style.color = "red"
+                pwdReErrorMsg.textContent = errMsg.pwRe.fail
+            }
+        }
+
+
+
+
+/* ----------------------------------- phone 유효성 검사 ------------------------------------ */
+
+        let phoneInput = document.querySelector('#member_phone input')
+        let phoneErrorMsg = document.querySelector('#member_phone .error-msg')
+        phoneInput.addEventListener('input', () => {
+            let phoneReg = /^010([0-9]{8})$/
+            if (phoneReg.test(phoneInput.value)) {
+                phoneErrorMsg.textContent = ""
+                account.phone = phoneInput.value
+            } else {
+                phoneErrorMsg.textContent = errMsg.phone.invalid
+                account.phone = null
+            }
+            console.log(account)
+        });
+
+
+
+
+
+/* -------------------------- 닉네임 중복확인  ------------------------------ */
+
+        let nameCheckBtn = document.querySelector("#nameChk");
+        let nickName = document.querySelector("#nickName");
+        let nickError = $(".nickError");
+        let confirmedNick="";
+
+        nameCheckBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            if(nickName.value == ""){
+                alert("닉네임을 입력해주세요.")
+                nickName.focus();
+                return false;
+            }
+
+
+            $.ajax({
+                type: "get",
+                url: "/users/member/memberLogin/join/nickCheck",
+                data: { "nickName": nickName.value },
+                success: function (res) {
+
+                    if (res.result == "good") {
+                        alert("사용가능한 닉네임입니다");
+                        confirmedNick=nickName.value;
+                        document.querySelector(".nickError").innerText="";
+                        //errorMsg.text('사용가능한 닉네임입니다.');
+                        //errorMsg.css('color', 'green');
+                    } else{
+                        nickError.text('이미 사용중인 닉네임입니다.')
+                        nickError.css('color', 'red');
+                    }
+                }
+            });
+        });
+
+
+
+/* --------------------------- 생년월일 yyyy-MM-dd 형식 받기 --------------------------- */
+
+        let dateInput = document.querySelector("#date");
+        let birthErrorMsg = document.querySelector('#member_birth .error-msg');
+
+
+        dateInput.addEventListener('input', () => {
+            let val = dateInput.value.replace(/\D/g, "");
+            let leng = val.length;
+            let result = '';
+
+            if (leng < 6) result = val;
+            else if (leng < 8) {
+                result += val.substring(0, 4);
+                result += "-";
+                result += val.substring(4);
+            } else {
+                result += val.substring(0, 4);
+                result += "-";
+                result += val.substring(4, 6);
+                result += "-";
+                result += val.substring(6);
+
+                if (!checkValidDate(result)) {
+                    birthErrorMsg.style.color = "red";
+                    birthErrorMsg.textContent = errMsg.birth.fail;
+                } else {
+                    birthErrorMsg.textContent = "";
+                }
+
+            }
+            dateInput.value = result;
+
+
+        });
+        const checkValidDate = (value) => {
+            let result = true;
+            try {
+                let date = value.split("-");
+                let y = parseInt(date[0], 10),
+                    m = parseInt(date[1], 10),
+                    d = parseInt(date[2], 10);
+
+                let dateRegex = /^(?=\d)(?:(?:31(?!.(?:0?[2469]|11))|(?:30|29)(?!.0?2)|29(?=.0?2.(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00)))(?:\x20|$))|(?:2[0-8]|1\d|0?[1-9]))([-.\/])(?:1[012]|0?[1-9])\1(?:1[6-9]|[2-9]\d)?\d\d(?:(?=\x20\d)\x20|$))?(((0?[1-9]|1[012])(:[0-5]\d){0,2}(\x20[AP]M))|([01]\d|2[0-3])(:[0-5]\d){1,2})?$/;
+                result = dateRegex.test(d + '-' + m + '-' + y);
+            } catch (err) {
+                result = false;
+            }
+            return result;
+        };
+
+
+/*---------------------------카카오 주소 API--------------------------------------*/
+
+    function Postcode() {
+            new daum.Postcode({
+                oncomplete: function (data) {
+                    // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+                    // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                    var addr = ''; // 주소 변수
+                    var extraAddr = ''; // 참고항목 변수
+
+                    //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                    if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                        addr = data.roadAddress;
+                    } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                        addr = data.jibunAddress;
+                    }
+
+                    // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+                    if (data.userSelectedType === 'R') {
+                        // 법정동명이 있을 경우 추가한다.
+                        // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                        if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+                            extraAddr += data.bname;
+                        }
+                        if (data.buildingName !== '' && data.apartment === 'Y') {
+                            extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                        }
+                        // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                        if (extraAddr !== '') {
+                            extraAddr = ' (' + extraAddr + ')';
+                        }
+                        // 조합된 참고항목을 해당 필드에 넣는다.
+                        document.getElementById("extraAddress").value = extraAddr;
+
+                    } else {
+                        document.getElementById("extraAddress").value = '';
+                    }
+
+                    // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                    document.getElementById("postcode").value = data.zonecode;
+                    document.getElementById("firstAddress").value = addr;
+                    // 커서를 상세주소 필드로 이동한다.
+                    document.getElementById("detailAddress").focus();
+            }
+        }).open();
+    }
+
+</script>
+</body>
+
+</html>

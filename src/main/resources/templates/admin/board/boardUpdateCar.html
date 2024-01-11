@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="ko"  xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="fragment/_layout">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>게시판 관리 > 게시판 수정</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <!--  <link rel="stylesheet" type="text/css" th:href="@{/static/css/layoutStyle.css}" />-->
+  <style>
+    .main {
+        background-color: white;
+        box-shadow: 0 0 3px 1px #ccc;
+        margin-bottom: 30px;
+    }
+    .main h3 {
+    padding: 10px 0 10px 15px;
+    border-bottom: 1px solid #888;
+    color: rgb(50, 50, 50);
+    }
+    /* ---------------------------------- main1 ---------------------------------- */
+    #main1 tr{
+        border-bottom: 1px solid #dcdcdc;
+    }
+
+    #main1 th, #main1 td{
+        padding: 8px 14px;
+        height: 50px;
+        text-align: left;
+    }
+
+    #main1 th {
+        background-color: #eee;
+        width: 10%;
+        line-height: 1.3rem;
+    }
+
+    #main1 td {
+        width: 40%;
+    }
+
+    #main1 .w100 {
+        width: 150px;
+    }
+
+    /* col {
+        display: table-column;
+    } */
+
+    #main1 select{
+        width: 250px;
+        height: 30px;
+    }
+
+    #main1 input {
+        height: 30px;
+        padding: 0 10px;
+        width: 250px;
+        font-size: 16px;
+    }
+
+    /* ------------------------------------------------------------------- */
+
+  .board_detail {
+    display: flex;
+  }
+
+  .board_detail li:nth-child(2), .board_detail li:nth-child(3), .board_detail li:nth-child(4) {
+    margin-left: 30px;
+  }
+
+  .red_border{ /* 값 미입력시 색 변경 이벤트 클래스*/
+    border: 1px solid red;
+    outline: red;
+  }
+
+  span {
+      color: rgb(220, 20, 20);
+  }
+
+  p {
+      margin: 0;
+  }
+
+  .btn_confirm {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+  }
+
+  .btn_confirm input {
+      border: none;
+      margin: 0 4px;
+  }
+
+  textarea {
+    width: 1090px;
+    height: 350px;
+    padding: 8px;
+    outline: 0;
+    font-size: 17px;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+
+  .rentalDate{
+    display: flex;
+  }
+
+  .rentalDate input {
+    width: 116.07px !important;
+    padding: 0px !important;
+  }
+  </style>
+</head>
+
+<body>
+<h2 layout:fragment="page_name">게시판글 수정</h2>
+
+<div class="main_container" layout:fragment="main_container">
+  <div class="main" id="main1">
+    <h3>게시판글 정보수정</h3>
+
+    <form onsubmit="return frmCheck()" action="/admin/boardUpdateCar" method="post" enctype="multipart/form-data" autocomplete="off">
+      <div class="f_table">
+        <table>
+          <colgroup>
+            <col class="w100">
+            <col>
+          </colgroup>
+          <tbody>
+          <tr>
+            <th>작성자</th>
+            <td>
+              <input type="text" name="memberNickName" class="memberNickName" th:value="${boardList.memberNickName}" readonly>
+            </td>
+          </tr>
+          <tr>
+            <th>글 제목</th>
+            <td>
+              <input type="text" name="title" class="title" th:value="${boardList.title}">
+            </td>
+            <th>글 작성일</th>
+            <td>
+              <input type="text" name="uploadDate" class="uploadDate" th:value="${boardList.uploadDate}" readonly>
+            </td>
+          </tr>
+          <tr>
+            <th>글 상세</th>
+            <td id="view_address" colspan="4">
+              <ul>
+                <li>
+                  <ul class="board_detail">
+                    <li>
+                      <label>제품명</label><br>
+                      <input type="text" name="name" class="name" th:value="${boardList.name}">
+                    </li>
+                    <li>
+                      <label>렌탈기간</label><br>
+                      <div class="rentalDate">
+                        <input type="date" name="rentalStartDate" th:value="${boardList.rentalStartDate}">&nbsp;~&nbsp;<input type="date" name="rentalEndDate" th:value="${boardList.rentalEndDate}">
+                      </div>
+<!--                      <input type="text" name="rentalStartDate" class="rentalStartDate" th:value="${boardList.rentalStartDate}">-->
+<!--                      <input type="text" name="rentalEndDate" class="rentalEndDate" th:value="${boardList.rentalEndDate}">-->
+                    </li>
+                    <li>
+                      <label>위치</label><br>
+                      <input type="text" name="address" class="address" th:value="${boardList.address}">
+                    </li>
+                    <li>
+                      <label>운송방식</label><br>
+                      <select class="carrier" name="carrier">
+                        <optgroup label="렌탈소유주가 선택">
+                          <th:block th:if="${#strings.equals(boardList.carType, 'owner')}">
+                            <option value="owner" selected>렌탈소유주가 선택</option>
+                          </th:block>
+                          <th:block th:unless="${#strings.equals(boardList.carType, 'owner')}">
+                            <option value="owner">렌탈소유주가 선택</option>
+                          </th:block>
+                        </optgroup>
+                        <optgroup label="렌탈요청자가 선택">
+                          <th:block th:if="${#strings.equals(boardList.carType, 'OOCL')}">
+                            <option value="OOCL" selected>OOCL</option>
+                          </th:block>
+                          <th:block th:unless="${#strings.equals(boardList.carType, 'OOCL')}">
+                            <option value="OOCL">OOCL</option>
+                          </th:block>
+                          <th:block th:if="${#strings.equals(boardList.carType, 'CJ')}">
+                            <option value="CJ" selected>CJ</option>
+                          </th:block>
+                          <th:block th:unless="${#strings.equals(boardList.carType, 'CJ')}">
+                            <option value="CJ">CJ</option>
+                          </th:block>
+                          <th:block th:if="${#strings.equals(boardList.carType, 'KCTC')}">
+                            <option value="KCTC" selected>KCTC</option>
+                          </th:block>
+                          <th:block th:unless="${#strings.equals(boardList.carType, 'KCTC')}">
+                            <option value="KCTC">KCTC</option>
+                          </th:block>
+                          <th:block th:if="${#strings.equals(boardList.carType, 'Pantos')}">
+                            <option value="Pantos" selected>Pantos</option>
+                          </th:block>
+                          <th:block th:unless="${#strings.equals(boardList.carType, 'Pantos')}">
+                            <option value="Pantos">Pantos</option>
+                          </th:block>
+                        </optgroup>
+                      </select>
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <ul class="board_detail">
+                    <li>
+                      <label>차종</label><br>
+                      <select class="carType" name="carType">
+                        <th:block th:if="${#strings.equals(boardList.carType, '소형')}">
+                          <option value="소형" selected>소형</option>
+                        </th:block>
+                        <th:block th:unless="${#strings.equals(boardList.carType, '소형')}">
+                          <option value="소형">소형</option>
+                        </th:block>
+                        <th:block th:if="${#strings.equals(boardList.carType, '중형')}">
+                          <option value="중형" selected>중형</option>
+                        </th:block>
+                        <th:block th:unless="${#strings.equals(boardList.carType, '중형')}">
+                          <option value="중형">중형</option>
+                        </th:block>
+                        <th:block th:if="${#strings.equals(boardList.carType, '대형')}">
+                          <option value="대형" selected>대형</option>
+                        </th:block>
+                        <th:block th:unless="${#strings.equals(boardList.carType, '대형')}">
+                          <option value="대형">대형</option>
+                        </th:block>
+                        <th:block th:if="${#strings.equals(boardList.carType, '전기차')}">
+                          <option value="전기차" selected>전기차</option>
+                        </th:block>
+                        <th:block th:unless="${#strings.equals(boardList.carType, '전기차')}">
+                          <option value="전기차">전기차</option>
+                        </th:block>
+                        <th:block th:if="${#strings.equals(boardList.carType, '수입차')}">
+                          <option value="수입차" selected>수입차</option>
+                        </th:block>
+                        <th:block th:unless="${#strings.equals(boardList.carType, '수입차')}">
+                          <option value="수입차">수입차</option>
+                        </th:block>
+                      </select>
+                    </li>
+                    <li>
+                      <label>연료종류</label><br>
+                      <input type="text" name="carFuelType" class="carFuelType" th:value="${boardList.carFuelType}">
+                    </li>
+                    <li>
+                      <label>차량 연식</label><br>
+                      <input type="text" name="carAge" class="carAge" th:value="${boardList.carAge}">
+                    </li>
+                    <li>
+                      <label>가격</label><br>
+                      <input type="text" name="rentalPrice" class="rentalPrice" th:value="${boardList.rentalPrice}">
+                    </li>
+                  </ul>
+                </li>
+                <li>
+                  <label>글 내용</label><br>
+                    <textarea type="text" name="content">[[${boardList.content}]]</textarea>
+                </li>
+              </ul>
+            </td>
+          </tr>
+          <tr class="img_file">
+            <th>제품 이미지</th>
+            <td>
+              <img th:src="@{|/upload/${boardList.folderName}/${boardList.fileName}|}" width="250" alt="">
+              <input type="file" name="file" class="file_insert" />
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="btn_confirm">
+        <input type="submit" value="수정" class="btnConfirm btn green" style="width: 52px; font-size: 14px;">
+        <a href="javascript:window.history.back();" class="btn gray" style="margin-left: 10xp">취소</a>
+      </div>
+      <input type="hidden" name="itemId" th:value="${boardList.itemId}"> <!-- 수정후 다음페이지로 id를 넘기기 위해 hidden을 사용해 id를 넘김 -->
+      <input type="hidden" name="fileName" th:value="${boardList.fileName}">
+      <input type="hidden" name="folderName" th:value="${boardList.folderName}">
+
+    </form>
+  </div>
+
+</div>
+
+<script layout:fragment="script">
+  window.onload=function(){
+      $(".board_menu").show();
+      $(".board_menu_1").css({"background-color":"rgba(255, 255, 255, 0.1)", "border-radius":"4px"});
+  }
+
+  function frmCheck(){
+        let rentalPrice = document.querySelector("input[name='rentalPrice']");
+        let carrierOption=document.querySelector(".carrierOption");
+        let carrier=document.querySelector("select[name=carrier]");
+
+        if($(".carType").val() ==""){
+            alert("차종을 선택해주세요.");
+            $(".carType").addClass("red_border");
+            $(".carType").focus();
+            return false;
+        }
+        if($(".title").val() == ""){
+            alert("글제목을 입력해주세요.");
+            $(".title").addClass("red_border");
+            $(".title").focus();
+            return false;
+        }
+        if($(".name").val() == ""){
+            alert("제품명을 입력해주세요.");
+            $(".name").addClass("red_border");
+            $(".name").focus();
+            return false;
+        }
+        if($(".carAge").val() == ""){
+            alert("연식을 입력해주세요.");
+            $(".carAge").addClass("red_border");
+            $(".carAge").focus();
+            return false;
+        }
+        if($(".carFuelType").val() == ""){
+            alert("연료타입을 입력해주세요.");
+            $(".carFuelType").addClass("red_border");
+            $(".carFuelType").focus();
+            return false;
+        }
+        if($(".address").val() == ""){
+            alert("거래위치를 입력해주세요.");
+            $(".address").addClass("red_border");
+            $(".address").focus();
+            return false;
+        }
+        if(rentalPrice.value=="" || isNaN(rentalPrice.value)){
+            alert("제품의 렌탈비용을 정확히 입력해주세요.");
+            rentalPrice.focus();
+            return false;
+        }
+        if(carrierOption.value==='선택'){
+            alert("운송방식을 선택해주세요.");
+            return false;
+        }
+
+        if($(".content").value==""){
+            alert("글내용을 입력해주세요.");
+            $(".content").addClass("red_border");
+            $(".content").focus();
+            return false;
+        }
+        if(carrierOption.value === 'renter' || carrier.disabled==true){
+            carrier.disabled=false;
+            carrier.value='renter';
+        }
+    }
+
+
+</script>
+
+</body>
+</html>

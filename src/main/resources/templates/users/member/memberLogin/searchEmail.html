@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>아이디, 비번찾기 </title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <link rel="stylesheet" th:href=@{/static/css/style.css}>
+    <link rel="stylesheet" th:href="@{/static/css/login/searchEmail.css}">
+</head>
+<body>
+
+<div th:replace="~{fragment/nav::nav}"></div>
+
+<div class="container">
+    <div class="layout">
+        <h2>이메일 찾기</h2>
+    </div>
+</div>
+<form id="searchEForm" class="searchEForm" action="/users/member/memberLogin/resultEmail" method="post">
+    <main>
+        <section class="content">
+            <div class="search-tab-list" aria-label="찾을대상">
+                <a th:href="@{./searchEmail}" class="tab-list active">이메일 찾기</a>
+                <a th:href="@{./searchPasswd}" class="tab-list">비밀번호 찾기</a>
+            </div>
+            <div class="search-main">
+                <div class="center-wrapper">
+                <ul>
+                    <li>
+                        <input type="text" name="memberName" id="name" placeholder="이름">
+                    </li>
+                    <li>
+                        <input type="text" name="memberPhone" id="phone" placeholder="휴대전화 입력 ('-'제외)">
+                    </li>
+                </ul>
+                <button type="submit" class="btn" id="sign">이메일 찾기</button>
+                </div>
+        </div>
+        </section>
+    </main>
+</form>
+<script>
+
+    document.addEventListener('DOMContentLoaded', function() {
+        let form = document.getElementById('searchEForm');
+        let btn = document.getElementById('sign');
+
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+
+            let name = document.querySelector('#name');
+            let phone = document.querySelector('#phone');
+
+                 if(name.value == "") {
+                        alert("이름을 입력해주세요.")
+                        name.focus();
+                        return false;
+                 }
+
+                 if(phone.value == "") {
+                        alert("휴대전화를 입력해주세요.")
+                        phone.focus();
+                        return false;
+                 }
+
+                 form.submit();
+        });
+    });
+</script>
+</body>
+</html>

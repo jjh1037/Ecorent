@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이메일 찾기 결과 </title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" th:href=@{/static/css/style.css}>
+    <link rel="stylesheet" th:href="@{/static/css/login/resultEmail.css}">
+</head>
+<body>
+<div th:replace="~{fragment/nav::nav}"></div>
+<form class="resultEmailForm">
+    <main>
+        <div class="layout">
+            <h2>이메일 찾기</h2>
+        </div>
+        <section class="content">
+            <div class="login-find-result">
+                <p th:if="${result != 'none'}" class="result-title">
+                    회원님의 정보로 <br>
+                    가입된 이메일입니다
+                </p>
+                <p th:unless="${result != 'none'}" class="result-title">
+                    회원정보가 없습니다 <br>
+                    <span>다시 확인해주세요</span>
+                </p>
+                <ul class="resultList">
+                    <li th:if="${result != 'none'}">
+                        <p class="emailResult">[[${result.memberEmail}]]&emsp;<span>[[${result.memberRegDate}]]</span></p>
+                    </li>
+                    <li th:unless="${result != 'none'}">
+                        <!-- memberEmail이 null인 경우에 대한 처리 -->
+                            <a th:href="@{./searchEmail}">이메일 찾으러가기</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="login-button">
+                <p class="passwd-search">
+                    비밀번호는 뭐더라?
+                    <a th:href="@{/users/member/memberLogin/searchPasswd}">비밀번호 찾기</a>
+                </p>
+                <button type="button" class="login" onclick="toLogin()">로그인 하러가기</button>
+            </div>
+        </section>
+    </main>
+</form>
+<script>
+    function toLogin() {
+        location.href = '/users/member/memberLogin/login';
+    }
+</script>
+</body>
+</html>

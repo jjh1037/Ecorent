@@ -1,0 +1,153 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+          integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script th:src="@{/static/js/fragment.js}"></script>
+    <link rel="stylesheet" th:href=@{/static/css/style.css}>
+    <style>
+        .post-container{
+            width: var(--main-width);
+            margin: 0 auto;
+            margin-top: 30px;
+            margin-bottom: 160px;
+            padding: 10px;
+        }
+        .post-container h2{
+            color:var(--sub-color);
+        }
+        .post-container form{
+            text-align: center;
+            margin: 50px 0;
+        }
+        .post-container ul{
+            padding: 0;
+            width: 1000px;
+            margin: 0 auto;
+        }
+        .post-container ul > *{
+            margin: 16px 0;
+        }
+        .post-container ul li{
+            list-style: none;
+        }
+        .post-container select{
+            width: 120px;
+            height: 36px;
+            border: 1px solid rgb(165, 165, 165);
+            margin: 0 10px;
+            outline: 0;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        .postTitle{
+            width: 800px;
+            height: 36px;
+            border: 0;
+            outline: 0;
+            border-bottom: 2px solid rgb(134, 134, 134);
+            margin: 0 10px;
+            padding:4px;
+        }
+        .postContent{
+            width: 100%;
+            height: 500px;
+            border: 0;
+            background-color: rgb(233, 233, 233);
+            border-radius: 10px;
+            padding: 10px;
+            outline:0;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size: 17px;
+        }
+
+        .postApply{
+            width: 100px;
+            height: 40px;
+            border: 0;
+            background-color: #91aa85;
+            border-radius: 3px;
+            font-family: 'Noto Sans KR', sans-serif;
+            font-size:15px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div th:replace="~{fragment/nav::nav}"></div>
+
+
+<div class="post-container">
+    <h2>글쓰기</h2>
+    <form method="post" action="/users/community/post" >
+        <ul>
+            <li>
+                <select class="postType" id="postType">
+                    <option value="">선택</option>
+                    <option value="concern">고민</option>
+                    <option value="boast">자랑</option>
+                    <option value="etc">자유</option>
+                </select>
+                <input type="text" class="postTitle" placeholder="글 제목을 입력하세요.">
+            </li>
+            <li>
+                <textarea class="postContent" id="editor" placeholder="글 내용을 입력하세요."></textarea>
+            </li>
+            <li>
+                <input type="submit" value="등록" class="postApply">
+            </li>
+        </ul>
+    </form>
+</div>
+<div th:replace="~{fragment/nav::footer}"></div>
+<script>
+
+    let postType = document.querySelector("#postType");
+    let postTitle = document.querySelector(".postTitle");
+    let postContent = document.querySelector(".postContent");
+    let postApply = document.querySelector(".postApply");
+
+    postApply.addEventListener('click', (e)=>{
+    e.preventDefault();
+
+    let obj = {
+        postType : postType.options[postType.selectedIndex].text,
+        postTitle : postTitle.value,
+        postContent : postContent.value
+    };
+
+    console.log(obj);
+
+    $.ajax({
+        type : "post",
+        url : "/users/community/post",
+        dataType: "json",
+        data : obj,
+        success : function(res){
+            if(res.result=="good"){
+                alert("게시글이 등록되었습니다.");
+                location.href="/users/community/listPost";
+            }else if(res.result=="login"){
+                location.href="/users/member/memberLogin/login";
+            }
+
+        }
+
+    });
+
+    });
+
+
+</script>
+
+
+</body>
+</html>

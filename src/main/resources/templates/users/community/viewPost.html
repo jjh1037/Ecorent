@@ -1,0 +1,436 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+          integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script th:src="@{/static/js/fragment.js}"></script>
+    <link rel="stylesheet" th:href=@{/static/css/style.css}>
+    <style>
+        .viewPost-container {
+            width: 100%;
+            max-width: var(--main-width);
+            margin: 0 auto;
+            margin-top: 30px;
+            margin-bottom: 160px;
+            padding: 10px;
+        }
+
+        .viewPost-container h2 {
+            color: var(--sub-color);
+        }
+
+        .btnWrapper {
+            width: 100%;
+            text-align: right;
+            margin: 10px 0;
+        }
+
+        .btnWrapper button{
+            border: 1px solid rgb(207, 207, 207);
+            padding: 6px 13px;
+            color: var(--sub-color);
+            background-color: white;
+            cursor: pointer;
+        }
+
+        .viewPost-container table{
+            border-collapse: collapse;
+            width: 100%;
+        }
+        .viewPost-container table td {
+            border-top: 1px solid rgb(221, 221, 221);
+            background-color: white;
+            padding: 8px 15px;
+            font-size: 15px;
+        }
+        table tr:nth-child(1) td:nth-child(1),
+        table tr:nth-child(2) td:nth-child(1){
+            text-align: center;
+            font-size: 14px;
+            color:grey;
+        }
+        .row3 td:nth-child(1) {
+            width: 10%;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .row3 td:nth-child(2) {
+            font-weight: bold;
+            color: var(--sub-color);
+        }
+
+        .row3 td:nth-child(3) {
+            width: 15%;
+            font-weight: bold;
+            text-align: right;
+        }
+        .row3 td i {
+            color: red;
+        }
+        table tr:nth-child(4){
+            height: 400px;
+        }
+        .viewPost-container table .row4 td{
+            padding: 24px 40px;
+            text-align: left;
+            vertical-align: top;
+            font-size: 17px;
+        }
+        .viewPost-container table .row4 pre{
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+        .viewOption{
+            width: 100%;
+            text-align: right;
+            margin: 10px 0;
+        }
+        .viewOption button{
+            border: 1px solid rgb(207, 207, 207);
+            padding: 6px 13px;
+            color: var(--sub-color);
+            background-color: white;
+            cursor: pointer;
+        }
+        .viewOption button i{
+            color:red;
+        }
+
+        .comment-wrapper{
+            width: 100%;
+            background-color: rgb(230, 230, 230);
+        }
+        .comment-top{
+            width: 100%;
+            padding: 10px;
+        }
+        .comment{
+            width: 100%;
+            margin: 10px 0;
+            padding:10px;
+            display: flex;
+            justify-content: space-around;
+            list-style: none;
+        }
+        .circle{
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--sub-color);
+            position: relative;
+        }
+        .circle h5{
+            width: 50px;
+            position: absolute;
+            text-align: center;
+            top:50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            color:white;
+            font-size:20px;
+        }
+        .writer-info ul{
+            width: 1170px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            list-style: none;
+            padding: 0;
+            font-size: 15px;
+        }
+        .writer-info li:nth-child(1){
+            margin-bottom: 4px;
+        }
+        .writer-info li:nth-child(1) span{
+            font-size: 15px;
+            color: grey;
+        }
+
+        .comment-bottom{
+            width: 100%;
+            text-align: center;
+            position: relative;
+        }
+        .comment-bottom textarea{
+            width: 96%;
+            height: 100px;
+            padding: 6px;
+            resize: none;
+            outline: none;
+            border: none;
+            margin-bottom: 20px;
+            font-family: 'NanumSquare', sans-serif;
+            font-size:16px;
+        }
+        .comment-bottom button{
+            width: 50px;
+            height: 34px;
+            position: absolute;
+            bottom: 36px;
+            right: 46px;
+            border-radius: 3px;
+            border: 1px solid #6D955B;
+            background-color: white;
+            color:rgb(41, 41, 41);
+            cursor: pointer;
+        }
+        .comment-bottom button:hover{
+            background-color: #f0f0f0;
+        }
+        .zero{
+            font size: 16px;
+            color: grey;
+        }
+    </style>
+</head>
+<body>
+
+
+<div th:replace="~{fragment/nav::nav}"></div>
+
+<div class="viewPost-container">
+    <h2>커뮤니티</h2>
+    <div class="btnWrapper">
+        <button>글목록</button>
+    </div>
+    <input type="hidden" class="postNum" th:value="${selectedPost.postNum}">
+    <th:block th:if="${#strings.isEmpty(session.user)}">
+        <input type="hidden" class="memberId" value="">
+    </th:block>
+    <th:block th:unless="${#strings.isEmpty(session.user)}">
+        <input type="hidden" class="memberId" th:value="${session.user.getMemberId}">
+    </th:block>
+    <form method="post" action="/users/community/post">
+        <table>
+
+            <tr class="row1">
+                <td>
+                    <p>작성자</p>
+                </td>
+                <td colspan='2'>
+                    <p class="postWriter">[[${selectedPost.postWriter}]]</p>
+                </td>
+            </tr>
+            <tr class="row2">
+                <td>
+                    <p>작성날짜</p>
+                </td>
+                <td  colspan='3'>
+                    <p class="postDate">[[${selectedPost.postDate}]]</p>
+                </td>
+            </tr>
+            <tr class="row3">
+                <td>
+                    <p>[[${selectedPost.postType}]]</p>
+                </td>
+                <td>
+                    <p class="postTitle">[[${selectedPost.postTitle}]]</p>
+                </td>
+                <td>
+                    <p class="postRecom"><i class="fa-solid fa-heart"></i>추천수&ensp;<span> [[${selectedPost.countLove}]]</span></p>
+                </td>
+            </tr>
+            <tr class="row4">
+                <td colspan='3'>
+                    <pre class="postContent">[[${selectedPost.postContent}]]</pre>
+                </td>
+            </tr>
+
+
+        </table>
+    </form>
+    <div class="viewOption">
+        <button class="loveBtn">
+            추천&ensp;
+            <th:block th:if="${session.user!=null && love!=null && love.state==1}">
+                <span><i class="fa-solid fa-heart"></i></span>
+            </th:block>
+            <th:block th:unless="${session.user!=null && love!=null && love.state==1}">
+                <span><i class="fa-regular fa-heart"></i></span>
+            </th:block>
+        </button>
+        <button class="editPostBtn" th:onclick="'editPost('+${selectedPost.postNum}+')'">글수정</button>
+        <button class="removePostBtn" th:onclick="'removePost(' + ${selectedPost.postNum} + ')'">글삭제</button>
+    </div>
+
+    <div class="comment-wrapper">
+        <ul class="comment-top">
+        </ul>
+        <div class="comment-bottom">
+            <textarea class="comContent" th:if="${#strings.isEmpty(session.user)}" placeholder="로그인을 하셔야 댓글을 작성할 수 있습니다."></textarea>
+            <textarea class="comContent" th:unless="${#strings.isEmpty(session.user)}"></textarea>
+            <button class="commentBtn">등록</button>
+        </div>
+    </div>
+
+</div>
+<div th:replace="~{fragment/nav::footer}"></div>
+
+
+<script>
+    let listBtn = document.querySelector(".btnWrapper button");
+    let editPostBtn = document.querySelector(".editPostBtn");
+    let removePostBtn = document.querySelector(".removePostBtn");
+    let postNum = document.querySelector(".postNum").value;
+    let memberId = document.querySelector(".memberId").value;
+    let loveBtn = document.querySelector(".loveBtn");
+
+    listBtn.addEventListener('click',()=>{
+        location.href="/users/community/listPost";
+    });
+
+    function editPost(postNum){
+        location.href="/users/community/editPost?postNum="+postNum;
+    };
+
+
+
+
+    /*-------------------------------좋아요 기능---------------------------------*/
+
+    loveBtn.addEventListener('click',()=>{
+
+        if(memberId==""){
+            alert("로그인을 하신후 이용 바랍니다.");
+            return false;
+        }
+
+        $.ajax({
+            type:"get",
+            url:"/users/community/viewPost/setLove",
+            data: {postNum:postNum,
+                   memberId:memberId},
+            dataType:"json",
+            success:function(res){
+                if(res.love=="true"){
+                    document.querySelector(".loveBtn span").innerHTML=`<i class="fa-solid fa-heart"></i>`;
+                }else{
+                    document.querySelector(".loveBtn span").innerHTML=`<i class="fa-regular fa-heart"></i>`;
+                }
+            }
+        });
+    });
+
+
+
+
+    /*----------------------------코멘트 작성후 등록 기능--------------------------------*/
+
+    let commentBtn = document.querySelector(".commentBtn");
+
+    commentBtn.addEventListener('click',()=>{
+
+        if(memberId==""){
+            alert("로그인을 하셔야 댓글등록이 가능합니다.");
+            return false;
+        }else{
+            let comContent = document.querySelector(".comContent").value;
+            let obj = {
+                postNum : postNum,
+                comWriter : memberId,
+                comContent : comContent
+            }
+
+            $.ajax({
+                type:"post",
+                url: "/users/community/viewPost/comment",
+                data : obj,
+                dataType: "json",
+                success: function(res){
+                    if(res.result=="success"){
+                        location.reload();
+                    }
+                }
+            });
+        }
+    });
+
+
+
+
+    /*-------------------------페이지 실행시 코멘트 리스트 가져오기-----------------------------*/
+
+    $.ajax({
+        type:"post",
+        url: "/users/community/viewPost",
+        data: {postNum},
+        dataType: "json",
+        success: function(res){
+            let output="";
+
+            if(res.result=="zero"){
+                output=`
+                <li class="comment">
+                    <h3 class="zero">등록된 댓글이 없습니다.</h3>
+                </li>`;
+            }else{
+                res.result.forEach((each)=>{
+                    output+=`
+                    <li class="comment">
+                        <div class="circle">
+                            <h5>${each.memberNickName.substring(0,2)}</h5>
+                        </div>
+                        <div class="writer-info">
+                            <ul>
+                                <li><h3>${each.memberNickName}<span>&emsp;${timeForm(each.comDate)}</span></h3></li>
+                                <li>${each.comContent}</li>
+                            </ul>
+                        </div>
+                    </li>
+                    `;
+                });
+            }
+            document.querySelector(".comment-top").innerHTML=output;
+        }
+    });
+
+
+
+    /*------------------------------포스트 글 삭제------------------------------------------*/
+
+    function removePost(postNum){
+        if(confirm("게시글을 삭제하시겠습니까?")){
+
+            let obj={ postNum : postNum };
+            $.ajax({
+                type : "post",
+                url : "/users/community/viewPost/deletePost",
+                dataType : "json",
+                data : obj,
+                success : function(res){
+                    if(res.result=="success"){
+                        location.href="/users/community/listPost";
+                    }
+                }
+            });
+        }
+    };
+
+
+    function timeForm(msgDate){
+        let date = new Date(msgDate);
+        console.log(date);
+        let year = date.getFullYear().toString().substr(-2);
+        var month = (date.getMonth() + 1).toString().padStart(2, '0');
+        var day = date.getDate().toString().padStart(2, '0');
+        var hours = date.getHours().toString().padStart(2, '0');
+        var minutes = date.getMinutes().toString().padStart(2, '0');
+        return `${year}.${month}.${day} (${hours}:${minutes})`;
+    }
+
+
+
+</script>
+
+
+</body>
+</html>

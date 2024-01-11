@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="ko"  xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="fragment/_layout">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>관리자 페이지 메인</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+          integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!--    <link rel="stylesheet" type="text/css" th:href="@{/static/css/layoutStyle.css}" />-->
+    <style>
+        .main {
+            background-color: white;
+            box-shadow: 0 0 3px 1px #ccc;
+            margin-bottom: 30px;
+        }
+
+        .main h3 {
+            border-bottom: none !important;
+        }
+
+        .name_view_link:hover {
+            font-weight: bold;
+            text-decoration: underline;
+        }
+        /* ---------------------------------- main2 ---------------------------------- */
+        .count_wrap {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px;
+        }
+
+        #main2 {
+            width : 49.5%;
+            height: 312px;
+        }
+
+        #main2 tr {
+            height: 40px;
+            text-align: center;
+        }
+
+        #main2 thead {
+            background-color: #eee;
+        }
+        #main2 th, #main2 td {
+            border: 1px solid #ccc;
+        }
+
+        .btn_confirm {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 60px;
+        }
+
+        .btn_confirm input {
+            border: none;
+            margin: 0 4px;
+        }
+
+        .btn2 {
+            padding: 5px 12px;
+            color:#fff;
+            border-radius: 3px;
+            font-size: 14px;
+            cursor:pointer;
+        }
+
+        .bottom {
+            display: block;
+            display: flex;
+            justify-content: center;
+            padding: 10px;
+        }
+
+        .board_container {
+            width: 100%;
+            display:flex;
+            justify-content:space-between;
+        }
+
+        .new_list {
+            display: flex;
+            justify-content:space-between;
+            border-bottom: 1px solid #888;
+            align-items: center;
+        }
+
+        .new_list a {
+            margin-right: 10px;
+            text-align:center;
+            font-size: 14px;
+            color: #aaa;
+        }
+
+        .new_list a:hover {
+            text-decoration: underline;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+<h2 layout:fragment="page_name">관리자 페이지</h2>
+
+<div class="main_container" layout:fragment="main_container" >
+    <div class="board_container">
+        <div class="main" id="main2">
+
+            <div class="new_list">
+                <h3>최신 회원가입 목록</h3>
+                <a href="/admin/member/memberList">바로가기</a>
+            </div>
+
+            <table>
+                <thead>
+                <tr>
+                    <th>닉네임</th>
+                    <th>이메일</th>
+                    <th>이름</th>
+                    <th>전화번호</th>
+                    <th>등급</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="memberList : ${memberList}">
+                    <td>
+                        <a th:href="@{/admin/member/memberView(memberId=${memberList.memberId})}" class="name_view_link">
+                            [[${memberList.memberNickName}]]
+                        </a>
+                    </td>
+                    <td>[[${memberList.memberEmail}]]</td>
+                    <td>[[${memberList.memberName}]]</td>
+                    <td>[[${memberList.memberPhone}]]</td>
+                    <td>[[${memberList.memberRole}]]</td>
+                </tr>
+                </tbody>
+            </table>
+            <br>
+        </div>
+
+        <div class="main" id="main2">
+            <div class="new_list">
+                <h3>최신 회원신고 목록</h3>
+                <a href="/memberReport">바로가기</a>
+            </div>
+
+            <table>
+                <thead>
+                <tr>
+                    <th>신고코드</th>
+                    <th>신고사유</th>
+                    <th>글제목</th>
+                    <th>글작성자</th>
+                    <th>신고자</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="reportList: ${reportList}">
+                    <td>[[${reportList.reportId}]]</td>
+                    <td>[[${reportList.reportType}]]</td>
+                    <td style="text-align: left;">
+                        <a th:href="@{/report/viewReport?(reportId=${reportList.reportId})}" class="name_view_link" style="margin-left: 10px;">
+                            [[${reportList.title}]]
+                        </a>
+                    </td>
+                    <td>[[${reportList.ownerNickName}]]</td>
+                    <td>[[${reportList.renterNickName}]]</td>
+                </tr>
+                </tbody>
+            </table>
+            <br>
+        </div>
+
+
+    </div>
+
+    <div class="board_container">
+    <!-- 게시판 목록-->
+        <div class="main" id="main2">
+            <div class="new_list">
+                <h3>최신 게시판 목록</h3>
+                <a href="/admin/boardList">바로가기</a>
+            </div>
+            <table>
+                <thead>
+                <tr>
+                    <th>카테고리</th>
+                    <th>글제목</th>
+                    <th>글작성자</th>
+                    <th>글작성일</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="boardList: ${boardList}">
+                    <td>[[${boardList.itemCategory}]]</td>
+                    <td style="text-align: left;">
+                        <th:block th:if="${#strings.equals(boardList.itemCategory, '자동차')}">
+                            <a th:href="@{/admin/boardViewCar?(itemId=${boardList.itemId})}" class="name_view_link" style="margin-left: 10px;">
+                                [[${boardList.title}]]
+                            </a>
+                        </th:block>
+                        <th:block th:unless="${#strings.equals(boardList.itemCategory, '자동차')}">
+                            <a th:href="@{/admin/boardView?(itemId=${boardList.itemId})}" class="name_view_link"  style="margin-left: 10px;">
+                                [[${boardList.title}]]
+                            </a>
+                        </th:block>
+                    </td>
+                    <td>[[${boardList.memberNickName}]]</td>
+                    <td>[[${boardList.uploadDate}]]</td>
+                </tr>
+                </tbody>
+            </table>
+            <br>
+        </div>
+
+        <div class="main" id="main2">
+            <div class="new_list">
+                <h3>최신 커뮤니티 목록</h3>
+                <a href="/admin/communityList">바로가기</a>
+            </div>
+            <table>
+                <thead>
+                <tr>
+                    <th>카테고리</th>
+                    <th>글제목</th>
+                    <th>글작성자</th>
+                    <th>글작성일</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="communityList: ${communityList}">
+                    <td>[[${communityList.postType}]]</td>
+                    <td style="text-align: left;">
+                        <a th:href="@{/admin/communityView?(postNum=${communityList.postNum})}" class="name_view_link" style="margin-left: 10px;">[[${communityList.postTitle}]]</a>
+                    </td>
+                    <td>[[${communityList.postWriter}]]</td>
+                    <td>[[${communityList.postDate}]]</td>
+                </tr>
+                </tbody>
+            </table>
+            <br>
+        </div>
+    </div>
+
+    <div class="board_container">
+        <div class="main" id="main2">
+            <div class="new_list">
+                <h3>최신 운송사 등록</h3>
+                <a href="/shipping/shippingList">바로가기</a>
+            </div>
+
+            <table>
+                <thead>
+                <tr>
+                    <th>국내/해외</th>
+                    <th>도시</th>
+                    <th>이름</th>
+                    <th>전화번호</th>
+                    <th>이메일</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="shipList: ${shippingList}">
+                    <td>
+                        <th:block th:if="${#strings.equals(shipList.domestic, 'true')}">
+                            <p>국내</p>
+                        </th:block>
+                        <th:block th:unless="${#strings.equals(shipList.domestic, 'true')}">
+                            <p>해외</p>
+                        </th:block>
+                    </td>
+                    <td>[[${shipList.city}]]</td>
+                    <td>
+                        <a th:href="@{/shipping/shippingView?(id=${shipList.id})}" class="name_view_link">
+                            [[${shipList.name}]]
+                        </a>
+                    </td>
+                    <td>[[${shipList.comNum}]]</td>
+                    <td>[[${shipList.email}]]</td>
+                </tr>
+                </tbody>
+            </table>
+            <br>
+        </div>
+    </div>
+</div>
+
+<script layout:fragment="script">
+    window.onload=function(){
+        $(".index-category").css({"background-color":"rgba(255, 255, 255, 0.1)", "border-radius":"4px"});
+    }
+</script>
+
+</body>
+</html>

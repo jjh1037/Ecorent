@@ -1,0 +1,415 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+          integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script th:src="@{/static/js/fragment.js}"></script>
+    <link rel="stylesheet" th:href="@{/static/css/style.css}">
+    <style>
+        /*@import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);*/
+
+        .wrapper {
+            width: var(--main-width);
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .my-menu{
+            width: 100%;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 60px;
+            box-shadow: 0 0 2px rgb(175, 175, 175);
+        }
+        .my-menu ul{
+            width: 100%;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .my-menu ul a{
+            text-decoration: none;
+            padding: 8px 12px;
+            margin: 0 20px;
+        }
+        .my-menu ul li{
+            width: 100%;
+            list-style: none;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: rgb(94, 94, 94);
+        }
+        .underline{
+            line-height: 1.2;
+            background-image: linear-gradient(transparent calc(100%-3px),#000 3px);
+            background-repeat: no-repeat;
+            background-size: 0% 100%;
+            transition: background-size 0.3s;
+            color:#000;
+        }
+        .underline.yellow{
+            background-image: linear-gradient(transparent 60%, #ffdb3b 40%);
+        }
+        .underline:hover {
+            background-size: 100% 100%;
+        }
+        .active {
+            line-height: 1.2;
+            background-repeat: no-repeat;
+            background-size: 0% 100%;
+            color:#000;
+            background-image: linear-gradient(transparent 60%, #ffdb3b 40%);
+            background-size: 100% 100%;
+        }
+
+        .btnArea {
+            width: 90%;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: right;
+            padding-right: 4px;
+        }
+
+        .removeBtn {
+            color: var(--main-color);
+            border: none;
+            background-color: transparent;
+            font-family: 'NanumSquare', sans-serif;
+            font-size: 19px;
+            font-weight: 800;
+            cursor: pointer;
+        }
+
+        /*가ㅣ영*/
+        .profile-container{
+            width: 100%;
+            max-width: 1300px;
+            min-height: 275px;
+            background-color: #fafafa;
+            display: flex;
+            border: 2px solid var(--main-color);
+            border-radius: 13px;
+        }
+
+         .box,
+         .box2 {
+            width: 33.333%;
+            height: 230px;
+            margin: 3px;
+            flex: none;
+            padding: 25px;
+            margin-top: 20px;
+            /*border: 1px solid #eaeaea;*/
+        }
+
+        .box2 {
+            border-left: 1px solid #e5e5e5;
+        }
+
+        .point,
+        .profile-content{
+            margin: 0 30px 30px 30px;
+        }
+
+        .name {
+            margin: 0 30px 80px 30px;
+        }
+
+        .name span {
+            font-size: 30px;
+            font-weight: 800;
+            color: var(--main-color);
+            /*color: #3c3c3c;*/
+        }
+
+        .name p {
+            font-size: 19px;
+            /*font-weight: bold;*/
+            margin: 5px;
+        }
+
+        .name .nim {
+            font-weight: bold;
+            font-size: 25px;
+            /*color: rgb(90, 90, 90);*/
+            color: #3c3c3c
+        }
+
+        .carousel {
+          width: 85%;
+          height: 50px;
+          overflow: hidden;
+          white-space: nowrap;
+          background-color: #e5e5e5;
+          border-radius: 8px;
+          margin: 30px;
+          margin-top: 20px;
+        }
+
+        .carousel-item {
+           width: 100%;
+           height: 65px;
+           display: inline-block;
+           margin-top: 15px;
+           margin-left: 5px;
+        }
+
+        .carousel-item.active {
+          display: block;
+        }
+
+        .carousel-item p {
+            font-size: 16px;
+            color: #222;
+            letter-spacing: -0.7px;
+        }
+
+        .profile-wrapper {
+            height: 200px;
+            /*background-color: #e5e5e5;*/
+            /*margin: 20px;*/
+            border-radius: 5px;
+        }
+
+        .profile p {
+            font-size: 25px;
+            font-weight: bold;
+            color: #3c3c3c;
+        }
+
+        .profile-view {
+            /*background-color: #e5e5e5;*/
+            margin: 40px 0;
+        }
+
+        .profile-view .line1,
+        .profile-view .line2,
+        .profile-view .line3 {
+            font-size: 16px;
+        }
+
+        .profile-view .line2 {
+            margin-left: 20px;
+        }
+
+        .profile-view .line3 {
+            margin-top: 30px; /* 위에 여백을 추가합니다 */
+        }
+
+        .profile-update {
+            margin: 18px 0;
+            text-align: right;
+        }
+
+        .profile-update a{
+            text-decoration: none;
+            color: black;
+        }
+
+        .profile-update a:hover {
+            text-decoration: underline;
+        }
+
+        .point .title {
+            font-size: 25px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .point-content p {
+            padding: 10px 0;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .point-wrapper span {
+            font-size: 30px;
+            font-weight: 800;
+            color: #F5BC00;
+            /*margin: 40px 0;*/
+        }
+
+        .member-point {
+            margin-top: 40px;
+        }
+/*
+        .point p {
+            margin: 5px;
+            font-size:17px;
+        }
+*/
+        .ad-image {
+            width: 100%;
+            height: 140px;
+            margin-top: 50px;
+        }
+
+        .advertisement {
+            width:100%;
+            height: 100%;
+        }
+
+    </style>
+</head>
+
+<body>
+
+<div th:replace="~{fragment/nav::nav}"></div>
+
+<div class="my-menu">
+    <ul>
+        <a href="/users/member/memberInfo/info">
+            <li class="underline yellow active">회원정보</li>
+        </a>
+        <a href="/users/member/cart">
+            <li class="underline yellow">장바구니</li>
+        </a>
+        <a href="/users/member/memberInfo/receivedForms">
+            <li class="underline yellow">받은렌탈요청</li>
+        </a>
+        <a href="/users/member/memberInfo/sentForms">
+            <li class="underline yellow">보낸렌탈요청</li>
+        </a>
+        <a href="/users/member/memberInfo/messages">
+            <li class="underline yellow">메시지함</li>
+        </a>
+    </ul>
+</div>
+
+
+<div class="wrapper">
+    <input type="hidden" class="memberId" value="${session.user.memberId}">
+
+    <div class="profile-container">
+        <div class="box">
+            <div class="name">
+                <span>[[${member.memberNickName}]]</span>
+                <span class="nim">님</span>
+                <!--                <p>반갑습니다</p>-->
+            </div>
+            <div class="carousel">
+                <div class="carousel-item">
+                    <p>
+                        <span>게시글 작성하고 30포인트 받기!</span>
+                    </p>
+                </div>
+                <div class="carousel-item">
+                    <p>
+                        <span>추천 운송 회사를 확인해보세요</span>
+                    </p>
+                </div>
+                <div class="carousel-item">
+                    <p>
+                        <span>렌탈 신청부터 운송까지 간편하게</span>
+                    </p>
+                </div>
+            </div>
+            <!--            <i class="fa-regular fa-heart"></i>-->
+            <!--            <svg width="24" height="24" viewBox="0 0 24 24" preserveAspectRatio="xMidYMid meet"><path fill="currentColor" d="M22.971 7.638c-.548-5.17-7.119-7.135-10.57-2.488a.5.5 0 0 1-.802 0C8.148.503 1.577 2.469 1.029 7.625.642 12.451 3.897 17.183 12 21.436c8.104-4.252 11.36-8.984 10.972-13.798zm.996-.093c.428 5.319-3.137 10.446-11.738 14.899a.5.5 0 0 1-.46 0C3.169 17.99-.395 12.864.034 7.532.656 1.67 7.904-.683 12 4.052 16.096-.683 23.344 1.67 23.967 7.545z"></path></svg>-->
+        </div>
+        <div class="box2">
+            <div class="profile-content">
+                <div class="profile">
+                    <p>내 정보</p>
+                </div>
+                <div class="profile-view">
+                    <span class="line1">성명 [[${member.memberName}]]</span>
+                    <span class="line2">생년월일 [[${member.memberBirth}]]</span><br>
+                    <span class="line3">이메일 [[${member.memberEmail}]]</span>
+                </div>
+                <div class="profile-update">
+                    <a th:href="@{/users/member/memberInfo/infoUpdate}">수정하기</a>
+                </div>
+            </div>
+        </div>
+        <div class="box2">
+            <div class="point">
+                <div class="point-wrapper">
+                    <p class="title">포인트</p>
+                    <div class="member-point">
+                        <span>[[${member.memberPoint}]]</span><span>P</span>
+                    </div>
+                    <div class="point-content">
+                        <p>적립하신 포인트는 1000P이상 부터 <br>
+                            사용 가능합니다.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ad-image">
+        <img th:src="@{/static/images/info/adver.png}" alt="" class="advertisement">
+    </div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // 현재 URL의 경로 가져오기
+        var currentPath = window.location.pathname;
+
+        // 모든 메뉴 항목 가져오기
+        var menuItems = document.querySelectorAll('.my-menu ul a');
+
+        // 각 메뉴 항목에 대해 반복
+        menuItems.forEach(function(item) {
+            // 메뉴 항목의 절대 경로 생성
+            var itemPath = new URL(item.getAttribute('href'), window.location.origin).pathname;
+
+            // 현재 경로가 메뉴 항목의 경로를 포함하는지 확인 (부모 메뉴 활성화를 위해)
+            if (currentPath.includes(itemPath) && itemPath !== '/') {
+                // 조건에 맞는 경우 checked-back 클래스 추가
+                item.classList.add(".active");
+            }
+        });
+    });
+
+    $(document).ready(function() {
+        var $carousel = $('.carousel');
+        var $items = $('.carousel-item');
+        var currentIndex = 0;
+
+        // 캐러셀 아이템의 너비를 캐러셀 컨테이너 너비로 설정
+        // 이 부분은 제거될 수 있습니다. CSS에서 이미 width를 100%로 설정했기 때문입니다.
+        // $items.width($carousel.width());
+
+        function moveToNextSlide() {
+            currentIndex++;
+            if (currentIndex >= $items.length) {
+                currentIndex = 0;
+            }
+            // 각 항목의 너비를 기반으로 스크롤 위치를 계산합니다.
+            // $carousel.width() 대신에 직접적인 너비 값을 사용할 수 있습니다.
+            var scrollPosition = currentIndex * $carousel.outerWidth();
+            $carousel.animate({
+                scrollLeft: scrollPosition
+            }, 800);
+        }
+
+        // 3초마다 자동으로 다음 슬라이드로 이동
+        setInterval(moveToNextSlide, 3000);
+    });
+
+
+
+
+
+</script>
+</body>
+
+</html>

@@ -1,0 +1,364 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+          integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script th:src="@{/static/js/fragment.js}"></script>
+    <link rel="stylesheet" th:href="@{/static/css/style.css}">
+    <style>
+
+        .my-menu{
+            width: 100%;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 60px;
+            box-shadow: 0 0 2px rgb(175, 175, 175);
+        }
+        .my-menu ul{
+            width: 100%;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .my-menu ul a{
+            text-decoration: none;
+            padding: 8px 12px;
+            margin: 0 20px;
+        }
+        .my-menu ul li{
+            width: 100%;
+            list-style: none;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: rgb(94, 94, 94);
+        }
+        .underline{
+            line-height: 1.2;
+            background-image: linear-gradient(transparent calc(100%-3px),#000 3px);
+            background-repeat: no-repeat;
+            background-size: 0% 100%;
+            transition: background-size 0.3s;
+            color:#000;
+        }
+        .underline.yellow{
+            background-image: linear-gradient(transparent 60%, #ffdb3b 40%);
+        }
+        .underline:hover {
+            background-size: 100% 100%;
+        }
+        .active {
+            line-height: 1.2;
+            background-repeat: no-repeat;
+            background-size: 0% 100%;
+            color:#000;
+            background-image: linear-gradient(transparent 60%, #ffdb3b 40%);
+            background-size: 100% 100%;
+        }
+
+        .wrapper {
+            width: var(--main-width);
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .btnArea {
+            width: 90%;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: right;
+        }
+
+        .removeBtn {
+            color: rgb(160, 160, 160);
+            border: 1px solid rgb(200, 200, 200);
+            background-color: white;
+            padding: 5px 7px;
+            cursor: pointer;
+        }
+
+        .removeBtn span{
+            color:coral;
+        }
+
+        table {
+            width: 90%;
+            border-collapse: collapse;
+        }
+
+        table th,
+        td {
+            border-top: 1px solid rgb(219, 219, 219);
+            border-bottom: 1px solid rgb(219, 219, 219);
+        }
+
+        thead th {
+            background-color: rgb(224, 224, 224);
+        }
+
+        thead tr {
+            height: 34px;
+            color:rgb(83, 83, 83);
+        }
+
+        table td {
+            height: 120px;
+            text-align: center;
+            background-color: rgb(255, 255, 255);
+        }
+
+        tbody td:nth-child(1) {
+            width: 6%;
+        }
+
+        tbody td:nth-child(2) {
+            width: 12%;
+        }
+
+        tbody td:nth-child(3) {
+            text-align: left;
+        }
+
+         tbody .img-wrapper {
+            background-color: cadetblue;
+            border-radius: 50%;
+            width: 90px;
+            height: 90px;
+            margin: 0 auto;
+            overflow: hidden;
+            position: relative;
+        }
+        tbody .img-wrapper img {
+            width: auto;
+            height: 100%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        tbody ul {
+            width: 100%;
+            height: 100%;
+            padding: 2px 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        tbody ul li {
+            list-style: none;
+            margin: 5px 0;
+        }
+
+        tbody ul li h4 {
+            font-size: 20px;
+            color: rgb(114, 114, 114);
+        }
+        tbody .title span{
+            font-size : 14px;
+            color: coral;
+            text-shadow : 1px 1px 0 gold;
+        }
+
+        tbody .content {
+            font-size: 18px;
+            color:rgb(45, 45, 45);
+        }
+
+        tbody .sender {
+            font-size: 15px;
+            color: grey;
+        }
+        .nullPost {
+            font-size: 18px;
+            color: rgb(128, 128, 128)
+        }
+
+
+    </style>
+</head>
+
+<body>
+
+<div th:replace="~{fragment/nav::nav}"></div>
+
+<div class="my-menu">
+    <ul>
+        <a href="/users/member/memberInfo/info">
+            <li class="underline yellow">회원정보</li>
+        </a>
+        <a href="/users/member/cart">
+            <li class="underline yellow">장바구니</li>
+        </a>
+        <a href="/users/member/memberInfo/receivedForms">
+            <li class="underline yellow">받은렌탈요청</li>
+        </a>
+        <a href="/users/member/memberInfo/sentForms">
+            <li class="underline yellow">보낸렌탈요청</li>
+        </a>
+        <a href="/users/member/memberInfo/messages">
+            <li class="underline yellow active">메시지함</li>
+        </a>
+    </ul>
+</div>
+
+
+<div class="wrapper">
+    <input type="hidden" class="userId" th:value="${session.user.memberId}">
+    <div class="btnArea">
+        <button class="removeBtn"><span><i class="fa-solid fa-caret-right"></i></span> 선택 삭제</button>
+    </div>
+    <table>
+        <thead>
+        <tr>
+            <th><input type="checkbox" id="checkAll"></th>
+            <th colspan="2">메시지 내용</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+
+    </table>
+
+</div>
+
+<script>
+    let memberId = document.querySelector(".userId").value;
+
+    function moveToMsg(renterId, ownerId, itemId,sentBy,msgId){
+
+
+
+        /*---------리스트에 보여지는 메시지가 로그인한 유저의 메시지가 아닌경우 읽음체크---------*/
+
+        if(sentBy!=memberId){
+            $.ajax({
+                type:"post",
+                url: "/users/member/memberInfo/messages/checkMsg",
+                data: {msgId:msgId},
+                dataType:"json",
+                success:function(res){
+
+                }
+            });
+        }
+        location.href="/users/member/memberInfo/msgView?renterId="+renterId+"&ownerId="+ownerId+"&itemId="+itemId;
+    }
+
+    /*----------------------페이지실행시 보여지는 메시지리스트 호출----------------------------*/
+    $.ajax({
+        type:"post",
+        url:"/users/member/memberInfo/messages",
+        dataType:"json",
+        success:function(res){
+            let output="";
+            if(res.list=="zero"){
+                document.querySelector("thead tr").innerHTML=
+                `<th colspan="3">메시지 내용</th>`;
+                console.log("zero");
+                output=`
+                <tr>
+                    <td colspan="3"><h4 class="nullPost">메시지함이 비어있습니다.</h4></td>
+                </tr>
+                `;
+                document.querySelector("tbody").innerHTML=output;
+                }else{
+                res.list.forEach((each)=>{
+                    let checked = "";
+                if(each.sentBy!=memberId){
+                    checked = each.checked === false ? '<span>New</span>' : '';
+                }
+                output+=`
+                <tr>
+            <td><input type="checkbox" class="checkBox" value="${each.itemId}" data-otherMemberId="${each.otherMemberId}"></td>
+            <td>
+                <div class="img-wrapper">
+                    <img src="/upload/${each.folderName}/${each.fileName}" alt="">
+                </div>
+            </td>
+            <td>
+                <ul onclick="moveToMsg(${each.renterId},${each.ownerId},${each.itemId},${each.sentBy},${each.msgId})">
+                    <li class="title">
+                        <h4>${each.title} ${checked}</h4>
+                    </li>
+                    <li class="content">${each.msgContent}</li>
+                    <li class="sender">${each.otherMemberName} | ${each.msgTime}</li>
+                </ul>
+            </td>
+        </tr>
+                `;
+                });
+                document.querySelector("tbody").innerHTML=output;
+            }
+        }
+    });
+
+
+
+    /*-----------------------------전체 메시지 선택박스 체크-------------------------------*/
+
+    document.querySelector("#checkAll").addEventListener('change',function(){
+        let checkBoxes = document.querySelectorAll(".checkBox");
+        checkBoxes.forEach((each)=>{
+            each.checked=this.checked;
+        });
+    });
+
+
+
+    /*----------------------삭제버튼 클릭시 체크된 체크박스만 삭제----------------------------*/
+
+    document.querySelector('.removeBtn').addEventListener('click',()=>{
+        let selectedMsgs=[];
+
+        document.querySelectorAll('tbody input[type=checkbox]:checked').forEach((each)=>{
+            selectedMsgs.push({
+            itemId : each.value,
+            otherMemberId : each.getAttribute('data-othermemberid')
+            });
+
+        });
+        console.log(selectedMsgs);
+
+        if(selectedMsgs.length===0){
+            alert('삭제할 항목을 선택해주세요.');
+            return;
+        }
+
+        $.ajax({
+            type:"post",
+            contentType: "application/json",
+            url:"/users/member/memberInfo/deleteMsgs",
+            data: JSON.stringify(selectedMsgs),
+            success: function(res){
+                if(res.result=="success"){
+                    location.reload();
+                }
+            }
+        });
+    });
+
+
+</script>
+</body>
+
+</html>

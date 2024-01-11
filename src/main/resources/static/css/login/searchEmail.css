@@ -1,0 +1,100 @@
+.searchEForm a {
+    text-decoration: none;
+    color: rgb(17, 17, 17);
+}
+
+.layout h2 {
+    text-align: center;
+    font-weight: 800;
+    font-family: 'NanumSquare', sans-serif;
+    font-size: 32px;
+    color: var(--font-black-color);
+    padding: 40px 0;
+    margin-top: 60px;
+}
+
+.searchEForm {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    width: 420px;
+    min-height: 300px;
+    padding: 10px;
+}
+
+.content {
+    position: relative;
+    max-width: 400px;
+    min-height: 400px;
+    border-left: 1px solid #f1f1f1;
+    border-right: 1px solid #f1f1f1;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+section .search-tab-list {
+    display: flex;
+    margin-bottom: 50px;
+}
+
+section .tab-list.active {
+    background-color: #fff;
+}
+
+section .tab-list {
+    display: flex;
+    width: 100%;
+    height: 50px;
+    border-top: 1px solid #f1f1f1;
+    background-color: #f1f1f1;
+    color: #696969;
+    justify-content: center;
+    align-items: center;
+}
+
+section .search-main ul {
+    width: 80%;
+    padding-bottom: 30px;
+}
+
+section .search-main ul li {
+    list-style: none;
+    margin: 15px 0;
+}
+
+section .center-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+section .center-wrapper input {
+    width: 100%;
+    height: 50px;
+    border-radius: 4px;
+    border: 1px solid #cfcfcf;
+}
+
+section .center-wrapper input::placeholder {
+    text-indent: 12px;
+    font-size: 14px;
+}
+
+section .center-wrapper input:focus {
+    outline: 0;
+    background-color: #f7f7f7;
+    border: 1px solid rgb(245, 188, 0);
+}
+
+section button {
+    width: 80%;
+    height: 50px;
+    border: 0;
+    border-radius: 4px;
+    background-color: var(--main-color);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+}
+
