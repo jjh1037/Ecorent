@@ -84,7 +84,7 @@
                 </ul>
             </th:block>
             <th:block th:if="${session.user!=null and session.user.memberRole=='Admin'}">
-                <a th:href="@{/admin/member/memberList}" class="signUrl">관리자</a>
+                <a th:href="@{/admin}" class="signUrl">관리자</a>
             </th:block>
         </div>
     </nav>
