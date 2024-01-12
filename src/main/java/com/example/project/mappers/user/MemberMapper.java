@@ -72,7 +72,7 @@ public interface MemberMapper {
     @Select("SELECT COUNT(*) FROM member WHERE memberEmail = #{memberEmail}")
     public int emailCheck(String memberEmail); //이메일 유효성체크
 
-    @Insert("INSERT INTO member VALUES (NULL, #{memberEmail}, #{memberPasswd}, #{memberName}, #{memberPhone}, #{memberNickName}, #{memberBirth}, #{memberPostcode}, #{memberAddress}, #{memberInterest}, now(), #{memberPoint}, '회원')")
+    @Insert("INSERT INTO member VALUES (NULL, #{memberEmail}, #{memberPasswd}, #{memberName}, #{memberPhone}, #{memberNickName}, #{memberBirth}, #{memberPostcode}, #{memberAddress}, #{memberInterest}, now(), 1000, '회원')")
     public void insertMember(MemberDto memberDto); // 회원가입 저장
 
     @Select("SELECT COUNT(*) FROM member WHERE memberNickName = #{nickName}")
