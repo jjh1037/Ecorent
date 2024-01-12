@@ -137,7 +137,7 @@
                 <li th:unless="${each.itemCategory=='자동차'}">
                     <div class="card" onclick="viewItem(${each.itemId},'${each.itemCategory}')">
                         <div class="card-img">
-                            <img src="/upload/${each.folderName}/${each.fileName}" alt="">
+                            <img th:src="@{|/upload/${each.folderName}/${each.fileName}|}" alt="">
                         </div>
                         <div class="card-discription">
                             <div class="itemtitle"><h2>[[${each.title}]]</h2></div>
