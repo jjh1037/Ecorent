@@ -31,7 +31,7 @@ public class CommunityController {
 
         String searchQuery = postService.getSearch(searchType, words);
         model.addAttribute("searchCount",postMapper.getCountSearch(searchQuery));
-        return "/users/community/listPost";
+        return "users/community/listPost";
     }
 
     @GetMapping("/post")
@@ -92,7 +92,7 @@ public class CommunityController {
     public String getEditPost(@RequestParam int postNum, Model model){
         UsersPostDto result = postMapper.viewPost(postNum);
         model.addAttribute("selectedPost",result);
-        return "/users/community/editPost";
+        return "users/community/editPost";
     }
 
     @PostMapping("/editPost")
