@@ -32,7 +32,7 @@ public class SnsLoginService {
             sb.append("grant_type=authorization_code");
 
             sb.append("&client_id=1cb6eeda5b10fa681b67816de0e0ea61"); //본인이 발급받은 key
-            sb.append("&redirect_uri=http://ec2-3-39-189-188.ap-northeast-2.compute.amazonaws.com:9888/oauth/kakao"); // 본인이 설정한 주소
+            sb.append("&redirect_uri=http://52.79.219.17:9888/oauth/kakao"); // 본인이 설정한 주소
 
             sb.append("&code=" + authorize_code);
             bw.write(sb.toString());
