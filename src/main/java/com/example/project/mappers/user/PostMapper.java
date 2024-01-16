@@ -14,7 +14,7 @@ public interface PostMapper {
     @Insert("INSERT INTO post VALUES(NULL, #{postType}, #{postTitle}, #{postWriter}, #{postContent}, NOW())")
     public void setPost(UsersPostDto postDto);
 
-    @Select("SELECT post.*, IFNULL(totalLove.loveCount,0) as countLove from post LEFT JOIN (SELECT post_num, COUNT(*) AS loveCount FROM love WHERE state=1 GROUP BY post_num) AS totalLove ON POST.post_num=totalLove.post_num where POST.post_num=#{id};")
+    @Select("SELECT post.*, IFNULL(totalLove.loveCount,0) as countLove from post LEFT JOIN (SELECT post_num, COUNT(*) AS loveCount FROM love WHERE state=1 GROUP BY post_num) AS totalLove ON post.post_num=totalLove.post_num where post.post_num=#{id};")
     public UsersPostDto viewPost(int id);
 
     @Delete("DELETE FROM post WHERE post_num=#{postNum}")
