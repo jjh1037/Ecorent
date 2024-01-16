@@ -28,10 +28,10 @@ public interface CartMapper {
     @Select("SELECT COUNT(*) FROM cart WHERE memberId = #{memberId} AND itemId = #{itemId}")
     int getCartDuplicateCheck(CartDto cartDto);
 
-    @Select("SELECT COUNT(*) FROM rentalforms where itemId = #{itemId} AND renterId = #{memberId} AND formStatus = 'saving'")
+    @Select("SELECT COUNT(*) FROM rentalForms where itemId = #{itemId} AND renterId = #{memberId} AND formStatus = 'saving'")
     int getSavingCheck(int itemId, int memberId);
 
-    @Update("UPDATE rentalforms SET formStatus = 'waiting' WHERE itemId = #{itemId} AND renterId = #{memberId} AND formStatus = 'saving'")
+    @Update("UPDATE rentalForms SET formStatus = 'waiting' WHERE itemId = #{itemId} AND renterId = #{memberId} AND formStatus = 'saving'")
     void setChangeFormStatusToWaiting(int itemId, int memberId);
 
 
