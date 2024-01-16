@@ -38,7 +38,7 @@ public class CommonController {
         }else{
             model.addAttribute("menu",engToKorCategory(category));
         }
-        return "/users/category/listProduct";
+        return "users/category/listProduct";
     }
 
     @PostMapping("/users/category/{category}")
@@ -59,13 +59,13 @@ public class CommonController {
     public String getProductView(@RequestParam int id, Model model){
         model.addAttribute("menu", korToEngCategory(categoryMapper.getCategoryName(id)));
         model.addAttribute("card",categoryMapper.getviewItem(id));
-        return "/users/category/viewProduct";
+        return "users/category/viewProduct";
     }
 
     @GetMapping("/users/category/postProduct")
     public String getPostProduct(@RequestParam String category, Model model){
         model.addAttribute("category",category);
-        return "/users/category/postProduct";
+        return "users/category/postProduct";
     }
 
     @PostMapping("/users/category/postProduct")
@@ -119,7 +119,7 @@ public class CommonController {
             return "redirect:/users/member/memberLogin/login";
         }else{
             model.addAttribute("item",categoryMapper.getviewItem(id));
-            return "/users/category/editProduct";
+            return "users/category/editProduct";
         }
     }
     @PostMapping("/users/category/editProduct")
