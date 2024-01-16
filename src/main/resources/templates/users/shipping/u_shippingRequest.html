@@ -222,13 +222,14 @@
                             </th:block>
                         </td>
                         <td style="align-items: center;">
-                            <img th:src="@{|/upload/${view.folderName}/${view.savedFileName}|}" style="max-width: 250px; max-height: 60px; margin: 3px 0; align-items: center; " alt="">
+                            <img th:src="@{|/static/upload/${view.folderName}/${view.savedFileName}|}" style="max-width: 250px; max-height: 60px; margin: 3px 0; align-items: center; " alt="">
                         </td>
                         <td>[[${view.name}]]</td>
                         <td>[[${view.city}]]</td>
                         <td>[[${view.comNum}]]</td>
                     </tr>
                 </table>
+                <input type="text" name="shippingEmail" class="shippingEmail" th:value="${view.email}">
             </div>
 
 
@@ -393,6 +394,7 @@
             let requestImportCity = document.querySelector(".requestImportCity").value;
             let requestImportDate = document.querySelector(".requestImportDate").value;
             let requestContent = document.querySelector(".requestContent").value;
+            let shippingEmail = document.querySelector(".shippingEmail").value;
             let id = document.querySelector(".id").value;
 
             let requestProduct = [];
@@ -416,6 +418,7 @@
                 requestImportDate:requestImportDate,
                 requestProduct:requestProduct,
                 requestContent:requestContent,
+                shippingEmail:shippingEmail,
                 id:id
             }
 
