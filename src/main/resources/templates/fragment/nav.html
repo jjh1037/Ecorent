@@ -84,7 +84,7 @@
                 </ul>
             </th:block>
             <th:block th:if="${session.user!=null and session.user.memberRole=='Admin'}">
-                <a th:href="@{/admin}" class="signUrl">관리자</a>
+                <a th:href="@{/admin/member/memberList}" class="signUrl">관리자</a>
             </th:block>
         </div>
     </nav>
@@ -154,7 +154,7 @@
                                     <a href="/users/member/cart" class="cartUrl">
                                         <div class="cart_wrap">
                                             <div class="cartImg">
-                                                <img src="/upload/${each.folderName}/${each.fileName}" alt="">
+                                                <img src="/static/upload/${each.folderName}/${each.fileName}" alt="">
                                             </div>
                                             <div class="cartText">
                                                 <h2>${each.title}</h2>
