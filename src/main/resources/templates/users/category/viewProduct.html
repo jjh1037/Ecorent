@@ -669,6 +669,9 @@
     /*---------------------------장바구니 함수---------------------------------*/
 
     document.querySelector(".cartBtn").addEventListener('click', function() {
+    if(document.querySelector("input[name=checkUser]").value=='empty'){
+            alert("로그인 후 이용해주세요.");
+    }
 
     if(ownerId.value == memberId.value) {
             alert("자신의 상품은 장바구니에 담을 수 없습니다.");
